@@ -65,7 +65,7 @@ function landing(): string {
       <div class="hero-copy">
         <p class="eyebrow">Read-only config audit · tape 01</p>
         <h1 id="hero-title" tabindex="-1">Trace every alert route change</h1>
-        <p class="lede">For platform teams who need to prove whether live alert routes match reviewed configuration.</p>
+        <p class="lede">For platform teams who need to prove whether live alert routes match the reviewed baseline.</p>
         <div class="hero-action"><a class="button route-link" href="/demo">Try it with sample data</a><span>Loads three realistic route changes in an isolated demo.</span></div>
         <ul class="plain-facts" aria-label="Product facts"><li>Runs offline after the first visit.</li><li>Recipient endpoints stay redacted.</li><li>Core CLI costs $0.</li></ul>
       </div>
@@ -91,7 +91,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
       <ol class="tape-steps">
         <li><span>01</span><div><h3>Snapshot exports</h3><p>Read Grafana or Alertmanager exports from a file or read-only URL.</p></div></li>
         <li><span>02</span><div><h3>Normalize routes</h3><p>Keep provider fields and replace recipient endpoints with fingerprints.</p></div></li>
-        <li><span>03</span><div><h3>Compare sources</h3><p>Show route, recipient, severity, and provider-field changes with timestamps.</p></div></li>
+        <li><span>03</span><div><h3>Compare sources</h3><p>Compare the baseline with live state and show each change with its timestamp.</p></div></li>
       </ol>
     </section>
 
@@ -106,7 +106,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
     </section>
 
     <section class="paid" aria-labelledby="paid-title">
-      <div><div class="section-label">Side B / optional</div><h2 id="paid-title">Add an approval report pack</h2><p>Pay $49 once for a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands stay free.</p></div>
+      <div><div class="section-label">Side B / optional</div><h2 id="paid-title">Add an approval report pack</h2><p>Pay $49 once for a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands stay free.</p><p>Sociobot and Dodo handle payment and refunds.</p></div>
       <div class="license-panel" data-license-panel><p class="license-state" aria-live="polite">Checking this browser for a license…</p></div>
     </section>
   </main>${footer()}`;
@@ -134,17 +134,17 @@ function demo(): string {
   if (state === 'error') {
     content = `<section class="state-card error-state" role="alert"><p class="state-mark">!</p><h2>The sample could not load</h2><p>The saved demo state is damaged. Reset it to load a clean copy.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
   } else if (state.cleared) {
-    content = `<section class="state-card"><p class="state-mark">∅</p><h2>No comparison is loaded</h2><p>Reset the demo to load the reviewed and live snapshots.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
+    content = `<section class="state-card"><p class="state-mark">∅</p><h2>No comparison is loaded</h2><p>Reset the demo to load the baseline and live snapshots.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
   } else {
     const selected = changes[state.selected] || changes[0];
     content = `<section class="ledger" aria-labelledby="ledger-title">
-      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Reviewed / Git</small><strong>a81c7e2</strong><time datetime="2026-08-27T16:00:00Z">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Drift found</b><span>3 changed · 2 matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>live-1842</strong><time datetime="2026-08-28T07:42:00Z">28 Aug · 07:42 UTC</time></div></div>
-      <div class="ledger-body"><div class="track-list"><h2 id="ledger-title">Changed routes</h2><p>Choose a route to inspect its reviewed and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
-      <article class="change-detail" aria-live="polite"><div class="section-label">Track 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Reviewed</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>grafana:production #live-1842</dd></div></dl></article></div>
+      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>a81c7e2</strong><time datetime="2026-08-27T16:00:00Z">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Drift found</b><span>3 changed · 2 matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>live-1842</strong><time datetime="2026-08-28T07:42:00Z">28 Aug · 07:42 UTC</time></div></div>
+      <div class="ledger-body"><div class="track-list"><h2 id="ledger-title">Changed routes</h2><p>Choose a route to inspect its baseline and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
+      <article class="change-detail" aria-live="polite"><div class="section-label">Track 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>grafana:production #live-1842</dd></div></dl></article></div>
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
   }
-  return `${demoBanner()}${header()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sandbox playback · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana export with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
+  return `${demoBanner()}${header()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sandbox playback · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
 }
 
 function privacy(): string {
@@ -261,14 +261,7 @@ function licenseMarkup(valid: boolean, notice = ''): string {
 async function setupLicense(): Promise<void> {
   const panel = document.querySelector<HTMLElement>('[data-license-panel]');
   if (!panel) return;
-  const params = new URLSearchParams(location.search);
-  const returned = params.get('license');
-  if (returned) {
-    localStorage.setItem(LICENSE_KEY, returned);
-    params.delete('license');
-    history.replaceState({}, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
-  }
-  const token = returned || localStorage.getItem(LICENSE_KEY);
+  const token = localStorage.getItem(LICENSE_KEY);
   const cached = readVerdict();
   panel.innerHTML = licenseMarkup(Boolean(token && cached?.valid));
   bindLicensePanel(panel);
@@ -315,6 +308,17 @@ function updateOfflineState(): void {
 window.addEventListener('popstate', () => render({ focus: true }));
 window.addEventListener('online', updateOfflineState);
 window.addEventListener('offline', updateOfflineState);
+captureReturnedLicense();
 render();
 
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+
+function captureReturnedLicense(): void {
+  const params = new URLSearchParams(location.search);
+  const returned = params.get('license');
+  if (!returned) return;
+  localStorage.setItem(LICENSE_KEY, returned);
+  localStorage.removeItem(VERDICT_KEY);
+  params.delete('license');
+  history.replaceState({}, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
+}

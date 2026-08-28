@@ -1,6 +1,6 @@
 # Alert Config Ledger
 
-Compare live alert routes with the config that reviewers approved. Alert Config Ledger is a read-only CLI for platform teams using Grafana, Alertmanager, or normalized JSON exports.
+Compare live alert routes with a reviewed baseline. Alert Config Ledger is a read-only CLI for platform teams using Grafana, Alertmanager, or normalized JSON exports.
 
 It fingerprints recipient endpoints during import. Reports show that a recipient changed without printing an email address, phone number, or webhook URL.
 
@@ -85,6 +85,8 @@ npm run build
 
 `npm test` runs Rust tests, site tests, and browser claim tests. `npm run build` produces the Rust release binary in `target/release/` and the static site in `dist/site/`.
 
+Use `npm ci` instead of `npm install` in a clean CI checkout.
+
 Run each part separately:
 
 ```sh
@@ -96,6 +98,8 @@ npm run test:site
 ```
 
 The landing-page demo is available at `/demo` and uses only bundled data. Its storage namespace is `demo:alert-config-ledger:*`.
+
+The deployed demo URL is `https://alert-config-change-ledger.sociobot.in/demo`.
 
 ## Privacy and security
 
