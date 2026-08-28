@@ -1,0 +1,6 @@
+{
+  "name": "alert-config-ledger-api",
+  "version": "0.1.0",
+  "private": true,
+  "engines": { "node": ">=20" }
+}

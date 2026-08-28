@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 28 August 2026. Counts treat `$0`, route labels, and command names as one word. Terminal commands are listed by line because they are recorded output. No item exceeds 22 words. No item contains a banned word.
+Audited 28 August 2026. Counts treat route labels and command names as one word. Terminal commands are listed by line because they are recorded output. No item exceeds 22 words. No item contains a banned word.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -11,7 +11,7 @@ Audited 28 August 2026. Counts treat `$0`, route labels, and command names as on
 | Loads three realistic route changes in an isolated demo. | 9 | Pass |
 | Runs offline after the first visit. | 6 | Pass |
 | Recipient endpoints stay redacted. | 4 | Pass |
-| Core CLI costs $0. | 4 | Pass |
+| Core CLI needs no license. | 5 | Pass |
 | Baseline on reel A. | 4 | Pass |
 | Live state on reel B. | 5 | Pass |
 | Playback / actual command | 4 | Pass |
@@ -29,7 +29,7 @@ Audited 28 August 2026. Counts treat `$0`, route labels, and command names as on
 | Snapshot exports | 2 | Pass |
 | Read Grafana or Alertmanager exports from a file or read-only URL. | 11 | Pass |
 | Normalize routes | 2 | Pass |
-| Keep provider fields and replace recipient endpoints with fingerprints. | 9 | Pass |
+| Keep non-secret provider fields and replace recipient endpoints with fingerprints. | 10 | Pass |
 | Compare sources | 2 | Pass |
 | Compare the baseline with live state and show each change with its timestamp. | 13 | Pass |
 | Side A / install | 4 | Pass |
@@ -43,12 +43,12 @@ Audited 28 August 2026. Counts treat `$0`, route labels, and command names as on
 | It does not replace Git review. | 6 | Pass |
 | It does not send telemetry. | 5 | Pass |
 | Side B / optional | 4 | Pass |
-| Add an approval report pack | 5 | Pass |
-| Pay $49 once for a reusable review template and sign-off checklist. | 11 | Pass |
-| The snapshot, diff, timeline, JSON, and Markdown commands stay free. | 10 | Pass |
-| Sociobot and Dodo handle payment and refunds. | 7 | Pass |
+| Use an existing Pro license | 5 | Pass |
+| A Pro license adds a reusable review template and sign-off checklist. | 11 | Pass |
+| The snapshot, diff, timeline, JSON, and Markdown commands need no license. | 12 | Pass |
+| New license sales are not open in this release. | 9 | Pass |
 | No active license in this browser. | 6 | Pass |
-| Buy Pro for $49 | 4 | Pass |
+| New license sales are not open in this release. | 9 | Pass |
 | Have a license? Paste it | 5 | Pass |
 | Verify license | 2 | Pass |
 | Trace live alert route changes back to their source. | 9 | Pass |
@@ -56,7 +56,7 @@ Audited 28 August 2026. Counts treat `$0`, route labels, and command names as on
 | Terms | 1 | Pass |
 | Built by Param Factory | 4 | Pass |
 
-Average across the 51 items: 5.7 words.
+Average across the 51 items: 5.9 words.
 
 ## Terminology
 

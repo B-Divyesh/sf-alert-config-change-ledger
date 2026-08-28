@@ -67,7 +67,7 @@ Exit code `0` means the command completed and no drift was found. `diff` and `ti
 
 ## Supported input
 
-- Grafana notification-policy JSON, including nested routes and contact point exports.
+- Grafana notification-policy JSON and contact-point array exports.
 - Alertmanager YAML or JSON with nested routes and receiver configs.
 - Alert Config Ledger snapshot JSON for scripted pipelines.
 
@@ -103,13 +103,13 @@ The deployed demo URL is `https://alert-config-change-ledger.sociobot.in/demo`.
 
 ## Privacy and security
 
-Configuration is processed by the CLI on your machine. API tokens are read from the environment and are not written to snapshots. Recipient targets are stored only as SHA-256 fingerprints. The static demo makes no cross-origin requests.
+Configuration is processed by the CLI on your machine. API tokens are read from the environment and are not written to snapshots. Recipient targets are stored only as SHA-256 fingerprints. Non-secret provider fields and timestamps remain in snapshots. The static demo makes no cross-origin requests.
 
-The Pro approval-report license is verified through the Sociobot billing API. The CLI's snapshot, diff, timeline, JSON, and Markdown output remain free.
+Existing Pro approval-report licenses are verified through the Sociobot billing API. The protected template comes from a same-origin function only after that check. New license sales are not open in this release. The CLI's snapshot, diff, timeline, JSON, and Markdown output remain free.
 
 ## Deploy
 
-The factory deploys `dist/site/` to `https://alert-config-change-ledger.sociobot.in`. This repository does not manage DNS, infrastructure, billing registration, or registry credentials.
+The factory deploys `dist/site/` and the license-gated function in `api/` to `https://alert-config-change-ledger.sociobot.in`. This repository does not manage DNS, infrastructure, billing registration, or registry credentials.
 
 ## License
 

@@ -8,12 +8,16 @@
     "build": "cargo build --release && npm run build:site",
     "build:site": "vite build --config site/vite.config.ts && node site/scripts/build-sw.mjs",
     "preview": "vite preview --config site/vite.config.ts",
-    "test": "cargo test && playwright test",
-    "test:site": "playwright test"
+    "test": "cargo test && npm run test:api && playwright test",
+    "test:api": "node --test api/**/*.test.cjs",
+    "test:site": "playwright test",
+    "typecheck": "tsc --noEmit -p site/tsconfig.json",
+    "lint": "cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings && npm run typecheck"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
     "@playwright/test": "1.58.2",
+    "@types/node": "24.3.0",
     "typescript": "5.9.2",
     "vite": "^7.3.6"
   }

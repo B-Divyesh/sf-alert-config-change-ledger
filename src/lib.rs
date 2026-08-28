@@ -39,11 +39,13 @@ pub struct Route {
     pub provider_updated_at: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Recipient {
     pub name: String,
     pub channels: Vec<String>,
     pub fingerprints: Vec<String>,
+    #[serde(default = "empty_object", skip_serializing_if = "is_empty_object")]
+    pub provider_fields: Value,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -126,6 +128,17 @@ pub fn parse_export(
     };
 
     let contacts = collect_contacts(&value, provider);
+    let is_grafana_contact_export = provider == "grafana"
+        && (value.is_array()
+            || (value
+                .get("contactPoints")
+                .and_then(Value::as_array)
+                .is_some()
+                && value.get("policy").is_none()
+                && value.get("receiver").is_none()));
+    if is_grafana_contact_export {
+        return snapshot_from_contact_points(contacts, source, captured_at);
+    }
     let route_root = if provider == "alertmanager" {
         value.get("route").unwrap_or(&value)
     } else {
@@ -157,7 +170,12 @@ fn collect_contacts(value: &Value, provider: &str) -> BTreeMap<String, Recipient
         "contactPoints"
     };
     let mut result = BTreeMap::new();
-    let Some(items) = value.get(key).and_then(Value::as_array) else {
+    let items = if provider == "grafana" && value.is_array() {
+        value.as_array()
+    } else {
+        value.get(key).and_then(Value::as_array)
+    };
+    let Some(items) = items else {
         return result;
     };
     for item in items {
@@ -166,15 +184,22 @@ fn collect_contacts(value: &Value, provider: &str) -> BTreeMap<String, Recipient
         };
         let mut channels = BTreeSet::new();
         let mut secrets = Vec::new();
-        if let Some(kind) = item.get("type").and_then(Value::as_str) {
-            channels.insert(kind.to_string());
-        }
-        if let Some(object) = item.as_object() {
-            for (key, nested) in object {
-                if key.ends_with("_configs") {
-                    channels.insert(key.trim_end_matches("_configs").to_string());
+        let receiver_values = item
+            .get("receivers")
+            .and_then(Value::as_array)
+            .map(Vec::as_slice)
+            .unwrap_or_else(|| std::slice::from_ref(item));
+        for receiver in receiver_values {
+            if let Some(kind) = receiver.get("type").and_then(Value::as_str) {
+                channels.insert(kind.to_string());
+            }
+            if let Some(object) = receiver.as_object() {
+                for (key, nested) in object {
+                    if key.ends_with("_configs") {
+                        channels.insert(key.trim_end_matches("_configs").to_string());
+                    }
+                    collect_contact_values(key, nested, &mut secrets);
                 }
-                collect_contact_values(key, nested, &mut secrets);
             }
         }
         secrets.sort();
@@ -186,6 +211,7 @@ fn collect_contacts(value: &Value, provider: &str) -> BTreeMap<String, Recipient
                 name: name.to_string(),
                 channels: channels.into_iter().collect(),
                 fingerprints,
+                provider_fields: redact_contact_fields(item),
             },
         );
     }
@@ -193,18 +219,7 @@ fn collect_contacts(value: &Value, provider: &str) -> BTreeMap<String, Recipient
 }
 
 fn collect_contact_values(key: &str, value: &Value, output: &mut Vec<String>) {
-    const SENSITIVE_KEYS: &[&str] = &[
-        "address",
-        "addresses",
-        "api_url",
-        "email",
-        "phone_number",
-        "routing_key",
-        "to",
-        "url",
-        "webhook_url",
-    ];
-    if SENSITIVE_KEYS.contains(&key) {
+    if is_sensitive_contact_key(key) {
         match value {
             Value::String(text) => output.push(text.to_string()),
             Value::Array(items) => items
@@ -224,6 +239,102 @@ fn collect_contact_values(key: &str, value: &Value, output: &mut Vec<String>) {
             .for_each(|value| collect_contact_values(key, value, output)),
         _ => {}
     }
+}
+
+fn is_sensitive_contact_key(key: &str) -> bool {
+    const SENSITIVE_KEYS: &[&str] = &[
+        "address",
+        "addresses",
+        "apikey",
+        "apiurl",
+        "authorization",
+        "authorizationcredentials",
+        "bottoken",
+        "email",
+        "emails",
+        "endpoint",
+        "integrationkey",
+        "password",
+        "phone",
+        "phonenumber",
+        "recipient",
+        "recipients",
+        "routingkey",
+        "to",
+        "token",
+        "url",
+        "webhookurl",
+    ];
+    let normalized_key = key
+        .chars()
+        .filter(|character| character.is_ascii_alphanumeric())
+        .flat_map(char::to_lowercase)
+        .collect::<String>();
+    SENSITIVE_KEYS.contains(&normalized_key.as_str())
+}
+
+fn redact_contact_fields(value: &Value) -> Value {
+    match value {
+        Value::Object(map) => Value::Object(
+            map.iter()
+                .filter(|(key, _)| !is_sensitive_contact_key(key))
+                .map(|(key, nested)| (key.clone(), redact_contact_fields(nested)))
+                .collect(),
+        ),
+        Value::Array(items) => Value::Array(items.iter().map(redact_contact_fields).collect()),
+        _ => value.clone(),
+    }
+}
+
+fn snapshot_from_contact_points(
+    contacts: BTreeMap<String, Recipient>,
+    source: Source,
+    captured_at: DateTime<Utc>,
+) -> Result<Snapshot> {
+    if contacts.is_empty() {
+        bail!("grafana contact point export contains no named contact points");
+    }
+    let routes = contacts
+        .into_values()
+        .map(|recipient| {
+            let name = recipient.name.clone();
+            let provider_updated_at =
+                ["updated_at", "updatedAt", "updated"]
+                    .iter()
+                    .find_map(|key| {
+                        recipient
+                            .provider_fields
+                            .get(*key)
+                            .and_then(Value::as_str)
+                            .map(str::to_string)
+                    });
+            Route {
+                id: format!("contact-{}", &fingerprint(&name)[..12]),
+                name: format!("contact point {name}"),
+                path: format!("contact-points/{name}"),
+                matchers: BTreeMap::new(),
+                severity: None,
+                recipients: vec![recipient],
+                semantics: json!({"object": "grafana contact point"}),
+                provider_updated_at,
+            }
+        })
+        .collect();
+    Ok(Snapshot {
+        schema_version: SCHEMA_VERSION,
+        provider: "grafana".to_string(),
+        captured_at,
+        source,
+        routes,
+    })
+}
+
+fn empty_object() -> Value {
+    json!({})
+}
+
+fn is_empty_object(value: &Value) -> bool {
+    value.as_object().is_some_and(Map::is_empty)
 }
 
 fn flatten_routes(
@@ -271,7 +382,7 @@ fn flatten_routes(
     } else {
         scope
             .iter()
-            .map(|(key, value)| format!("{key} {value}"))
+            .map(|(key, value)| format_matcher(key, value))
             .collect::<Vec<_>>()
             .join(", ")
     };
@@ -304,6 +415,7 @@ fn flatten_routes(
             name: receiver.to_string(),
             channels: Vec::new(),
             fingerprints: Vec::new(),
+            provider_fields: empty_object(),
         });
     output.push(Route {
         id: format!("route-{}", &fingerprint(&identity)[..12]),
@@ -327,6 +439,15 @@ fn flatten_routes(
         }
     }
     Ok(())
+}
+
+fn format_matcher(key: &str, value: &str) -> String {
+    for operator in ["=~", "!=", "="] {
+        if let Some(operand) = value.strip_prefix(operator) {
+            return format!("{key} {operator} {operand}");
+        }
+    }
+    format!("{key} {value}")
 }
 
 fn parse_matchers(object: &Map<String, Value>) -> BTreeMap<String, String> {
@@ -768,5 +889,77 @@ mod tests {
                 .iter()
                 .any(|route| route.severity.as_deref() == Some("critical"))
         );
+    }
+
+    #[test]
+    fn grafana_contact_point_arrays_detect_common_recipient_changes() {
+        let baseline = parse_export(
+            include_bytes!("../examples/grafana-contact-points-reviewed.json"),
+            "grafana",
+            Source {
+                name: "reviewed".into(),
+                revision: None,
+            },
+            "2026-08-27T09:00:00Z".parse().unwrap(),
+        )
+        .unwrap();
+        let live = parse_export(
+            include_bytes!("../examples/grafana-contact-points-live.json"),
+            "grafana",
+            Source {
+                name: "live".into(),
+                revision: None,
+            },
+            "2026-08-28T10:15:00Z".parse().unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(baseline.routes.len(), 5);
+        assert_eq!(compare(&baseline, &live).changes.len(), 5);
+        assert_eq!(
+            baseline
+                .routes
+                .iter()
+                .flat_map(|route| &route.recipients)
+                .flat_map(|recipient| &recipient.channels)
+                .cloned()
+                .collect::<BTreeSet<_>>(),
+            ["email", "opsgenie", "pagerduty", "slack", "webhook"]
+                .map(str::to_string)
+                .into_iter()
+                .collect()
+        );
+    }
+
+    #[test]
+    fn grafana_contact_metadata_is_preserved_without_credentials() {
+        let snapshot = parse_export(
+            include_bytes!("../examples/grafana-contact-points-reviewed.json"),
+            "grafana",
+            Source {
+                name: "reviewed".into(),
+                revision: None,
+            },
+            Utc::now(),
+        )
+        .unwrap();
+        let pager = snapshot
+            .routes
+            .iter()
+            .find(|route| route.name == "contact point primary-pager")
+            .unwrap();
+        let serialized = serde_json::to_string(&snapshot).unwrap();
+
+        assert_eq!(
+            pager.provider_updated_at.as_deref(),
+            Some("2026-08-27T09:00:00Z")
+        );
+        assert_eq!(pager.recipients[0].provider_fields["provenance"], "file");
+        assert_eq!(
+            pager.recipients[0].provider_fields["receivers"][0]["uid"],
+            "pager-01"
+        );
+        assert!(serialized.contains("pagerduty"));
+        assert!(!serialized.contains("pd-reviewed-key"));
     }
 }

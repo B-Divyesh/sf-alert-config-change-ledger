@@ -1,0 +1,67 @@
+[
+  {
+    "orgId": 1,
+    "name": "primary-pager",
+    "receivers": [
+      {
+        "uid": "pager-01",
+        "type": "pagerduty",
+        "settings": { "integrationKey": "pd-reviewed-key", "severity": "critical" },
+        "disableResolveMessage": false
+      }
+    ],
+    "provenance": "file",
+    "updated": "2026-08-27T09:00:00Z"
+  },
+  {
+    "orgId": 1,
+    "name": "ops-escalation",
+    "receivers": [
+      {
+        "uid": "ops-01",
+        "type": "opsgenie",
+        "settings": { "apiKey": "ops-reviewed-key", "apiUrl": "https://api.opsgenie.test" }
+      }
+    ],
+    "provenance": "api"
+  },
+  {
+    "orgId": 1,
+    "name": "incident-room",
+    "receivers": [
+      {
+        "uid": "slack-01",
+        "type": "slack",
+        "settings": { "url": "https://hooks.slack.test/reviewed", "recipient": "#incidents" }
+      }
+    ],
+    "provenance": "api"
+  },
+  {
+    "orgId": 1,
+    "name": "audit-hook",
+    "receivers": [
+      {
+        "uid": "webhook-01",
+        "type": "webhook",
+        "settings": {
+          "url": "https://alerts.test/reviewed",
+          "authorization_credentials": "webhook-reviewed-token"
+        }
+      }
+    ],
+    "provenance": "file"
+  },
+  {
+    "orgId": 1,
+    "name": "team-email",
+    "receivers": [
+      {
+        "uid": "email-01",
+        "type": "email",
+        "settings": { "addresses": "ops-reviewed@example.test", "singleEmail": true }
+      }
+    ],
+    "provenance": "file"
+  }
+]

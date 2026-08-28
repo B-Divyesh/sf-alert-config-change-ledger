@@ -1,4 +1,4 @@
-const CACHE = 'alert-ledger-shell-v1';
+const CACHE = 'alert-ledger-shell-v2';
 const APP_ASSETS = [];
 const SHELL = ['/', '/demo', '/index.html', '/cassette-ledger.webp', '/favicon.svg', ...APP_ASSETS];
 
@@ -18,8 +18,10 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
   if (event.request.mode === 'navigate') {
     event.respondWith(fetch(event.request).then((response) => {
-      const copy = response.clone();
-      caches.open(CACHE).then((cache) => cache.put('/index.html', copy));
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE).then((cache) => cache.put('/index.html', copy));
+      }
       return response;
     }).catch(() => caches.match('/index.html')));
     return;

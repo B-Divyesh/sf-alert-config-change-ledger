@@ -1,0 +1,615 @@
+
+$ cargo test --test claims claim_core_workflow_no_license
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_core_workflow_no_license ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+$ cargo test --test claims claim_provider_inputs
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_provider_inputs ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+$ cargo test --test claims claim_grafana_contact_points_and_provider_fields
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_grafana_contact_points_and_provider_fields ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+$ cargo test --test claims claim_read_only_get_and_command_surface
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.01s
+
+
+$ cargo test --test claims claim_recipient_values_are_redacted
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_recipient_values_are_redacted ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+$ cargo test --test claims claim_api_tokens_never_enter_snapshots
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_api_tokens_never_enter_snapshots ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.01s
+
+
+$ cargo test --test claims claim_documented_exit_codes
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_documented_exit_codes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.01s
+
+
+$ cargo test --test claims claim_core_commands_and_formats_need_no_license
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_core_commands_and_formats_need_no_license ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.02s
+
+
+$ cargo test --test claims claim_demo_needs_no_network_or_telemetry
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.12s
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 1 test
+test claim_demo_needs_no_network_or_telemetry ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+
+$ npm test -- --grep @claim:demo-privacy
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test --grep @claim:demo-privacy
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-db3cbda8b3d3f0e8)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-ba774e1108518d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 9 tests
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_provider_inputs ... ok
+test claim_documented_exit_codes ... ok
+test claim_recipient_values_are_redacted ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/cli.rs (target/debug/deps/cli-63e69b0b8e88dc9d)
+
+running 3 tests
+test invalid_input_explains_recovery ... ok
+test demo_runs_without_setup ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 1 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 1.029969
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 2 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.530135
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 3 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.29072
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 76.573114
+[2m[WebServer] [22m(node:14910) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m(node:14952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:14970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › site/tests/site.spec.ts:136:1 › @claim:demo-privacy demo stays same-origin and isolated (1.2s)
+  ✓  1 [mobile] › site/tests/site.spec.ts:136:1 › @claim:demo-privacy demo stays same-origin and isolated (1.5s)
+
+  2 passed (5.6s)
+
+$ npm test -- --grep @claim:offline-reload
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test --grep @claim:offline-reload
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-db3cbda8b3d3f0e8)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-ba774e1108518d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 9 tests
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_provider_inputs ... ok
+test claim_documented_exit_codes ... ok
+test claim_recipient_values_are_redacted ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/cli.rs (target/debug/deps/cli-63e69b0b8e88dc9d)
+
+running 3 tests
+test invalid_input_explains_recovery ... ok
+test demo_runs_without_setup ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 1 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 1.086373
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 2 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.525535
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 3 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.286719
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 89.24816
+[2m[WebServer] [22m(node:15267) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m(node:15309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:15327) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15327) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › site/tests/site.spec.ts:178:1 › @claim:offline-reload bundled demo reloads offline (1.5s)
+  ✓  2 [mobile] › site/tests/site.spec.ts:178:1 › @claim:offline-reload bundled demo reloads offline (1.6s)
+
+  2 passed (5.8s)
+
+$ npm test -- --grep @claim:report-download
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test --grep @claim:report-download
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-db3cbda8b3d3f0e8)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-ba774e1108518d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 9 tests
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_provider_inputs ... ok
+test claim_documented_exit_codes ... ok
+test claim_recipient_values_are_redacted ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/cli.rs (target/debug/deps/cli-63e69b0b8e88dc9d)
+
+running 3 tests
+test invalid_input_explains_recovery ... ok
+test demo_runs_without_setup ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 1 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 0.990666
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 2 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.634143
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 3 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.288119
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 94.670122
+[2m[WebServer] [22m(node:15629) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m(node:15671) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:15705) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15705) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › site/tests/site.spec.ts:150:1 › @claim:report-download exports the sample report (983ms)
+  ✓  1 [mobile] › site/tests/site.spec.ts:150:1 › @claim:report-download exports the sample report (1.3s)
+
+  2 passed (5.2s)
+
+$ npm test -- --grep @claim:web-cli-parity
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test --grep @claim:web-cli-parity
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-db3cbda8b3d3f0e8)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-ba774e1108518d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 9 tests
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_provider_inputs ... ok
+test claim_documented_exit_codes ... ok
+test claim_recipient_values_are_redacted ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/cli.rs (target/debug/deps/cli-63e69b0b8e88dc9d)
+
+running 3 tests
+test invalid_input_explains_recovery ... ok
+test demo_runs_without_setup ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 1 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 1.026968
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 2 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.521635
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 3 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.506934
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 83.8671
+[2m[WebServer] [22m(node:16000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m(node:16042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:16060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16061) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16061) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › site/tests/site.spec.ts:162:1 › @claim:web-cli-parity web demo reports the CLI sample comparison (1.1s)
+  ✓  1 [mobile] › site/tests/site.spec.ts:162:1 › @claim:web-cli-parity web demo reports the CLI sample comparison (1.3s)
+
+  2 passed (4.2s)
+
+$ npm test -- --grep @claim:paid-template
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test --grep @claim:paid-template
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-db3cbda8b3d3f0e8)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-ba774e1108518d9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-33cf7737078a6522)
+
+running 9 tests
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_provider_inputs ... ok
+test claim_documented_exit_codes ... ok
+test claim_recipient_values_are_redacted ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/cli.rs (target/debug/deps/cli-63e69b0b8e88dc9d)
+
+running 3 tests
+test invalid_input_explains_recovery ... ok
+test demo_runs_without_setup ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 1 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 0.970865
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 2 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.512235
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 3 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.391227
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 86.127351
+[2m[WebServer] [22m(node:16361) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m(node:16420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[2m[WebServer] [22m(Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 2 workers
+
+(node:16439) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16438) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16439) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:16438) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › site/tests/site.spec.ts:189:1 › @claim:paid-template valid licenses reveal the report pack (2.1s)
+  ✓  1 [mobile] › site/tests/site.spec.ts:189:1 › @claim:paid-template valid licenses reveal the report pack (3.1s)
+
+  2 passed (7.0s)

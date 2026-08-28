@@ -17,7 +17,7 @@ const changes = [
   },
   {
     mark: '~', kind: 'Severity changed', route: 'service = checkout', detail: 'Warning now routes as critical.',
-    before: 'severity = warning', after: 'severity = critical', fields: 'severity, recipients'
+    before: 'severity = warning', after: 'severity = critical', fields: 'severity, recipients, matchers'
   },
   {
     mark: '+', kind: 'Route added', route: 'team = security', detail: 'A new critical route exists only in live state.',
@@ -48,7 +48,7 @@ function footer(): string {
   return `<footer class="site-footer">
     <p>Trace live alert route changes back to their source.</p>
     <nav aria-label="Footer navigation"><a class="route-link" href="/privacy">Privacy</a><a class="route-link" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
-    <p class="build">v0.1.0 · build 001</p>
+    <p class="build">v0.1.0 · build 002</p>
   </footer>`;
 }
 
@@ -60,14 +60,14 @@ function demoBanner(): string {
 }
 
 function landing(): string {
-  return `${header()}<main id="main">
+  return `${header()}<main id="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">Read-only config audit · tape 01</p>
         <h1 id="hero-title" tabindex="-1">Trace every alert route change</h1>
         <p class="lede">For platform teams who need to prove whether live alert routes match the reviewed baseline.</p>
         <div class="hero-action"><a class="button route-link" href="/demo">Try it with sample data</a><span>Loads three realistic route changes in an isolated demo.</span></div>
-        <ul class="plain-facts" aria-label="Product facts"><li>Runs offline after the first visit.</li><li>Recipient endpoints stay redacted.</li><li>Core CLI costs $0.</li></ul>
+        <ul class="plain-facts" aria-label="Product facts"><li>Runs offline after the first visit.</li><li>Recipient endpoints stay redacted.</li><li>Core CLI needs no license.</li></ul>
       </div>
       <figure class="hero-art"><img src="/cassette-ledger.webp" width="1200" height="800" alt="A cut-paper cassette routes red and teal tape through an alert ledger." fetchpriority="high"><figcaption>Baseline on reel A. Live state on reel B.</figcaption></figure>
     </section>
@@ -90,7 +90,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
       <div class="section-label">A / B / source</div><h2 id="method-title">How the ledger works</h2>
       <ol class="tape-steps">
         <li><span>01</span><div><h3>Snapshot exports</h3><p>Read Grafana or Alertmanager exports from a file or read-only URL.</p></div></li>
-        <li><span>02</span><div><h3>Normalize routes</h3><p>Keep provider fields and replace recipient endpoints with fingerprints.</p></div></li>
+        <li><span>02</span><div><h3>Normalize routes</h3><p>Keep non-secret provider fields and replace recipient endpoints with fingerprints.</p></div></li>
         <li><span>03</span><div><h3>Compare sources</h3><p>Compare the baseline with live state and show each change with its timestamp.</p></div></li>
       </ol>
     </section>
@@ -106,7 +106,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
     </section>
 
     <section class="paid" aria-labelledby="paid-title">
-      <div><div class="section-label">Side B / optional</div><h2 id="paid-title">Add an approval report pack</h2><p>Pay $49 once for a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands stay free.</p><p>Sociobot and Dodo handle payment and refunds.</p></div>
+      <div><div class="section-label">Side B / optional</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
       <div class="license-panel" data-license-panel><p class="license-state" aria-live="polite">Checking this browser for a license…</p></div>
     </section>
   </main>${footer()}`;
@@ -144,11 +144,11 @@ function demo(): string {
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
   }
-  return `${demoBanner()}${header()}<main id="main" class="demo-main"><section class="demo-intro"><p class="eyebrow">Sandbox playback · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
+  return `${demoBanner()}${header()}<main id="main" class="demo-main" tabindex="-1"><section class="demo-intro"><p class="eyebrow">Sandbox playback · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
 }
 
 function privacy(): string {
-  return `${header()}<main id="main" class="legal"><p class="eyebrow">Policy / plain copy</p><h1 tabindex="-1">Keep alert config on your machine</h1><p class="lede">Effective 28 August 2026.</p>
+  return `${header()}<main id="main" class="legal" tabindex="-1"><p class="eyebrow">Policy / plain copy</p><h1 tabindex="-1">Keep alert config on your machine</h1><p class="lede">Effective 28 August 2026.</p>
     <h2>CLI data</h2><p>The CLI processes exports on your machine. It makes no telemetry request.</p><p>A URL import sends one GET request to the URL you provide. Tokens come from your chosen environment variable.</p><p>Snapshots contain recipient fingerprints instead of endpoint values.</p>
     <h2>Demo data</h2><p>The web demo uses bundled sample data. Its state stays under the <code>demo:alert-config-ledger:</code> browser prefix.</p><p>Leaving demo mode removes that demo state. The service worker caches site files for offline use.</p>
     <h2>License data</h2><p>If you paste a license, this browser stores the token and its latest verdict.</p><p>Verification sends the token to the Sociobot billing API. No alert configuration is included.</p>
@@ -157,17 +157,17 @@ function privacy(): string {
 }
 
 function terms(): string {
-  return `${header()}<main id="main" class="legal"><p class="eyebrow">Terms / version 0.1</p><h1 tabindex="-1">Use the ledger as an audit aid</h1><p class="lede">Effective 28 August 2026.</p>
+  return `${header()}<main id="main" class="legal" tabindex="-1"><p class="eyebrow">Terms / version 0.1</p><h1 tabindex="-1">Use the ledger as an audit aid</h1><p class="lede">Effective 28 August 2026.</p>
     <h2>Open source CLI</h2><p>The CLI is licensed under MIT. It is provided without warranty.</p>
     <h2>Your responsibility</h2><p>Use credentials with read-only access. Review reports before using them in an incident process.</p>
-    <h2>Pro purchase</h2><p>The Pro approval report pack costs $49 once. Sociobot and Dodo act as merchant of record.</p><p>A refund revokes the related license. Core CLI commands stay available without a license.</p>
+    <h2>Pro licenses</h2><p>An active Pro license gives access to the approval report pack.</p><p>Core CLI commands stay available without a license.</p>
     <h2>Limits</h2><p>The ledger does not guarantee that a provider export is complete. Provider access and export quality remain your responsibility.</p>
     <h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a>.</p>
   </main>${footer()}`;
 }
 
 function notFound(): string {
-  return `${header()}<main id="main" class="not-found"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Tape missing / 404</p><h1 tabindex="-1">This route is not in the ledger</h1><p>The address does not match a page in this release.</p><a class="button route-link" href="/">Return to the ledger</a></main>${footer()}`;
+  return `${header()}<main id="main" class="not-found" tabindex="-1"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Tape missing / 404</p><h1 tabindex="-1">This route is not in the ledger</h1><p>The address does not match a page in this release.</p><a class="button route-link" href="/">Return to the ledger</a></main>${footer()}`;
 }
 
 function setMeta(path: string): void {
@@ -234,7 +234,19 @@ async function handleAction(event: Event): Promise<void> {
     await navigator.clipboard.writeText('cargo install --path .\nalert-ledger demo');
     (event.currentTarget as HTMLElement).textContent = 'Copied command';
   } else if (action === 'download-pro') {
-    const response = await fetch('/approval-report-template.md');
+    const token = localStorage.getItem(LICENSE_KEY);
+    if (!token) {
+      announce('The license is missing. Paste it again and retry.');
+      return;
+    }
+    const response = await fetch('/api/approval-pack', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!response.ok) {
+      announce('The approval pack could not be authorized. Verify the license and retry.');
+      return;
+    }
     download('alert-ledger-approval-template.md', await response.text(), 'text/markdown');
     announce('Downloaded the approval report template.');
   }
@@ -255,7 +267,7 @@ function announce(message: string): void {
 
 function licenseMarkup(valid: boolean, notice = ''): string {
   if (valid) return `<p class="license-state good">License active.</p><button class="button" data-action="download-pro">Download approval report pack</button><button class="text-button" data-action="remove-license">Remove license</button>`;
-  return `${notice ? `<p class="license-state notice">${notice}</p>` : '<p class="license-state">No active license in this browser.</p>'}<a class="button" href="${API}/products/${SLUG}/checkout">Buy Pro for $49</a><form class="license-form"><label for="license-token">Have a license? Paste it</label><div><input id="license-token" name="license" autocomplete="off" required><button class="button secondary" type="submit">Verify license</button></div></form>`;
+  return `${notice ? `<p class="license-state notice">${notice}</p>` : '<p class="license-state">No active license in this browser.</p>'}<p>New license sales are not open in this release.</p><form class="license-form"><label for="license-token">Have a license? Paste it</label><div><input id="license-token" name="license" autocomplete="off" required><button class="button secondary" type="submit">Verify license</button></div></form>`;
 }
 
 async function setupLicense(): Promise<void> {
