@@ -31,16 +31,17 @@ Change window:
 `;
 
 module.exports = async function approvalPack(context, req) {
-  const authorization = req.headers?.authorization || req.headers?.Authorization || '';
-  const match = authorization.match(/^Bearer\s+(.+)$/i);
-  if (!match) {
+  const license = req.headers?.['x-alert-ledger-license']
+    || req.headers?.['X-Alert-Ledger-License']
+    || '';
+  if (!license) {
     context.res = response(401, 'A Pro license is required.');
     return;
   }
 
   try {
     const verify = await fetch(
-      `${BILLING_API}/products/${PRODUCT}/verify?license=${encodeURIComponent(match[1])}`,
+      `${BILLING_API}/products/${PRODUCT}/verify?license=${encodeURIComponent(license)}`,
       { headers: { Accept: 'application/json' } },
     );
     if (!verify.ok) {

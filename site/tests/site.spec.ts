@@ -188,13 +188,13 @@ test('@claim:offline-reload bundled demo reloads offline', async ({ page, contex
 
 test('@claim:paid-template valid licenses reveal the report pack', async ({ page }) => {
   let verifyRequest = '';
-  let approvalAuthorization = '';
+  let approvalLicense = '';
   await page.route('https://api.sociobot.in/**', async (route) => {
     verifyRequest = route.request().url();
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }) });
   });
   await page.route('**/api/approval-pack', async (route) => {
-    approvalAuthorization = route.request().headers().authorization || '';
+    approvalLicense = route.request().headers()['x-alert-ledger-license'] || '';
     await route.fulfill({ status: 200, contentType: 'text/markdown', body: '# Alert route approval\n' });
   });
   await page.goto('/');
@@ -205,7 +205,7 @@ test('@claim:paid-template valid licenses reveal the report pack', async ({ page
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download approval report pack' }).click();
   expect((await downloadPromise).suggestedFilename()).toBe('alert-ledger-approval-template.md');
-  expect(approvalAuthorization).toBe('Bearer test-license-token');
+  expect(approvalLicense).toBe('test-license-token');
 });
 
 test('unlicensed browsers have no paid-content URL or download action', async ({ page }) => {

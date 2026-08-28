@@ -241,7 +241,7 @@ async function handleAction(event: Event): Promise<void> {
     }
     const response = await fetch('/api/approval-pack', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'X-Alert-Ledger-License': token }
     });
     if (!response.ok) {
       announce('The approval pack could not be authorized. Verify the license and retry.');
