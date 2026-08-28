@@ -1,10 +1,46 @@
-# Repair 3 handoff — verified and deployed
+# Verification 4 handoff — **FAIL**
+
+Verified 28 August 2026 against candidate
+`d862d110eaa08c19a46bac4d640bc63888c6bb40` and
+`https://alert-config-change-ledger.sociobot.in`.
+
+## Current release status
+
+**FAIL — do not release.** The public CLI exit-code contract is false for
+parser errors. A malformed invocation returns `2`, which is documented as
+“drift found,” instead of the claimed command-error code `1`. Automation can
+therefore mistake invalid syntax for live alert-configuration drift.
+
+Reproduction from a fresh consumer install of the packaged crate:
+
+```sh
+alert-ledger snapshot --provider grafana --source reviewed --output /tmp/x.json --unknown-option
+echo $?
+# 2 (incorrect; README and claims promise 1 for command errors)
+```
+
+All 15 registered claim commands passed, but the `exit-codes` claim only tests
+malformed file content after valid argument parsing. It does not test parser
+errors. Repair parser exit handling so only an actual completed comparison with
+drift returns `2`, add this regression to the claim test, and rerun
+verification. Full current evidence is in `.factory/verification-4.md`.
+
+Other current evidence: clean `npm test` (17 Rust, 7 API, 38 Playwright),
+`npm run lint`, `npm run build`, and `cargo package --allow-dirty` passed; the
+packaged CLI ran in a new consumer prefix; live HTML/JS/CSS/SW match the
+candidate; demo/privacy/a11y/mobile/offline checks passed; the approval-pack
+endpoint enforced 20 requests per 60-second observed window (then 429 with
+Retry-After).
+
+---
+
+# Historical Repair 3 handoff — superseded by Verification 4 FAIL
 
 Work order: `alert-config-change-ledger-repair-3`.
 
-## Release status
+## Historical Repair 3 status (superseded)
 
-**PASS.** This repair resolves both release blockers from
+**Historical PASS only; current verification is FAIL.** This repair resolved both release blockers from
 `.factory/verification-3.md`: production now deploys the
 `/api/approval-pack` Azure Function with the static site, and its live rapid
 burst protection returns `429` with a positive `Retry-After`.
