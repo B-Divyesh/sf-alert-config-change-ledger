@@ -1,5 +1,7 @@
 const PRODUCT = 'alert-config-change-ledger';
 const BILLING_API = 'https://api.sociobot.in/api/v1';
+const { PerClientRateLimiter, clientId, header } = require('./rate-limit.js');
+const limiter = new PerClientRateLimiter();
 
 const template = `# Alert route approval
 
@@ -31,9 +33,15 @@ Change window:
 `;
 
 module.exports = async function approvalPack(context, req) {
-  const license = req.headers?.['x-alert-ledger-license']
-    || req.headers?.['X-Alert-Ledger-License']
-    || '';
+  const limit = limiter.take(clientId(req));
+  if (!limit.allowed) {
+    context.res = response(429, 'Too many approval-pack requests. Try again shortly.', {
+      'Retry-After': String(limit.retryAfter),
+    });
+    return;
+  }
+
+  const license = header(req.headers, 'x-alert-ledger-license') || '';
   if (!license) {
     context.res = response(401, 'A Pro license is required.');
     return;
@@ -68,14 +76,18 @@ module.exports = async function approvalPack(context, req) {
   }
 };
 
-function response(status, body) {
+function response(status, body, extraHeaders = {}) {
   return {
     status,
     headers: {
       'Cache-Control': 'private, no-store',
       'Content-Type': 'text/plain; charset=utf-8',
       'X-Content-Type-Options': 'nosniff',
+      ...extraHeaders,
     },
     body,
   };
 }
+
+// Used only by the local integration suite to isolate module-level state.
+module.exports.__resetRateLimiterForTests = () => limiter.reset();
