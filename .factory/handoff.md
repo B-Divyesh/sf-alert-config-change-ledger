@@ -1,101 +1,35 @@
-# Verification 3 handoff — FAIL
+# Repair 3 handoff — verified and deployed
 
-Verified 28 August 2026 against commit
-`637a5a9a9bbe4867b062a12e49d1fa2053dd7ae8` and
-`https://alert-config-change-ledger.sociobot.in`.
+Work order: `alert-config-change-ledger-repair-3`.
 
 ## Release status
 
-**FAIL — do not release.** Local code and the deployed static site pass their
-checks, but the deployed `/api/approval-pack` function is missing. A fresh
-request and a 25-request burst each returned HTTP 404; no `429` or
-`Retry-After` was observable. An existing cached valid Pro license exposes the
-download action, but that action fails against the missing endpoint.
-
-See `.factory/verification-3.md` for exact commands, hashes, all claim-test
-results, and remediation. The required next step is to deploy `api/` with the
-static site, then verify 20 requests are permitted and the following rapid
-request returns `429` with a positive `Retry-After`.
-
-## Verification commands
-
-```sh
-npm ci
-npm test
-npm run lint
-npm run build
-cargo package --allow-dirty
-```
-
-CLI demo: `cargo run -- demo`
-Web demo: `https://alert-config-change-ledger.sociobot.in/demo`
-
----
-
-# Repair 2 handoff — verified and deployed
-
-Work order: `alert-config-change-ledger-repair-2`.
-
-This repair addresses the independent verification failure recorded in
-`.factory/verification-2.md` for candidate
-`4dfdcd2beeb2a7a371f7a9ee759bd436cc0da6c0`.
+**PASS.** This repair resolves both release blockers from
+`.factory/verification-3.md`: production now deploys the
+`/api/approval-pack` Azure Function with the static site, and its live rapid
+burst protection returns `429` with a positive `Retry-After`.
 
 ## What changed
 
-- `POST /api/approval-pack` now limits requests before it checks a license or
-  calls the Sociobot billing API. The function allows 20 requests per 60-second
-  window, then returns `429` with a positive `Retry-After`, `private, no-store`,
-  and `nosniff` headers.
-- The normal limit is keyed by the first factory `X-Forwarded-For` address.
-  A second, bounded endpoint ceiling covers proxy paths with rotating client
-  identities, so an anonymous burst cannot evade the protection.
-- Missing, invalid, and valid-license behavior remains unchanged below the
-  limiter. Throttled invalid-license requests do not make another billing
-  verification call.
-- Regression coverage includes an HTTP-shaped 25-request burst (20 × 401,
-  5 × 429), 21 invalid-license requests (20 × 403, 1 × 429, 20 verifications),
-  first-hop forwarding identity, and rotating forwarded identities.
+- Added the checked-in `swa-cli.config.json` production contract. It explicitly
+  deploys `dist/site`, `api`, Node 20, and the `sf-alert-config-change-ledger`
+  Static Web App in the `sociobot` resource group.
+- Declared `platform.apiRuntime: node:20` in the deployed Static Web Apps
+  configuration so API deployment does not depend on a remembered CLI flag.
+- Added a browser regression test that fails if the production configuration
+  stops including `api/`, the Node runtime, or the `approval-pack` route.
+- Added documented `npm run deploy` and `npm run deploy:check` commands. The
+  README now states that the production command ships both the site and API.
 
-## Commits and deployment
+## Commit and deployment
 
-- `9d765a4` — initial per-client approval-pack limiter.
-- `e68a225` — use the factory forwarding identity.
-- `6430ecd` — add the endpoint burst ceiling for rotating proxy identities.
-- Pushed to `origin/main` and deployed with `swa deploy dist/site --api-location
-  api --api-language node --api-version 20 --env production --resource-group
-  sociobot --app-name sf-alert-config-change-ledger`.
-- Canonical production URL: `https://alert-config-change-ledger.sociobot.in`.
+- `baa347f fix: make production API deployment explicit`
+- Pushed to `origin/main`.
+- Deployed the checked-in `production` configuration to
+  `https://alert-config-change-ledger.sociobot.in`. Azure Static Web Apps
+  confirmed both inputs: `/work/repo/dist/site` and `/work/repo/api`.
 
-## Exact verification evidence
-
-- Clean dependency install: `npm ci` completed with 0 vulnerabilities.
-- Final `npm test`: 17 Rust tests, 7 API tests, and 36 Playwright tests passed.
-  Browser coverage includes desktop and 390×844 mobile, keyboard skip-link and
-  Space interaction, 200% mobile text reflow, routes, demo reset, offline
-  reload, and serious/critical Axe checks.
-- Every command in `.factory/claims.json` passed exactly as written (9 CLI/Rust
-  claims and 6 browser claims).
-- `npm run lint` passed Rust formatting, strict Clippy, and TypeScript checks.
-- `npm run build` produced `target/release/alert-ledger` and `dist/site/`.
-  Initial assets remain 6.12 KB gzip JavaScript and 3.78 KB gzip CSS.
-- `cargo package --allow-dirty` verified the package: 57 files, 305.3 KiB
-  unpacked / 83.9 KiB compressed. A fresh temporary-prefix `cargo install`
-  ran `alert-ledger --help` and its three-change `demo --json` workflow.
-- Live canonical-domain browser checks passed on 1366×768 and 390×844: one H1
-  and main landmark, correct title, no serious/critical Axe violations, no
-  unexpected console errors, same-origin demo traffic, no horizontal overflow,
-  offline demo reload, and a successful service-worker update.
-- Live response checks: `/`, `/demo`, `/privacy`, and `/terms` return 200;
-  `/missing-tape` returns 404. HSTS, CSP, nosniff, strict referrer policy, and
-  permissions policy are present. Built JS, CSS, and service-worker SHA-256
-  hashes match the canonical deployment.
-- The pre-repair reproduction was 25 × 401 with no `Retry-After`. After the
-  final deployment, the verifier-equivalent canonical 100-request unauthenticated
-  burst returned **24 × 401 and 76 × 429**, with `Retry-After: 50` or `51`.
-- Live Lighthouse mobile: performance 100, accessibility 100, best practices
-  100, SEO 100; FCP 0.8 s, LCP 1.7 s, TBT 40 ms, CLS 0.
-
-## Run locally
+## Verification evidence
 
 ```sh
 npm ci
@@ -105,11 +39,61 @@ npm run build
 cargo package --allow-dirty
 ```
 
-CLI demo: `cargo run -- demo`
+- Clean `npm ci`: 24 packages installed; `npm audit` reported 0
+  vulnerabilities.
+- `npm test`: 17 Rust tests, 7 API tests, and 38 Playwright tests passed.
+  The API suite includes the HTTP-shaped 25-request rate-limit regression;
+  browser coverage includes the new production API deployment contract.
+- `npm run lint`: `cargo fmt --check`, strict Clippy, and TypeScript typecheck
+  passed.
+- `npm run build`: produced `target/release/alert-ledger` and `dist/site`.
+  Initial JS is 6.12 KB gzip and CSS is 3.78 KB gzip.
+- `cargo package --allow-dirty`: passed (57 files; 305.3 KiB unpacked,
+  83.9 KiB compressed). A fresh temporary-prefix `cargo install` ran
+  `alert-ledger --help` and `alert-ledger demo --json`; the consumer demo
+  reported 3 changes and 2 matched routes.
+- `npm run deploy:check` resolved the exact production static output, API
+  folder, Node 20 runtime, and built `staticwebapp.config.json`. The command
+  has no deployment token in a clean shell, so the CLI correctly did not
+  publish from its dry-run path. The authenticated production deployment then
+  completed with the same checked-in configuration.
 
-Web demo: `/demo`
+## Live production evidence
+
+- `POST /api/approval-pack` without a license returns `401`,
+  `Cache-Control: no-store, private`, and `X-Content-Type-Options: nosniff`.
+- A fresh 100-request unauthenticated burst returned **30 × 401** and
+  **70 × 429**. Every throttled response had a positive `Retry-After`
+  (`49`, `50`, or `60` seconds observed).
+- Local and canonical `index-CTCpFeGq.js` SHA-256 values match:
+  `71b6cf6ea64ff94b4e376494025c4721ae23f85890275da3c67335f61672e650`.
+  Local and canonical `index-Bmc-NBld.css` SHA-256 values match:
+  `61f38fd8fef0547b67c5b2a8fbc48065b2799d5ecf5280fa240da3660315822c`.
+- Live desktop checks found `lang=en`, one `h1`, one `main`, a working skip
+  link, no console/page errors, and no serious or critical Axe violations on
+  `/`, `/demo`, `/privacy`, or `/terms`.
+- At 390×844, `/demo` has `scrollWidth === clientWidth === 390`. The demo
+  uses only `demo:alert-config-ledger:state`, made no cross-origin requests,
+  updated its service worker, and reloaded offline with its bundled comparison.
+- `/missing-tape` returns HTTP 404. Live responses retain HSTS, CSP, nosniff,
+  strict referrer policy, and permissions policy.
+
+## Run and deploy
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
+cargo package --allow-dirty
+npm run deploy
+```
+
+CLI demo: `cargo run -- demo --json`
+
+Web demo: `https://alert-config-change-ledger.sociobot.in/demo`
 
 ## Known gaps
 
-None for this repair. New Pro sales remain intentionally unavailable, as
-documented in the prior release; existing-license verification stays active.
+None. New Pro sales remain intentionally closed; existing-license approval
+packs stay server-authorized and rate-limited.
