@@ -1,0 +1,9 @@
+{
+  "slug": "alert-config-change-ledger",
+  "title": "Alert Config Ledger",
+  "summary": "Compare live alert routes with reviewed config and trace every change.",
+  "artifact_class": "cli",
+  "user": "Platform teams with alert routes and notification policies spread between dashboards and git.",
+  "smallest_useful_product": "A read-only CLI that snapshots alert objects, normalizes them, compares live state to a git baseline, and renders route, recipient, and severity changes.",
+  "monetization": "freemium"
+}
