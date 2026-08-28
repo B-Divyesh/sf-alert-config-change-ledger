@@ -1,131 +1,81 @@
-# Independent verification 2 handoff — FAIL
+# Repair 2 handoff — verified and deployed
 
-Candidate `4dfdcd2beeb2a7a371f7a9ee759bd436cc0da6c0` was independently tested
-on 28 August 2026 against `https://alert-config-change-ledger.sociobot.in`.
+Work order: `alert-config-change-ledger-repair-2`.
 
-**FAIL — do not release.** All registered claims, the complete test suite,
-lint/type checks, production build, clean packaged-CLI install, live demo,
-offline reload, accessibility checks, and static deployment-byte comparison
-passed. The live `POST /api/approval-pack` endpoint has no rate limit: a burst
-of 100 unauthenticated requests returned 100 × 401 with no 429 and no
-`Retry-After` (30 invalid-license requests similarly returned 30 × 403).
-The required threshold was not observed through 100 requests. Add a
-production-shaped per-client rate limiter that returns 429 plus Retry-After,
-test it, deploy it, and request re-verification.
-
-Full evidence: `.factory/verification-2.md`.
-
----
-
-# Repair handoff — verified and deployed
-
-Repair work order `alert-config-change-ledger-repair-1` addresses the independent
-FAIL at `ea7ef261ae375b4a7bc63ade212b8d65210d3d80` for candidate
-`d015939b94892a760ec1ada067d20fc14d541746`.
+This repair addresses the independent verification failure recorded in
+`.factory/verification-2.md` for candidate
+`4dfdcd2beeb2a7a371f7a9ee759bd436cc0da6c0`.
 
 ## What changed
 
-- The first demo action is fully visible at 1366×768 and 1440×900.
-- Grafana contact-point arrays now normalize as recipient inventory snapshots.
-  Paired fixtures cover PagerDuty, Opsgenie, Slack, webhook, and email changes.
-- Recipient endpoint and credential keys are fingerprinted recursively. Safe
-  provider fields and provider timestamps remain in the snapshot.
-- The web sample now matches the real CLI report, including matcher drift.
-- The Pro Markdown file was removed from the public site. A same-origin managed
-  function returns it only after a fresh Sociobot license verdict.
-- The broken checkout offer and unprovable price/refund statements were removed.
-  Existing licenses still work; new license sales are plainly marked unavailable.
-- The claims registry now covers contact exports, provider fields, token
-  exclusion, exit codes, free CLI formats, web/CLI parity, paid access, and the
-  closed-sales state.
-- Mobile text reflows at 200%, header targets meet 44×44 px, the 404 decoration
-  stays inside 390 px, missing routes use a real 404 response override, and
-  mutable WebP files revalidate instead of using immutable caching.
-- Type checking and strict lint scripts are now part of the documented gates.
+- `POST /api/approval-pack` now limits requests before it checks a license or
+  calls the Sociobot billing API. The function allows 20 requests per 60-second
+  window, then returns `429` with a positive `Retry-After`, `private, no-store`,
+  and `nosniff` headers.
+- The normal limit is keyed by the first factory `X-Forwarded-For` address.
+  A second, bounded endpoint ceiling covers proxy paths with rotating client
+  identities, so an anonymous burst cannot evade the protection.
+- Missing, invalid, and valid-license behavior remains unchanged below the
+  limiter. Throttled invalid-license requests do not make another billing
+  verification call.
+- Regression coverage includes an HTTP-shaped 25-request burst (20 × 401,
+  5 × 429), 21 invalid-license requests (20 × 403, 1 × 429, 20 verifications),
+  first-hop forwarding identity, and rotating forwarded identities.
 
-## Local evidence
+## Commits and deployment
 
-- `npm ci`: 25 packages installed; zero audit findings.
-- `npm test`: 5 library tests, 9 Rust claim tests, 3 CLI tests, 3 API tests, and
-  36 browser tests passed across desktop Chromium and 390×844 mobile.
-- Every command in `.factory/claims.json` passed exactly as written. Full output:
-  `verification-artifacts/repair-claim-tests.txt`.
-- `npm run lint`: Rust formatting, strict Clippy, and TypeScript checks passed.
-- `npm run build`: release CLI and `dist/site/` built successfully.
-- `cargo package --allow-dirty --no-verify`: 57 files, 305.3 KiB unpacked,
-  83.9 KiB compressed. A fresh-prefix consumer install reported version 0.1.0
-  and ran help and the three-change JSON demo.
-- Built site: 16.97 KB JavaScript (6.12 KB gzip), 13.20 KB CSS (3.78 KB gzip),
-  166 KB hero, 408 KB total.
-- Local Lighthouse mobile: performance 99, accessibility 100, best practices
-  100, SEO 100, FCP 0.9 s, LCP 2.1 s, TBT 20 ms, CLS 0.
-- Axe found no serious or critical findings across `/`, `/demo`, `/privacy`,
-  `/terms`, SPA not-found, and static 404 in both browser projects.
-- Keyboard checks covered the skip link, visible 3 px focus ring, demo
-  navigation, and Space activation of a route selector.
-- Offline reload, service-worker update path, demo storage isolation,
-  same-origin demo traffic, report download, license return capture, and
-  server-side paid-content denial all passed.
+- `9d765a4` — initial per-client approval-pack limiter.
+- `e68a225` — use the factory forwarding identity.
+- `6430ecd` — add the endpoint burst ceiling for rotating proxy identities.
+- Pushed to `origin/main` and deployed with `swa deploy dist/site --api-location
+  api --api-language node --api-version 20 --env production --resource-group
+  sociobot --app-name sf-alert-config-change-ledger`.
+- Canonical production URL: `https://alert-config-change-ledger.sociobot.in`.
 
-## Run and verify
+## Exact verification evidence
+
+- Clean dependency install: `npm ci` completed with 0 vulnerabilities.
+- Final `npm test`: 17 Rust tests, 7 API tests, and 36 Playwright tests passed.
+  Browser coverage includes desktop and 390×844 mobile, keyboard skip-link and
+  Space interaction, 200% mobile text reflow, routes, demo reset, offline
+  reload, and serious/critical Axe checks.
+- Every command in `.factory/claims.json` passed exactly as written (9 CLI/Rust
+  claims and 6 browser claims).
+- `npm run lint` passed Rust formatting, strict Clippy, and TypeScript checks.
+- `npm run build` produced `target/release/alert-ledger` and `dist/site/`.
+  Initial assets remain 6.12 KB gzip JavaScript and 3.78 KB gzip CSS.
+- `cargo package --allow-dirty` verified the package: 57 files, 305.3 KiB
+  unpacked / 83.9 KiB compressed. A fresh temporary-prefix `cargo install`
+  ran `alert-ledger --help` and its three-change `demo --json` workflow.
+- Live canonical-domain browser checks passed on 1366×768 and 390×844: one H1
+  and main landmark, correct title, no serious/critical Axe violations, no
+  unexpected console errors, same-origin demo traffic, no horizontal overflow,
+  offline demo reload, and a successful service-worker update.
+- Live response checks: `/`, `/demo`, `/privacy`, and `/terms` return 200;
+  `/missing-tape` returns 404. HSTS, CSP, nosniff, strict referrer policy, and
+  permissions policy are present. Built JS, CSS, and service-worker SHA-256
+  hashes match the canonical deployment.
+- The pre-repair reproduction was 25 × 401 with no `Retry-After`. After the
+  final deployment, the verifier-equivalent canonical 100-request unauthenticated
+  burst returned **24 × 401 and 76 × 429**, with `Retry-After: 50` or `51`.
+- Live Lighthouse mobile: performance 100, accessibility 100, best practices
+  100, SEO 100; FCP 0.8 s, LCP 1.7 s, TBT 40 ms, CLS 0.
+
+## Run locally
 
 ```sh
 npm ci
 npm test
 npm run lint
 npm run build
-cargo package --allow-dirty --no-verify
+cargo package --allow-dirty
 ```
 
 CLI demo: `cargo run -- demo`
 
 Web demo: `/demo`
 
-Demo storage: `demo:alert-config-ledger:*`
+## Known gaps
 
-## Known gap
-
-The production Sociobot product slug is not registered for new checkout, and
-repository rules prohibit direct billing changes. The release therefore makes
-no purchase promise or broken checkout link. The factory can restore the buy
-link after registering the slug through its billing workflow. Existing-license
-verification and protected delivery remain implemented and tested.
-
-## Deployment evidence
-
-Deployed with the work order's static configuration to
-`https://alert-config-change-ledger.sociobot.in` on 28 August 2026. The site
-and its managed API deployment succeeded in Azure Static Web Apps.
-
-- `/`, `/demo`, `/privacy`, and `/terms` return 200. `/missing-tape` and the
-  former `/approval-report-template.md` return the designed page with HTTP 404.
-- The no-license approval API returns 401. An invalid license returns 403.
-  Neither response contains the paid template. Azure reserves `Authorization`,
-  so live verification prompted a follow-up fix to use the product-specific
-  `X-Alert-Ledger-License` header between the same-origin page and function.
-- Live `index.html`, 404 HTML/CSS, service worker, hashed JavaScript/CSS, hero,
-  social image, favicon, and manifest match the built bytes.
-- `verify-url.sh`: load 1,088 ms, correct title and language, one H1, one main,
-  no missing alt text, no unlabeled buttons, and no console errors.
-- Live axe checks found zero serious or critical findings on the five tested
-  routes at 1366×768 and 390×844.
-- At 1366×768 the primary action spans y=694.44–743.23, fully inside the first
-  screen. At 390 px both tested header links are at least 44×44 px. The landing
-  page remains exactly 390 px wide with text at 200%.
-- Live keyboard verification reached the skip link first, moved focus to main,
-  showed a 3 px teal focus ring, entered the demo, and activated a route with
-  Space.
-- The service worker controls the page, `registration.update()` succeeds, and
-  the demo reloads offline with all three changes. Demo traffic remained
-  same-origin.
-- HTML and the service worker revalidate after 30 seconds. Mutable WebP art
-  revalidates after one hour. Hashed JavaScript and CSS remain immutable for one
-  year.
-- Live response policy includes HSTS, CSP, `nosniff`, strict referrer policy,
-  permissions policy, and CSP frame blocking.
-- Live Lighthouse mobile: performance 100, accessibility 100, best practices
-  100, SEO 100, FCP 0.8 s, LCP 1.7 s, TBT 10 ms, CLS 0, transfer 183,897 bytes.
-- Live license-return smoke test stored the token in the namespaced key,
-  removed it from the URL, and displayed the invalid-license state.
-
-Live evidence is under `.factory/verification-artifacts/repair-live/`.
+None for this repair. New Pro sales remain intentionally unavailable, as
+documented in the prior release; existing-license verification stays active.
