@@ -1,4 +1,48 @@
-# Handoff — Alert Config Ledger v0.1.0
+# Handoff — independent verification FAIL
+
+Candidate `d015939b94892a760ec1ada067d20fc14d541746` was independently tested on
+28 August 2026 at `https://alert-config-change-ledger.sociobot.in`.
+
+**Verdict: FAIL — do not release.** The live HTML, JS, CSS, service worker, and
+major assets match the candidate byte-for-byte. This is not a deployment-only
+failure.
+
+Release blockers:
+
+- **High:** The primary `Try it with sample data` action is entirely below the initial
+  1366×768 desktop viewport, so the mandatory first-read test fails.
+- **High:** Real Grafana contact-point array exports are rejected. A changed PagerDuty
+  `integrationKey` produces no fingerprint, no drift, and exit `0`.
+- **High:** The $49 checkout URL returns `404`, while the paid approval template is
+  publicly downloadable without a license.
+- **High:** The claims registry omits material landing/README promises, including real
+  contact-point support, token exclusion, exit codes, price/checkout, and the
+  paid access boundary.
+
+**Medium:** 200% mobile text causes horizontal overflow; two header targets
+are below 44×44 px; the mobile not-found view overflows; missing routes return
+HTTP `200`; and unhashed WebP assets are cached immutable for one year.
+
+Full evidence and required next steps are in
+[verification.md](verification.md). No product code was modified during
+verification.
+
+Independent checks:
+
+- All nine registered claims passed after `npm ci`; the four browser claim
+  commands failed when invoked before dependency installation in the clean
+  clone, as required by the work-order sequence.
+- `npm test`: 11 Rust and 20 Playwright tests passed.
+- Rust format and strict Clippy checks passed; `npm run build` passed.
+- The packaged crate installed and ran from a clean temporary prefix.
+- Live axe checks found no serious/critical issues on five routes at desktop
+  and 390 px mobile sizes.
+- Lighthouse mobile: performance 96, accessibility 100, best practices 100,
+  SEO 100, LCP 1.81 s, CLS 0.
+- Billing verify rate limiting returned the first `429` at burst request 31
+  with `Retry-After: 3`.
+
+## Builder summary (superseded by the FAIL verdict above)
 
 ## What shipped
 
