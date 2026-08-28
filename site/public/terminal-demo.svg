@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="590" viewBox="0 0 960 590" role="img" aria-labelledby="title desc">
+  <title id="title">Alert Ledger demo terminal recording</title>
+  <desc id="desc">The command finds three changed routes between a Git baseline and live Grafana state.</desc>
+  <rect width="960" height="590" fill="#191714"/>
+  <rect x="0" y="0" width="960" height="52" fill="#dccdaa"/>
+  <circle cx="28" cy="26" r="8" fill="#a9342a"/><circle cx="54" cy="26" r="8" fill="#8a5500"/><circle cx="80" cy="26" r="8" fill="#0b6762"/>
+  <text x="480" y="33" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#191714">alert-ledger demo — sample data</text>
+  <g font-family="monospace" font-size="18" fill="#f2e8ce">
+    <text x="32" y="90" fill="#67b7ad">$ alert-ledger demo</text>
+    <text x="32" y="132" font-weight="700">ALERT CONFIG LEDGER</text>
+    <text x="32" y="164">BASE  git:platform/alerts#a81c7e2 · 2026-08-27T16:00:00Z</text>
+    <text x="32" y="196">LIVE  grafana:production#live-1842 · 2026-08-28T07:42:00Z</text>
+    <text x="32" y="244" fill="#f18374" font-weight="700">! DRIFT  3 changed routes · 2 matched</text>
+    <text x="32" y="286">~ team = payments</text><text x="64" y="316" fill="#dccdaa">changed: recipients · source: grafana:production#live-1842</text>
+    <text x="32" y="358">~ service = checkout</text><text x="64" y="388" fill="#dccdaa">changed: severity, recipients · warning → critical</text>
+    <text x="32" y="430">+ team = security</text><text x="64" y="460" fill="#dccdaa">changed: route · source: grafana:production#live-1842</text>
+    <text x="32" y="514" fill="#67b7ad">Demo files: /tmp/alert-ledger-demo-…</text>
+  </g>
+  <path d="M0 555h960" stroke="#a9342a" stroke-width="6" stroke-dasharray="18 8"/>
+</svg>

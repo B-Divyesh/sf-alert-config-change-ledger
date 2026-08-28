@@ -1,0 +1,9 @@
+{
+  "name": "Alert Config Ledger",
+  "short_name": "Alert Ledger",
+  "start_url": "/demo",
+  "display": "standalone",
+  "background_color": "#f2e8ce",
+  "theme_color": "#f2e8ce",
+  "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }]
+}

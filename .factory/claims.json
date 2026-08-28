@@ -1,0 +1,65 @@
+[
+  {
+    "id": "core-workflow",
+    "claim": "The bundled demo compares reviewed and live Grafana snapshots and attributes three route changes.",
+    "where": "landing preview, demo, README",
+    "test": "cargo test --test claims claim_core_workflow_no_license",
+    "sandbox": "bundled sample exports in a temporary directory; no account or license"
+  },
+  {
+    "id": "provider-inputs",
+    "claim": "The CLI normalizes Grafana JSON and Alertmanager YAML exports.",
+    "where": "landing how-it-works, README",
+    "test": "cargo test --test claims claim_provider_inputs",
+    "sandbox": "bundled Grafana and Alertmanager example exports"
+  },
+  {
+    "id": "read-only-import",
+    "claim": "URL imports use GET and the CLI has no write command.",
+    "where": "landing facts and boundaries, README",
+    "test": "cargo test --test claims claim_read_only_get_and_command_surface",
+    "sandbox": "temporary local HTTP listener and the compiled CLI help output"
+  },
+  {
+    "id": "recipient-redaction",
+    "claim": "Reports replace recipient endpoint values with SHA-256 fingerprints.",
+    "where": "landing facts, privacy, README",
+    "test": "cargo test --test claims claim_recipient_values_are_redacted",
+    "sandbox": "bundled exports containing sample email and webhook endpoints"
+  },
+  {
+    "id": "no-telemetry",
+    "claim": "The local demo runs with no telemetry or network dependency.",
+    "where": "landing boundaries, README",
+    "test": "cargo test --test claims claim_demo_needs_no_network_or_telemetry",
+    "sandbox": "compiled demo with HTTP and HTTPS proxies pointed at a closed local port"
+  },
+  {
+    "id": "demo-privacy",
+    "claim": "The web demo makes only same-origin requests and uses a separate demo storage prefix.",
+    "where": "demo banner, privacy, README",
+    "test": "npm test -- --grep @claim:demo-privacy",
+    "sandbox": "fresh browser context on /demo with every request and localStorage key recorded"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "The bundled demo reloads offline after the first visit.",
+    "where": "landing facts, demo offline state",
+    "test": "npm test -- --grep @claim:offline-reload",
+    "sandbox": "fresh browser context; install service worker, reload once, then set the context offline"
+  },
+  {
+    "id": "report-download",
+    "claim": "The demo exports a JSON drift report with all three sample changes.",
+    "where": "demo action",
+    "test": "npm test -- --grep @claim:report-download",
+    "sandbox": "fresh demo state; inspect the downloaded file and count change records"
+  },
+  {
+    "id": "paid-template",
+    "claim": "A valid Pro license reveals the downloadable approval report pack.",
+    "where": "landing paid tier",
+    "test": "npm test -- --grep @claim:paid-template",
+    "sandbox": "fresh browser context with a recorded valid license-verification response"
+  }
+]

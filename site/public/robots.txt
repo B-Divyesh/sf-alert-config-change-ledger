@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alert-config-change-ledger.sociobot.in/sitemap.xml
