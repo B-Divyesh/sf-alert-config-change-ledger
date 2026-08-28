@@ -1,0 +1,18 @@
+{
+  "receiver": "ops-primary",
+  "group_by": ["grafana_folder", "alertname"],
+  "group_wait": "30s",
+  "group_interval": "5m",
+  "repeat_interval": "4h",
+  "routes": [
+    {"receiver": "payments-pager", "object_matchers": [["team", "=", "payments"], ["severity", "=", "critical"]], "group_wait": "10s"},
+    {"receiver": "checkout-slack", "object_matchers": [["service", "=", "checkout"], ["severity", "=", "warning"]], "mute_time_intervals": ["weekend-maintenance"]},
+    {"receiver": "data-oncall", "object_matchers": [["team", "=", "data"]], "continue": true}
+  ],
+  "contactPoints": [
+    {"name": "ops-primary", "type": "email", "settings": {"addresses": "ops@example.test"}},
+    {"name": "payments-pager", "type": "webhook", "settings": {"url": "https://pager.example.test/integration/reviewed"}},
+    {"name": "checkout-slack", "type": "slack", "settings": {"url": "https://hooks.example.test/services/reviewed"}},
+    {"name": "data-oncall", "type": "email", "settings": {"addresses": "data@example.test"}}
+  ]
+}

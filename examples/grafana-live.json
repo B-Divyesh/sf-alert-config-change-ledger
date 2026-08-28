@@ -1,0 +1,20 @@
+{
+  "receiver": "ops-primary",
+  "group_by": ["grafana_folder", "alertname"],
+  "group_wait": "30s",
+  "group_interval": "5m",
+  "repeat_interval": "4h",
+  "routes": [
+    {"receiver": "payments-secondary", "object_matchers": [["team", "=", "payments"], ["severity", "=", "critical"]], "group_wait": "10s"},
+    {"receiver": "checkout-slack", "object_matchers": [["service", "=", "checkout"], ["severity", "=", "critical"]], "mute_time_intervals": ["weekend-maintenance"]},
+    {"receiver": "data-oncall", "object_matchers": [["team", "=", "data"]], "continue": true},
+    {"receiver": "security-oncall", "object_matchers": [["team", "=", "security"], ["severity", "=", "critical"]]}
+  ],
+  "contactPoints": [
+    {"name": "ops-primary", "type": "email", "settings": {"addresses": "ops@example.test"}},
+    {"name": "payments-secondary", "type": "webhook", "settings": {"url": "https://pager.example.test/integration/live"}},
+    {"name": "checkout-slack", "type": "slack", "settings": {"url": "https://hooks.example.test/services/live"}},
+    {"name": "data-oncall", "type": "email", "settings": {"addresses": "data@example.test"}},
+    {"name": "security-oncall", "type": "email", "settings": {"addresses": "security@example.test"}}
+  ]
+}
