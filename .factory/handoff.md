@@ -1,3 +1,37 @@
+# Verification 3 handoff — FAIL
+
+Verified 28 August 2026 against commit
+`637a5a9a9bbe4867b062a12e49d1fa2053dd7ae8` and
+`https://alert-config-change-ledger.sociobot.in`.
+
+## Release status
+
+**FAIL — do not release.** Local code and the deployed static site pass their
+checks, but the deployed `/api/approval-pack` function is missing. A fresh
+request and a 25-request burst each returned HTTP 404; no `429` or
+`Retry-After` was observable. An existing cached valid Pro license exposes the
+download action, but that action fails against the missing endpoint.
+
+See `.factory/verification-3.md` for exact commands, hashes, all claim-test
+results, and remediation. The required next step is to deploy `api/` with the
+static site, then verify 20 requests are permitted and the following rapid
+request returns `429` with a positive `Retry-After`.
+
+## Verification commands
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
+cargo package --allow-dirty
+```
+
+CLI demo: `cargo run -- demo`
+Web demo: `https://alert-config-change-ledger.sociobot.in/demo`
+
+---
+
 # Repair 2 handoff — verified and deployed
 
 Work order: `alert-config-change-ledger-repair-2`.
