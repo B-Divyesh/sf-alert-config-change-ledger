@@ -17,7 +17,8 @@ FAIL at `ea7ef261ae375b4a7bc63ade212b8d65210d3d80` for candidate
 - The broken checkout offer and unprovable price/refund statements were removed.
   Existing licenses still work; new license sales are plainly marked unavailable.
 - The claims registry now covers contact exports, provider fields, token
-  exclusion, exit codes, free CLI formats, web/CLI parity, and paid access.
+  exclusion, exit codes, free CLI formats, web/CLI parity, paid access, and the
+  closed-sales state.
 - Mobile text reflows at 200%, header targets meet 44×44 px, the 404 decoration
   stays inside 390 px, missing routes use a real 404 response override, and
   mutable WebP files revalidate instead of using immutable caching.

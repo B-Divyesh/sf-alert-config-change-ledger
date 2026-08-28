@@ -208,7 +208,7 @@ test('@claim:paid-template valid licenses reveal the report pack', async ({ page
   expect(approvalLicense).toBe('test-license-token');
 });
 
-test('unlicensed browsers have no paid-content URL or download action', async ({ page }) => {
+test('@claim:sales-closed unlicensed browsers have no checkout or paid-content action', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Download approval report pack' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: /Buy Pro/ })).toHaveCount(0);

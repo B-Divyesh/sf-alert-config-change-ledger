@@ -96,5 +96,12 @@
     "where": "landing Pro section, README",
     "test": "npm test -- --grep @claim:paid-template",
     "sandbox": "fresh browser context with recorded valid verification plus API tests for missing, invalid, and valid licenses"
+  },
+  {
+    "id": "sales-closed",
+    "claim": "New Pro license sales are not open in this release.",
+    "where": "landing Pro section, README",
+    "test": "npm test -- --grep @claim:sales-closed",
+    "sandbox": "fresh browser context; assert the closed-sales notice and absence of checkout and paid-content links"
   }
 ]
