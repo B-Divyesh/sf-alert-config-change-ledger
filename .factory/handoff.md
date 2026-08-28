@@ -1,3 +1,22 @@
+# Independent verification 2 handoff — FAIL
+
+Candidate `4dfdcd2beeb2a7a371f7a9ee759bd436cc0da6c0` was independently tested
+on 28 August 2026 against `https://alert-config-change-ledger.sociobot.in`.
+
+**FAIL — do not release.** All registered claims, the complete test suite,
+lint/type checks, production build, clean packaged-CLI install, live demo,
+offline reload, accessibility checks, and static deployment-byte comparison
+passed. The live `POST /api/approval-pack` endpoint has no rate limit: a burst
+of 100 unauthenticated requests returned 100 × 401 with no 429 and no
+`Retry-After` (30 invalid-license requests similarly returned 30 × 403).
+The required threshold was not observed through 100 requests. Add a
+production-shaped per-client rate limiter that returns 429 plus Retry-After,
+test it, deploy it, and request re-verification.
+
+Full evidence: `.factory/verification-2.md`.
+
+---
+
 # Repair handoff — verified and deployed
 
 Repair work order `alert-config-change-ledger-repair-1` addresses the independent
