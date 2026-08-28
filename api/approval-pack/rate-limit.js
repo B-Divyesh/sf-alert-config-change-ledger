@@ -68,13 +68,13 @@ function header(headers, name) {
 }
 
 function clientId(req) {
-  // Azure supplies X-Azure-ClientIP when available. Otherwise use the first
-  // address in the proxy chain, which is the originating client address.
-  const azureClientIp = header(req.headers, 'x-azure-clientip');
-  if (azureClientIp) return `ip:${azureClientIp.trim()}`;
+  // The factory ingress sets the originating client as the first forwarded
+  // address. Do not key on a platform proxy address, which can vary per call.
   const forwardedFor = header(req.headers, 'x-forwarded-for');
   if (forwardedFor) return `ip:${forwardedFor.split(',')[0].trim()}`;
-  return 'ip:unknown';
+  // A missing trusted address must still be protected. Sharing this bounded
+  // bucket is safer than accepting an unlimited anonymous burst.
+  return 'ip:unattributed';
 }
 
 module.exports = {

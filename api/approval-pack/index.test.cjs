@@ -2,8 +2,17 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 const approvalPack = require('./index.js');
+const { clientId } = require('./rate-limit.js');
 
 test.beforeEach(() => approvalPack.__resetRateLimiterForTests());
+
+test('rate-limit client identity uses the factory forwarding header', () => {
+  assert.equal(clientId({ headers: {
+    'X-Forwarded-For': '198.51.100.91, 10.0.0.8',
+    'X-Azure-ClientIP': '10.0.0.8',
+  } }), 'ip:198.51.100.91');
+  assert.equal(clientId({ headers: {} }), 'ip:unattributed');
+});
 
 test('unlicensed approval-pack requests never receive paid content', async () => {
   const context = {};
