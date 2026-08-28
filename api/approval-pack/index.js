@@ -2,6 +2,8 @@ const PRODUCT = 'alert-config-change-ledger';
 const BILLING_API = 'https://api.sociobot.in/api/v1';
 const { PerClientRateLimiter, clientId, header } = require('./rate-limit.js');
 const limiter = new PerClientRateLimiter();
+// A shared ceiling covers proxy paths that do not provide a stable client IP.
+const burstLimiter = new PerClientRateLimiter({ maxClients: 1 });
 
 const template = `# Alert route approval
 
@@ -33,7 +35,9 @@ Change window:
 `;
 
 module.exports = async function approvalPack(context, req) {
-  const limit = limiter.take(clientId(req));
+  const endpointLimit = burstLimiter.take('approval-pack');
+  const clientLimit = limiter.take(clientId(req));
+  const limit = endpointLimit.allowed ? clientLimit : endpointLimit;
   if (!limit.allowed) {
     context.res = response(429, 'Too many approval-pack requests. Try again shortly.', {
       'Retry-After': String(limit.retryAfter),
@@ -90,4 +94,7 @@ function response(status, body, extraHeaders = {}) {
 }
 
 // Used only by the local integration suite to isolate module-level state.
-module.exports.__resetRateLimiterForTests = () => limiter.reset();
+module.exports.__resetRateLimiterForTests = () => {
+  limiter.reset();
+  burstLimiter.reset();
+};

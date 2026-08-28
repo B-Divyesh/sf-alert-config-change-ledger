@@ -92,3 +92,16 @@ test('bursts are rate limited per client before license verification', async (t)
     assert.equal(result.headers.get('cache-control'), 'private, no-store');
   }
 });
+
+test('the endpoint ceiling protects against rotating forwarded client identities', async () => {
+  const responses = [];
+  for (let index = 0; index < 25; index += 1) {
+    const context = {};
+    await approvalPack(context, { headers: { 'X-Forwarded-For': `198.51.100.${index}` } });
+    responses.push(context.res);
+  }
+  assert.equal(responses.filter((item) => item.status === 401).length, 20);
+  const blocked = responses.filter((item) => item.status === 429);
+  assert.equal(blocked.length, 5);
+  assert.ok(blocked.every((item) => /^[1-9]\d*$/.test(item.headers['Retry-After'])));
+});
