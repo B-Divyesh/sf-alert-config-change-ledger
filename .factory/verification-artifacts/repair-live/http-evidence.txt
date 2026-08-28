@@ -1,0 +1,10 @@
+/                                status=200 cache=public, must-revalidate, max-age=30 bytes=1907
+/demo                            status=200 cache=public, must-revalidate, max-age=30 bytes=1907
+/privacy                         status=200 cache=public, must-revalidate, max-age=30 bytes=1907
+/terms                           status=200 cache=public, must-revalidate, max-age=30 bytes=1907
+/missing-tape                    status=404 cache=public, must-revalidate, max-age=30 bytes=1438
+/approval-report-template.md     status=404 cache=public, must-revalidate, max-age=30 bytes=1438
+/cassette-ledger.webp            status=200 cache=public, max-age=3600, must-revalidate bytes=169978
+/og.webp                         status=200 cache=public, max-age=3600, must-revalidate bytes=147442
+/api/approval-pack missing     status=401 body=A Pro license is required.
+/api/approval-pack invalid     status=403 body=This Pro license is not active.

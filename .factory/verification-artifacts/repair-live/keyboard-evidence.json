@@ -1,0 +1,11 @@
+{
+  "first": {
+    "text": "Skip to main content",
+    "outline": "rgb(11, 103, 98) solid 3px"
+  },
+  "skipped": "MAIN",
+  "outline": "rgb(11, 103, 98) solid 3px",
+  "url": "https://alert-config-change-ledger.sociobot.in/demo",
+  "pressed": "true",
+  "detail": true
+}

@@ -211,6 +211,8 @@ test('@claim:paid-template valid licenses reveal the report pack', async ({ page
 test('unlicensed browsers have no paid-content URL or download action', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Download approval report pack' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /Buy Pro/ })).toHaveCount(0);
+  await expect(page.getByText('New license sales are not open in this release.')).toHaveCount(2);
   await expect(page.locator('a[href="/approval-report-template.md"]')).toHaveCount(0);
   expect(existsSync(resolve('site/public/approval-report-template.md'))).toBe(false);
 });

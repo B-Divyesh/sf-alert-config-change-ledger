@@ -1,4 +1,4 @@
-# Repair handoff — local gates passed
+# Repair handoff — verified and deployed
 
 Repair work order `alert-config-change-ledger-repair-1` addresses the independent
 FAIL at `ea7ef261ae375b4a7bc63ade212b8d65210d3d80` for candidate
@@ -73,4 +73,39 @@ verification and protected delivery remain implemented and tested.
 
 ## Deployment evidence
 
-Pending deployment and live verification.
+Deployed with the work order's static configuration to
+`https://alert-config-change-ledger.sociobot.in` on 28 August 2026. The site
+and its managed API deployment succeeded in Azure Static Web Apps.
+
+- `/`, `/demo`, `/privacy`, and `/terms` return 200. `/missing-tape` and the
+  former `/approval-report-template.md` return the designed page with HTTP 404.
+- The no-license approval API returns 401. An invalid license returns 403.
+  Neither response contains the paid template. Azure reserves `Authorization`,
+  so live verification prompted a follow-up fix to use the product-specific
+  `X-Alert-Ledger-License` header between the same-origin page and function.
+- Live `index.html`, 404 HTML/CSS, service worker, hashed JavaScript/CSS, hero,
+  social image, favicon, and manifest match the built bytes.
+- `verify-url.sh`: load 1,088 ms, correct title and language, one H1, one main,
+  no missing alt text, no unlabeled buttons, and no console errors.
+- Live axe checks found zero serious or critical findings on the five tested
+  routes at 1366×768 and 390×844.
+- At 1366×768 the primary action spans y=694.44–743.23, fully inside the first
+  screen. At 390 px both tested header links are at least 44×44 px. The landing
+  page remains exactly 390 px wide with text at 200%.
+- Live keyboard verification reached the skip link first, moved focus to main,
+  showed a 3 px teal focus ring, entered the demo, and activated a route with
+  Space.
+- The service worker controls the page, `registration.update()` succeeds, and
+  the demo reloads offline with all three changes. Demo traffic remained
+  same-origin.
+- HTML and the service worker revalidate after 30 seconds. Mutable WebP art
+  revalidates after one hour. Hashed JavaScript and CSS remain immutable for one
+  year.
+- Live response policy includes HSTS, CSP, `nosniff`, strict referrer policy,
+  permissions policy, and CSP frame blocking.
+- Live Lighthouse mobile: performance 100, accessibility 100, best practices
+  100, SEO 100, FCP 0.8 s, LCP 1.7 s, TBT 10 ms, CLS 0, transfer 183,897 bytes.
+- Live license-return smoke test stored the token in the namespaced key,
+  removed it from the URL, and displayed the invalid-license state.
+
+Live evidence is under `.factory/verification-artifacts/repair-live/`.

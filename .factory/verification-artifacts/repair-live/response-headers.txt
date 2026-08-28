@@ -1,0 +1,10 @@
+HTTP/2 200 
+cache-control: public, must-revalidate, max-age=30
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+HTTP/2 200 
+content-type: text/javascript
+cache-control: public, max-age=31536000, immutable

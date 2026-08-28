@@ -1,0 +1,143 @@
+{
+  "desktop": {
+    "routes": {
+      "/": {
+        "status": 200,
+        "title": "Alert Config Ledger — trace alert route changes",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/demo": {
+        "status": 200,
+        "title": "Demo — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/privacy": {
+        "status": 200,
+        "title": "Privacy — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/terms": {
+        "status": 200,
+        "title": "Terms — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/missing-tape": {
+        "status": 404,
+        "title": "Page not found — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      }
+    },
+    "action": {
+      "x": 93,
+      "y": 694.4375,
+      "width": 260.84375,
+      "height": 48.796875
+    },
+    "targets": {
+      "home": {
+        "x": 93,
+        "y": 17,
+        "width": 238.4375,
+        "height": 44
+      },
+      "demo": {
+        "x": 1046.5625,
+        "y": 17,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "reflow": {
+      "scroll": 1366,
+      "client": 1366
+    },
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 ()"
+    ]
+  },
+  "mobile": {
+    "routes": {
+      "/": {
+        "status": 200,
+        "title": "Alert Config Ledger — trace alert route changes",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/demo": {
+        "status": 200,
+        "title": "Demo — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/privacy": {
+        "status": 200,
+        "title": "Privacy — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/terms": {
+        "status": 200,
+        "title": "Terms — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      },
+      "/missing-tape": {
+        "status": 404,
+        "title": "Page not found — Alert Config Ledger",
+        "h1": 1,
+        "main": 1,
+        "seriousCritical": 0
+      }
+    },
+    "action": {
+      "x": 16,
+      "y": 434.21875,
+      "width": 260.84375,
+      "height": 48.796875
+    },
+    "targets": {
+      "home": {
+        "x": 16,
+        "y": 12,
+        "width": 44,
+        "height": 44
+      },
+      "demo": {
+        "x": 179.5625,
+        "y": 12,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "reflow": {
+      "scroll": 390,
+      "client": 390
+    },
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 ()"
+    ]
+  },
+  "offline": {
+    "registration": {
+      "scope": "https://alert-config-change-ledger.sociobot.in/",
+      "controller": true
+    },
+    "offline": true,
+    "demoVisible": true,
+    "crossOrigin": []
+  }
+}
