@@ -7,6 +7,8 @@
     "dev": "vite --config site/vite.config.ts",
     "build": "cargo build --release && npm run build:site",
     "build:site": "vite build --config site/vite.config.ts && node site/scripts/build-sw.mjs",
+    "deploy": "npm run build && swa deploy production --env production",
+    "deploy:check": "npm run build && swa deploy production --env production --dry-run",
     "preview": "vite preview --config site/vite.config.ts",
     "test": "cargo test && npm run test:api && playwright test",
     "test:api": "node --test api/**/*.test.cjs",

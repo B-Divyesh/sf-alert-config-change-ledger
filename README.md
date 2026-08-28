@@ -109,7 +109,12 @@ Existing Pro approval-report licenses are verified through the Sociobot billing 
 
 ## Deploy
 
-The factory deploys `dist/site/` and the license-gated function in `api/` to `https://alert-config-change-ledger.sociobot.in`. This repository does not manage DNS, infrastructure, billing registration, or registry credentials.
+The checked-in `swa-cli.config.json` deploys both `dist/site/` and the
+license-gated function in `api/` to
+`https://alert-config-change-ledger.sociobot.in`. Verify that deployment shape
+without publishing with `npm run deploy:check`; publish the production build
+with `npm run deploy`. This repository does not manage DNS, infrastructure,
+billing registration, or registry credentials.
 
 ## License
 

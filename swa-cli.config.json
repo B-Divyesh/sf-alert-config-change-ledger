@@ -1,0 +1,16 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "production": {
+      "appLocation": ".",
+      "outputLocation": "dist/site",
+      "apiLocation": "api",
+      "swaConfigLocation": "dist/site",
+      "apiLanguage": "node",
+      "apiVersion": "20",
+      "subscriptionId": "283af945-693b-4a6e-b952-df928d0a18a9",
+      "resourceGroup": "sociobot",
+      "appName": "sf-alert-config-change-ledger"
+    }
+  }
+}

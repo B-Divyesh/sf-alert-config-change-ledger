@@ -126,6 +126,24 @@ test('deployment policy returns a designed 404 and revalidates mutable art', () 
   expect(art.headers['Cache-Control']).toContain('must-revalidate');
 });
 
+test('production deployment configuration always ships the approval-pack API', () => {
+  const deploy = JSON.parse(readFileSync(resolve('swa-cli.config.json'), 'utf8')).configurations.production;
+  const config = JSON.parse(readFileSync(resolve('site/public/staticwebapp.config.json'), 'utf8'));
+  expect(deploy).toMatchObject({
+    appLocation: '.',
+    outputLocation: 'dist/site',
+    apiLocation: 'api',
+    swaConfigLocation: 'dist/site',
+    apiLanguage: 'node',
+    apiVersion: '20',
+    appName: 'sf-alert-config-change-ledger',
+    resourceGroup: 'sociobot',
+  });
+  expect(config.platform).toEqual({ apiRuntime: 'node:20' });
+  expect(existsSync(resolve('api/approval-pack/function.json'))).toBe(true);
+  expect(readFileSync(resolve('api/approval-pack/function.json'), 'utf8')).toContain('"route": "approval-pack"');
+});
+
 test('sample demo shows attributable drift', async ({ page }) => {
   await page.goto('/demo');
   await expect(page.getByText('3 changed · 2 matched')).toBeVisible();
