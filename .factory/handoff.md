@@ -77,6 +77,8 @@ cargo package --allow-dirty
   updated its service worker, and reloaded offline with its bundled comparison.
 - `/missing-tape` returns HTTP 404. Live responses retain HSTS, CSP, nosniff,
   strict referrer policy, and permissions policy.
+- Fresh live Lighthouse mobile: performance **100**, accessibility **100**,
+  best practices **100**, SEO **100**; FCP **0.9 s**, LCP **1.8 s**, CLS **0**.
 
 ## Run and deploy
 
