@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-08-29T15:12:00Z",
+  "url": "https://alert-config-change-ledger.sociobot.in/api/approval-pack",
+  "method": "POST",
+  "concurrent_requests": 25,
+  "observed_allowance": "20 requests per 60 seconds",
+  "status_counts": {
+    "401": 20,
+    "429": 5
+  },
+  "retry_after_on_every_429": "58",
+  "cache_control_on_every_response": "no-store, private",
+  "build_on_every_response": "repair-7",
+  "limit_store_on_every_response": "azure-table"
+}

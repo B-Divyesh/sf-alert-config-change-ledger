@@ -1,0 +1,13 @@
+Candidate c8579b97e4c6bff63bc72abbff5eb1b17b5b7d2d
+Live https://alert-config-change-ledger.sociobot.in
+
+MATCH ef32f6e79ca14ce1ef08f13df4c1c6cb4a7754f843780862a0a9c4b438145387 index.html
+MATCH 98ce7d78da44b61382a852b0b7ae704e3c03adc4228053f1017a9a770f5a9b7d assets/index-CRE9ftmn.js
+MATCH 5e7fa3e76433fa63d5c19cbdf6fccc5999f565976f65c36fa2f37b29f8100a35 assets/index-Xzwkw3PS.css
+MATCH a09780020174f918c6d2ef6a0c257edf9c7aea08cfd1479d67456054ca6f04c6 sw.js
+MATCH 95d3e614926f6836d78e5e98cf29ea6e0dfd8dd8688e551fe1f53f2b28a595f5 404.html
+MATCH a8ae0f9fa2e0963e1527fc306cb81c5e81fbbb6577fbef12b8570b502270ecbb cassette-ledger.webp
+MATCH 44df560bb2b76b66082357e78a623ddc1ec4d51c36b965a2318e1cec0761c46f terminal-demo.svg
+
+API X-Alert-Ledger-Build: repair-7
+API X-Alert-Ledger-Limit-Store: azure-table

@@ -1,0 +1,155 @@
+{
+  "base": "https://alert-config-change-ledger.sociobot.in",
+  "checkedAt": "2026-08-29T15:13:33.579Z",
+  "routes": {
+    "/": {
+      "title": "Alert Config Ledger — trace alert route changes",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Trace every alert route change",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 200,
+      "axeSeriousCritical": []
+    },
+    "/demo": {
+      "title": "Demo — Alert Config Ledger",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Review three live route changes",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 200,
+      "axeSeriousCritical": []
+    },
+    "/privacy": {
+      "title": "Privacy — Alert Config Ledger",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Keep alert config on your machine",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 200,
+      "axeSeriousCritical": []
+    },
+    "/terms": {
+      "title": "Terms — Alert Config Ledger",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Use the ledger as an audit aid",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 200,
+      "axeSeriousCritical": []
+    },
+    "/missing-tape": {
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "This route is not in the ledger",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 404,
+      "axeSeriousCritical": []
+    },
+    "/404.html": {
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "This route is not in the ledger",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "status": 200,
+      "axeSeriousCritical": []
+    }
+  },
+  "errors": [
+    "console: Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  "keyboard": {
+    "firstFocus": "Skip to main content",
+    "firstOutline": "rgb(11, 103, 98) solid 3px",
+    "skipTarget": {
+      "tag": "MAIN",
+      "id": "main"
+    },
+    "nextFocus": "Try it with sample data",
+    "nextOutline": "rgb(11, 103, 98) solid 3px",
+    "routePressed": "true",
+    "detailHeading": "Severity changed"
+  },
+  "demo": {
+    "banner": "Demo — sample data, nothing is saved",
+    "summary": "3 changed · 2 matched",
+    "emptyHeading": "No comparison is loaded",
+    "downloadName": "alert-ledger-sample-report.json",
+    "downloadedChanges": 3,
+    "storageKeys": [
+      "demo:alert-config-ledger:state"
+    ],
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/demo",
+        "type": "document"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-CRE9ftmn.js",
+        "type": "script"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-Xzwkw3PS.css",
+        "type": "stylesheet"
+      }
+    ],
+    "responses": [
+      {
+        "url": "https://alert-config-change-ledger.sociobot.in/demo",
+        "status": 200
+      },
+      {
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-Xzwkw3PS.css",
+        "status": 200
+      },
+      {
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-CRE9ftmn.js",
+        "status": 200
+      }
+    ],
+    "crossOriginRequests": [],
+    "plaintextContactHits": 0
+  },
+  "offline": {
+    "worker": "https://alert-config-change-ledger.sociobot.in/sw.js",
+    "message": "You are offline. The bundled demo still works.",
+    "summary": "3 changed · 2 matched"
+  },
+  "mobile": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "controlsBelow44": [],
+    "text200": {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  },
+  "reducedMotion": {
+    "scrollBehavior": "auto",
+    "reelDuration": "1e-05s",
+    "reelIterations": "1"
+  }
+}
