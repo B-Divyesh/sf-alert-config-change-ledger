@@ -265,6 +265,23 @@ fn claim_documented_exit_codes() {
         ])
         .assert()
         .code(1);
+    Command::cargo_bin("alert-ledger")
+        .unwrap()
+        .args([
+            "snapshot",
+            "--provider",
+            "grafana",
+            "--source",
+            "reviewed",
+            "--output",
+            folder.path().join("unused.json").to_str().unwrap(),
+            "--unknown-option",
+        ])
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains(
+            "unexpected argument '--unknown-option'",
+        ));
 }
 
 /// @claim:free-core-cli

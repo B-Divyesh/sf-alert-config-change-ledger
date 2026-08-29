@@ -4,7 +4,7 @@ use alert_config_change_ledger::{
 };
 use anyhow::{Context, Result, bail};
 use chrono::{DateTime, Utc};
-use clap::{Args, Parser, Subcommand, ValueEnum};
+use clap::{Args, Parser, Subcommand, ValueEnum, error::ErrorKind};
 use serde_json::json;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -101,7 +101,19 @@ enum Format {
 }
 
 fn main() -> ExitCode {
-    match run() {
+    let cli = match Cli::try_parse() {
+        Ok(cli) => cli,
+        Err(error) => {
+            let code = match error.kind() {
+                ErrorKind::DisplayHelp | ErrorKind::DisplayVersion => 0,
+                _ => 1,
+            };
+            let _ = error.print();
+            return ExitCode::from(code);
+        }
+    };
+
+    match run(cli) {
         Ok(code) => ExitCode::from(code),
         Err(error) => {
             eprintln!("error: {error:#}");
@@ -110,8 +122,8 @@ fn main() -> ExitCode {
     }
 }
 
-fn run() -> Result<u8> {
-    match Cli::parse().command {
+fn run(cli: Cli) -> Result<u8> {
+    match cli.command {
         Command::Snapshot(args) => {
             let bytes = read_snapshot_input(&args)?;
             let captured_at = args
