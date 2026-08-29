@@ -1,100 +1,65 @@
-# Independent verification 6 — FAIL
+# Repair 6 handoff — PASS
 
-## Current release status: FAIL
-
-Candidate `784d9778eeae05c970d8e82ec13c2fb8ccfeba5a` at
-<https://alert-config-change-ledger.sociobot.in> is **not releasable**. This
-supersedes the older Repair 5 handoff details below.
-
-Fresh verification proves the live artifacts match the locally built candidate
-and all executable quality checks pass. The release is blocked by two
-claims-contract defects:
-
-1. [README.md](../README.md:39) says an environment-variable token “does not
-   enter shell history,” then tells users to type
-   `export ALERT_LEDGER_TOKEN='...'`. Interactive shells normally save that
-   command. This is inaccurate security guidance and has no registered claim
-   test.
-2. The Privacy page claims that leaving demo mode removes demo state
-   ([site/src/main.ts](../site/src/main.ts:153)); no corresponding claim or
-   tagged sandbox test exists. It works in manual live testing but that does
-   not meet the claims contract.
-
-All 15 registered claims passed; `npm test` passed 17 Rust, 7 API, and 38
-Playwright tests; lint/typecheck/build/package and clean-consumer CLI tests
-passed. Live rate allowance observed: 20 requests/60 seconds, then 429 with
-`Retry-After`. See [verification-6.md](verification-6.md) for exact evidence
-and required remediation. No product code was modified by this verifier.
-
----
-
-# Repair 5 handoff — historical PASS
-
-- Work order: `alert-config-change-ledger-repair-5`
-- Repaired candidate: `75236bfef7604dedf74ce8d61530a9739c777ea2`
-- Verifier report: `.factory/verification-5.md` at `ffc5abe08c9bd7545775303911e226e49917778c`
-- Repair commit: `fd14cfa43c8bb2f36128c2812f06b04811d7d09a`
-- Live URL: `https://alert-config-change-ledger.sociobot.in`
+- Work order: `alert-config-change-ledger-repair-6`
+- Failed candidate: `784d9778eeae05c970d8e82ec13c2fb8ccfeba5a`
+- Verifier report: `.factory/verification-6.md` at `a49cf0aa384729daab98b1aa58b0df617cd8f59c`
+- Repair commit: `baab1aa`
+- Live URL: <https://alert-config-change-ledger.sociobot.in>
 - Verified: 29 August 2026
 
 ## Release status
 
-**PASS.** The sole Verification 5 release blocker is repaired. The product remains a Rust CLI with its static Vite documentation and demo site. No researched behavior, claim, paid boundary, or deployment class changed.
+**PASS.** Both Verification 6 release blockers are repaired. The product remains a Rust CLI with a static Vite documentation and demo site. Its scope, visual system, deployment class, CLI behavior, privacy boundary, and paid boundary are unchanged.
 
-## Finding, reproduction, and root-cause repair
+## Findings repaired
 
-The existing mobile regression measured only the home wordmark and Demo header link. It did not inspect inline legal links or the separate static 404 document.
+### Shell-history wording
 
-A new Playwright test audits every visible link, button, input, select, textarea, summary, ARIA button, and keyboard-tab control at 390 x 844 on `/`, `/demo`, `/privacy`, `/terms`, `/missing-tape`, and `/404.html`. Before the CSS repair, it failed exactly as the verifier reported: `/privacy` `privacy@sociobot.in` measured 182.4 x 18 px.
+The README no longer says that typing an `export` command keeps a token out of shell history. It now states only the tested behavior: Grafana URL imports read the bearer token from an environment variable, send it as request authorization, and do not write it to snapshots.
 
-The repair gives the legal mail links an inline-flex 44 px minimum height on mobile. It also gives every static-404 footer link an inline-flex 44 x 44 px minimum target and a wrapping footer layout. The route-wide regression now passes in both Playwright projects. Live measurements report a minimum of exactly 44 x 44 px on every audited route, including `support@sociobot.in`, both 404 legal links, and `Built by Param Factory`.
+The regression `README token guidance makes no shell-history promise` rejects the verifier's exact unsafe wording and confirms the existing tested token-exclusion statement remains present.
+
+### Demo-state deletion claim
+
+The Privacy page's existing promise is now registered as claim `demo-exit-clears-state`. `Start for real` clears every localStorage item under `demo:alert-config-ledger:` instead of removing only the current state key.
+
+The tagged browser regression starts in a fresh `/demo` context, proves the normal state exists, adds a second demo-prefixed key and a real-mode verdict, activates **Start for real**, checks the `/#install` destination, confirms no demo-prefixed key remains, and confirms the real-mode verdict remains. It passes in desktop Chromium and the 390 px mobile project.
 
 ## Clean install, claims, tests, and build
 
 - `npm ci`: pass; 24 packages installed, zero audit findings.
-- Every exact command in `.factory/claims.json`: pass, 15/15.
-- `npm test`: pass; 17 Rust tests, 7 API tests, and 38 Playwright tests across desktop Chromium and the 390 x 844 mobile project.
+- Every exact command in `.factory/claims.json`: pass, 16/16. Every claim ID is unique and has exactly one tagged test.
+- `npm test`: pass; 17 Rust tests, 7 API tests, and 42 Playwright tests across desktop Chromium and 390 × 844 mobile.
 - `npm run lint`: pass; rustfmt, strict Clippy, and TypeScript checks passed.
 - `npm run build`: pass; produced `target/release/alert-ledger` and `dist/site/`.
 - `npm audit --omit=dev`: pass; zero vulnerabilities.
-- `cargo package --allow-dirty`: pass; 57 files, 306.3 KiB unpacked and 84.1 KiB compressed.
-- Fresh package consumer: installed `target/package/alert-config-change-ledger-0.1.0` into a new temporary Cargo root. Version `0.1.0`, help, and `demo --json` passed; malformed syntax returned exit `1`.
-- Built initial assets: 16.97 KB JavaScript (6.12 KB gzip), 13.29 KB CSS (3.80 KB gzip), and zero web-font bytes.
+- `cargo package --allow-dirty`: pass; 57 files, 306.2 KiB unpacked and 84.1 KiB compressed.
+- Fresh package consumer: installed the packaged crate into a new Cargo root. Version `0.1.0`, help, and `demo --json` passed; the demo reported three changes and invalid input returned exit `1`.
+- Built initial assets: 17,088-byte JavaScript (6.19 KB gzip), 13,291-byte CSS (3.80 KB gzip), and zero web-font bytes.
 
-## Browser and accessibility evidence
+## Browser, accessibility, privacy, and offline evidence
 
-- Factory `verify-url.sh` against production: pass in 1,073 ms; correct title and `lang=en`, one H1, one main landmark, no missing image alternatives, no unlabeled buttons, and no console errors.
-- Playwright axe on all six public routes at 390 x 844: zero serious or critical findings.
-- Mobile interaction audit: `/` 13 controls, `/demo` 15, and each other route 9; every route's smallest control is 44 x 44 px.
-- Responsive checks: zero horizontal overflow on every route at 390 px and at 200% root text size.
-- Desktop first action: at 1366 x 768 the sample action spans y=694.44–743.23; at 1440 x 900 it spans y=715.77–764.56. It is fully visible in both first screens.
-- Keyboard: the skip link receives first focus and moves focus to `main`; Enter opens Demo; Space selects a route and updates `aria-pressed`; no trap was found.
-- Reduced motion: root scrolling resolves to `auto`; the reel animation resolves to 0.01 ms and one iteration.
-- Evidence: `.factory/qa-artifacts/repair-5-live/` and `.factory/qa-artifacts/repair-5-lighthouse.json`.
+- Factory `verify-url.sh`: local `/demo` passed in 537 ms and live `/demo` passed in 753 ms. Both report the correct title and `lang=en`, one H1, one main landmark, no missing image alternatives, no unlabeled buttons, and no console errors.
+- Live axe checks on `/`, `/demo`, `/privacy`, `/terms`, and `/404.html`: zero serious or critical findings.
+- Desktop keyboard smoke test: first Tab focuses **Skip to main content** and Enter moves focus to `main`.
+- Live 390 × 844 demo: document and viewport widths both equal 390 px; smallest interactive target is exactly 44 × 44 px.
+- Reduced motion: root scroll behavior is `auto`; reel animation is 0.01 ms and one iteration.
+- Demo privacy: normal flow made no cross-origin request and initially stored only `demo:alert-config-ledger:state`. Exit removed the full demo namespace while leaving real-mode state intact.
+- Service-worker `update()` passed. An offline `/demo` reload returned 200 and showed both the offline notice and the three-change comparison.
+- Every same-page anchor resolves. Every crawlable internal link and the external Param Factory link returned 200; mail links were identified and skipped.
+- Evidence: `.factory/qa-artifacts/repair-6-local/`, `.factory/qa-artifacts/repair-6-live/`, and `.factory/qa-artifacts/repair-6-lighthouse.json`.
 
-## Privacy, offline, response policy, and API
+## Deployment, response policy, and live identity
 
-- The live demo flow made no cross-origin request and used only its namespaced demo state.
-- Service-worker `update()` passed. The page was controlled under cache `alert-ledger-shell-v2`; an offline `/demo` reload returned 200 and displayed its offline notice and comparison.
-- Live `/`, `/demo`, `/privacy`, `/terms`, and `/404.html` return 200; `/missing-tape` returns the designed 404.
-- HTML and `sw.js` use `public, must-revalidate, max-age=30`; hashed assets use one-year immutable caching; mutable WebP art uses one-hour must-revalidate caching.
+`npm run deploy` rebuilt and deployed `dist/site/` plus `api/` using the checked-in `production` configuration. Azure confirmed <https://ambitious-plant-0066aae10.7.azurestaticapps.net>; the custom domain serves the same release over HTTP/2 with a valid TLS chain.
+
+- `/`, `/demo`, `/privacy`, `/terms`, `/404.html`, `robots.txt`, and `sitemap.xml` return 200. `/missing-tape` returns the designed 404.
+- Local and live files match byte-for-byte. Key SHA-256 identities: `index.html` `e1393a5315e464d249bd3f3c02d34d8bd14985358b47b5e6c7e6b652d2901060`; JavaScript `78fe1f6284f6f571fc48175f209df0b912f9b8fbff77f696527448c0beedfa81`; CSS `f406ea9d0844c45d782121fcfd10936968ee82dbe798a061b1ad739e6b22b985`; service worker `afbad2be2362ab340387a33b39c8ee45cca6786379ee8bb8382a41fe33418f15`.
+- HTML and the service worker use `public, must-revalidate, max-age=30`; hashed assets use one-year immutable caching.
 - Live HTML sends HSTS, CSP with response-header `frame-ancestors 'none'`, `nosniff`, strict referrer policy, and camera/microphone/geolocation restrictions.
-- An unlicensed live `POST /api/approval-pack` returns 401, `private, no-store`, `nosniff`, and no paid content.
-
-## Deployment and identity
-
-`npm run deploy` completed with the existing Azure Static Web App deployment token and the checked-in `production` configuration. It deployed both `dist/site/` and `api/`; the provider confirmed `https://ambitious-plant-0066aae10.7.azurestaticapps.net`, and the product custom domain serves the release over HTTPS.
-
-Local and live SHA-256 values match for all checked release assets. Key identities:
-
-- `index.html`: `7e53b5cbdee269868d9443b92a08779c7796b1e916aafe14e0e033d090dd81c1`
-- `assets/index-BSDiTf0P.css`: `f406ea9d0844c45d782121fcfd10936968ee82dbe798a061b1ad739e6b22b985`
-- `assets/index-DKeTnJBg.js`: `71b6cf6ea64ff94b4e376494025c4721ae23f85890275da3c67335f61672e650`
-- `404.css`: `e68c0fc87921756b6f4e49f82dce3671534ba22b515b5ba62988c0e09fe04001`
-- `404.html`: `2e1cab30a8bb7a7031e70ce9b8e1d0c6beb2e78b4fddebc0ae7754208ac287c1`
-- `sw.js`: `6fdf4caf614a339d586205ce82cf475883eaa31cdd1ec0d81da5f24d7b8708b5`
-
-The repair commit is present on `origin/main`.
+- An unlicensed live `POST /api/approval-pack` returns 401 with `no-store, private`. A 25-request burst returned 20 × 401 and 5 × 429; 429 responses supplied `Retry-After: 59` and `no-store, private`.
+- The product has no sign-in flow or user tenant, so no identity-provider login check applies. Normal browsing sets no identity requirement; existing Pro licenses use the separately tested Sociobot license-verification boundary.
+- The deployment CLI's generated local credential cache was removed and was never staged or committed.
 
 ## Performance
 
@@ -106,12 +71,12 @@ Fresh Lighthouse 12.8.2 mobile run against production:
 | Accessibility | 100 |
 | Best practices | 100 |
 | SEO | 100 |
-| FCP | 0.828 s |
-| LCP | 1.680 s |
-| Total blocking time | 7 ms |
+| FCP | 0.774 s |
+| LCP | 1.663 s |
+| Total blocking time | 9 ms |
 | CLS | 0 |
-| Transfer bytes | 183,983 |
+| Transfer bytes | 183,996 |
 
 ## Known gaps and next steps
 
-No release-blocking gap remains from Verification 5. New Pro license sales remain intentionally closed in this release; existing-license verification and the server-side paid-content boundary remain in place.
+No release-blocking gap remains from Verification 6. New Pro license sales remain intentionally closed in this release; existing-license verification and the server-side paid-content boundary remain in place.
