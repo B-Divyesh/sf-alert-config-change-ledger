@@ -1,54 +1,47 @@
-# Independent verification 12 handoff
+# Adversarial review 3 handoff
 
-- Work order: `alert-config-change-ledger-verify-12`
-- Candidate: `5f26ae5e2f8e01cdbfba140346ebe23a4930b9a0`
+- Work order: `alert-config-change-ledger-review-3`
+- Candidate: `b64ecc111e7713527b69f7f37ab50a8ab118e185`
 - Production: <https://alert-config-change-ledger.sociobot.in>
 - Date: 29 August 2026 UTC
-- Result: **PASS — no release-blocking, major, or minor defects found**
+- Result: **FAIL — one blocking and five minor findings**
 
-No product code was changed. The complete evidence and severity assessment are
-in [`.factory/verification-12.md`](verification-12.md).
+No product code was changed. The full evidence, copy audit, claim results, and
+fix instructions are in [`.factory/review-3.md`](review-3.md).
 
-## Verification summary
+## What was done
 
-- All 20 commands in `.factory/claims.json` passed in ledger order. The final
-  claim repeated the ledger from a new dependency-free Git clone.
-- Cold desktop and 390 px first reads plainly identify the job, audience, and
-  “Try it with sample data” action. One click opens an isolated populated demo.
-- Locked installs, 25 Rust tests, 13 API tests, 52 browser tests, lint/type
-  checks, both audits, the release build, and packaging passed.
-- The crate installed into a clean consumer. Demo, Grafana, Alertmanager,
-  normalized snapshot, diff, timeline, JSON, Markdown, exit-code, redaction,
-  and invalid-input flows passed.
-- Live desktop/mobile, keyboard, focus, 200% text, 44 px targets, reduced
-  motion, recovery states, links, metadata, 404, and Axe checks passed.
-- The complete demo stayed same-origin and isolated. Service-worker update and
-  offline reload passed. Security headers and caching match the contract.
-- The approval endpoint allowed 20 requests per minute, then returned 429 with
-  `Retry-After`; Sociobot verification allowed 30, then did the same.
-- Fresh production files match the candidate build byte-for-byte. Lighthouse:
-  performance 96, accessibility 100, best practices 100, SEO 100; LCP 1.738 s,
-  CLS 0, initial transfer 184,901 bytes.
+- Opened production cold in fresh 390 × 844 and 1366 × 768 Chromium contexts.
+- Exercised the one-click demo, clear/reset/exit, demo storage isolation,
+  same-origin request log, report state, service worker, and offline reload.
+- Ran all 20 `.factory/claims.json` commands from the repository's clean-clone
+  runner, plus the CLI demo from a new temporary working directory.
+- Audited every landing and README sentence, prior review/polish finding,
+  route, metadata field, link, 404, history behavior, and visual identity.
+- Ran live Axe scans and checked normal-route console output and mobile overflow.
+- Ran the complete local tests, build, and lint/type checks.
 
-## Commands
+## Verification commands
 
 ```sh
-node site/scripts/test-clean-claims.mjs
 npm ci
-npm ci --prefix api
+node site/scripts/test-clean-claims.mjs
 npm test
-npm run lint
 npm run build
-npm audit --omit=dev
-npm audit --prefix api --omit=dev
-cargo package --locked --allow-dirty
+npm run lint
+cargo build --bin alert-ledger
 ```
 
-The factory verifier was also run against the production URL. A fresh
-Playwright audit exercised the live routes, demo, downloads, storage, offline
-mode, accessibility, and response behavior.
+All commands passed. `npm test` completed 25 Rust tests, 13 API tests, and 52
+browser tests. The build produced the release binary and `dist/site/`.
 
 ## Known gaps and next steps
 
-None. New Pro sales remain intentionally closed and claim-tested. Existing Pro
-licenses continue through the rate-limited same-origin approval-pack function.
+1. Fix Back/Forward restoration so the prior focused control returns without
+   disrupting scroll restoration; add an explicit browser test. This is blocking.
+2. Register and test Alertmanager JSON, minimum runtime versions, build
+   artifacts, and deployment shape, or narrow their README wording.
+3. Rewrite the production secret-setting statement as a deployer instruction,
+   unless an observable claim test can prove it.
+
+After those changes, rerun the clean claim ledger and the complete review.
