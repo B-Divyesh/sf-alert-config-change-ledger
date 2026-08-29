@@ -8,9 +8,9 @@ const repository = resolve(process.cwd());
 const temporaryRoot = mkdtempSync(join(tmpdir(), 'alert-ledger-clean-claims-'));
 const clone = join(temporaryRoot, 'repo');
 
-function run(command, args, { capture = false } = {}) {
+function run(command, args, { capture = false, cwd = clone } = {}) {
   const result = spawnSync(command, args, {
-    cwd: clone,
+    cwd,
     encoding: capture ? 'utf8' : undefined,
     stdio: capture ? 'pipe' : 'inherit',
   });
@@ -24,7 +24,7 @@ function run(command, args, { capture = false } = {}) {
 }
 
 try {
-  run('git', ['clone', '--no-local', '--depth', '1', repository, clone]);
+  run('git', ['clone', '--no-local', '--depth', '1', repository, clone], { cwd: repository });
   assert.equal(existsSync(join(clone, 'node_modules')), false, 'the cloned checkout must start without root dependencies');
   assert.equal(existsSync(join(clone, 'api/node_modules')), false, 'the cloned checkout must start without API dependencies');
 
