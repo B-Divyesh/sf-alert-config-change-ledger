@@ -199,7 +199,8 @@ class PerClientRateLimiter {
 }
 
 function productionCounterStore(environment = process.env) {
-  const connectionString = environment.AzureWebJobsStorage
+  const connectionString = environment.ALERT_LEDGER_RATE_LIMIT_STORAGE
+    || environment.AzureWebJobsStorage
     || environment.AZURE_STORAGE_CONNECTION_STRING
     || environment.WEBSITE_CONTENTAZUREFILECONNECTIONSTRING;
   if (connectionString) return new AzureTableAtomicCounterStore(connectionString);

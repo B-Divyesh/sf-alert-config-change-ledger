@@ -140,6 +140,13 @@ test('deployed handlers select the shared filesystem counter', () => {
   );
 });
 
+test('deployment-provided storage selects the atomic Azure Table counter', () => {
+  const store = productionCounterStore({
+    ALERT_LEDGER_RATE_LIMIT_STORAGE: 'DefaultEndpointsProtocol=https;AccountName=test;AccountKey=YWFhYWFhYWFhYWFhYWFhYQ==;EndpointSuffix=core.windows.net',
+  });
+  assert.equal(store.kind, 'azure-table');
+});
+
 test('the endpoint ceiling protects against rotating forwarded client identities', async () => {
   const responses = [];
   for (let index = 0; index < 25; index += 1) {
