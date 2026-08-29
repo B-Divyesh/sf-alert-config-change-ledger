@@ -1,62 +1,37 @@
-# Alert Config Ledger — Polish 3 handoff
+# Alert Config Ledger — verification 13 handoff
 
-- Work order: `alert-config-change-ledger-polish-3`
-- Base candidate: `5f26ae5e2f8e01cdbfba140346ebe23a4930b9a0`
-- Repair commits: `7f13583`, `af42294`, `2a19cc3`
+- Candidate: `6996431117e8e613eabd3b58f2258e2e3b9ffdf6`
 - Production: <https://alert-config-change-ledger.sociobot.in>
 - Date: 29 August 2026 UTC
-- Status: complete — committed, pushed, deployed, and cold-checked in production.
+- Status: **FAIL — do not release**
 
-## Delivered repairs
+No product code was changed by this verification. The full evidence and exact
+commands are in [verification-13.md](verification-13.md).
 
-- Preserved the cassette-ledger visual identity while making every first-screen and section label concrete, bounded, and plain.
-- Kept `?demo=1` as an isolated one-click sample path with a persistent banner, reset, explicit exit, and demo-prefixed browser storage only.
-- Added the missing claim coverage: Alertmanager JSON, Rust/Node minimum versions, release build artifacts, and production deployment shape.
-- Added route metadata, real route handling, 404 behavior, responsive layout checks, and Back/Forward scroll-plus-focus restoration.
-- Reworded the deployment secret sentence as an actionable deployer instruction instead of an unprovable production assertion.
+## Blocking defects
 
-## Verification completed locally
+1. `/demo` has `Reset demo` and `Install the CLI`, but lacks the contractually
+   required plainly-labelled `Start for real` exit from isolated demo mode.
+2. `npm test` fails 1/54 Playwright tests at 390px: Back/Forward restores
+   focus to Footer Privacy while it remains below the viewport.
 
-```sh
-npm test
-npm run lint
-npm run build
-cargo package --allow-dirty
-npm run test:claim:minimum-runtimes
-npm run test:claim:build-artifacts
-node site/scripts/test-clean-claims.mjs
-/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173 .factory/qa-artifacts/polish-3/local
-```
+The initial clean claims run also showed that the minimum-runtime checker
+fails when Rust 1.85.0 is not preinstalled. With that declared toolchain
+installed, the complete 23-entry clean-clone claims ledger passed, as did
+lint, release build, package/install, live demo, privacy, Axe, offline,
+headers, rate limiting, and candidate/live byte comparison.
 
-- `npm test`: passed — 25 Rust tests, 13 API tests, and 54 Playwright tests.
-- The clean-clone ledger passed all 23 `.factory/claims.json` entries. It runs each recorded command once from a fresh dependency-free copy; the bootstrap entry accounts for the runner itself.
-- Minimum runtime claim passed with Rust 1.85.0 and Node 22.12.0.
-- Build-artifact claim produced and executed `target/release/alert-ledger`, then verified the Vite site entry and hashed assets under `dist/site/`.
-- Lint, release build, and `cargo package --allow-dirty` passed.
-- Local URL verification reported no console errors, `lang=en`, exactly one H1 and one main landmark, and no images without alt text.
-- Playwright Axe coverage passed with no serious or critical findings on landing, demo, legal, and 404 routes.
-- Lighthouse (mobile): Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 2.12 s, CLS 0, TBT 60 ms.
-
-Evidence lives in [`.factory/qa-artifacts/polish-3`](qa-artifacts/polish-3) and the complete finding map is [`.factory/polish-3.md`](polish-3.md).
-
-## Production deployment and cold check
-
-- Deployed through `npm run deploy` using `swa-cli.config.json`; Static Web Apps accepted both `dist/site` and `api` and published the revision to the configured production app.
-- Opened <https://alert-config-change-ledger.sociobot.in> cold after deployment. [The production audit](qa-artifacts/polish-3/live/live-audit.json) passed all landing, demo, legal, 404, metadata, focus/history, offline, and mobile checks.
-- The audit confirms the F-3-1 state transition: footer Privacy was focused at scroll position 1815, browser Back restored that same control at 1815, and Forward focused the Privacy H1 at position 0.
-- [Production verification](qa-artifacts/polish-3/live/verify.json) reports HTTP 200, no console errors, `lang=en`, one H1, a main landmark, and no missing image alt text. Production screenshots are saved beside that report.
-
-## Run, test, and deploy
+## Verification commands
 
 ```sh
 npm ci
-npm test
+cargo test
+npm test                 # currently fails: mobile Back/Forward test
+npm run lint
 npm run build
-npm run deploy
+cargo package --allow-dirty --no-verify
+node site/scripts/test-clean-claims.mjs
 ```
 
-For the CLI only: `cargo run -- demo`. The browser demo opens directly at `/?demo=1` or `/demo`; Reset demo reseeds isolated sample keys, and Install the CLI clears them before returning home.
-
-## Known gaps
-
-None.
+The CLI package was installed into a new consumer root and verified with
+`alert-ledger --help` and `alert-ledger demo --json`.
