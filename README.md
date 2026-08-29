@@ -88,7 +88,7 @@ npm run build
 
 `npm test` runs Rust tests, site tests, and browser claim tests. `npm run build` produces the Rust release binary in `target/release/` and the static site in `dist/site/`.
 
-Every claim command in `.factory/claims.json` runs from a clean clone in ledger order. On its first run, `npm test` installs the locked root and `api/` test dependencies it needs, including the API rate-limit dependency. For a direct regression check of that clean-clone path, run:
+Every claim command in `.factory/claims.json` runs from a clean clone in ledger order. On its first run, `npm test` installs the locked root and `api/` test dependencies it needs, including the API rate-limit dependency. The minimum-runtime claim installs Rust 1.85.0 with the minimal rustup profile when that toolchain is absent. For a direct regression check of that clean-clone path, run:
 
 ```sh
 npm run test:claims-clean

@@ -285,7 +285,7 @@ test('@claim:demo-privacy demo stays same-origin and isolated', async ({ page })
   expect(keys).toEqual([expect.stringMatching(/^demo:alert-config-ledger:/)]);
 });
 
-test('@claim:demo-exit-clears-state leaving the demo removes only demo state', async ({ page }) => {
+test('@claim:demo-exit-clears-state Start for real leaves the demo and removes only demo state', async ({ page }) => {
   await page.goto('/?demo=1');
   await expect(page).toHaveTitle('Demo — Alert Config Ledger');
   await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
@@ -300,8 +300,9 @@ test('@claim:demo-exit-clears-state leaving the demo removes only demo state', a
     'sb_license_verdict:alert-config-change-ledger',
   ]);
 
-  await page.getByRole('button', { name: 'Install the CLI' }).click();
-  await expect(page).toHaveURL('/#install');
+  await page.getByRole('button', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
   const storage = await page.evaluate(() => ({
     demoKeys: Object.keys(localStorage).filter((key) => key.startsWith('demo:alert-config-ledger:')),
     realVerdict: localStorage.getItem('sb_license_verdict:alert-config-change-ledger'),

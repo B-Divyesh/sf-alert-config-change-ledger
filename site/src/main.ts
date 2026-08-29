@@ -105,7 +105,7 @@ function footer(): string {
 function demoBanner(): string {
   return `<aside class="demo-banner" aria-label="Demo mode">
     <span><strong>Demo</strong> — sample data, nothing is saved</span>
-    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-history-focus="demo-install" data-action="start-real">Install the CLI</button></span>
+    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-history-focus="demo-start-real" data-action="start-real">Start for real</button><button class="text-button" data-history-focus="demo-install" data-action="install-cli">Install the CLI</button></span>
   </aside>`;
 }
 
@@ -285,15 +285,21 @@ function focusNewRoute(): void {
 }
 
 function restoreHistoryEntry(entry: HistoryEntry | null): void {
-  const target = entry?.focus
-    ? document.querySelector<HTMLElement>(`[data-history-focus="${entry.focus}"]`)
-    : null;
-  const fallback = document.querySelector<HTMLElement>('[data-history-focus="page-heading"]');
-  window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+  // Browsers restore their own persisted scroll state after popstate. Wait for
+  // that work to settle, then apply our saved position and reveal the focused
+  // control. Focusing with preventScroll alone can leave a restored footer
+  // link below the viewport on mobile.
+  window.setTimeout(() => window.requestAnimationFrame(() => {
+    const target = entry?.focus
+      ? document.querySelector<HTMLElement>(`[data-history-focus="${entry.focus}"]`)
+      : null;
+    const fallback = document.querySelector<HTMLElement>('[data-history-focus="page-heading"]');
+    const focusTarget = target || fallback;
     setRouteScroll(entry?.scroll?.x || 0, entry?.scroll?.y || 0);
-    (target || fallback)?.focus({ preventScroll: true });
+    focusTarget?.focus({ preventScroll: true });
+    focusTarget?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' as ScrollBehavior });
     announceRoute();
-  }));
+  }), 0);
 }
 
 function render(options: { focus?: 'new' | 'restore'; entry?: HistoryEntry | null } = {}): void {
@@ -339,6 +345,9 @@ async function handleAction(event: Event): Promise<void> {
     render();
     document.querySelector<HTMLElement>('#ledger-title')?.focus();
   } else if (action === 'start-real') {
+    clearDemoState();
+    navigate('/');
+  } else if (action === 'install-cli') {
     clearDemoState();
     navigate('/#install');
     requestAnimationFrame(() => document.querySelector('#install')?.scrollIntoView());
