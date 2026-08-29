@@ -2,8 +2,5 @@
   "name": "alert-config-ledger-api",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@azure/data-tables": "13.3.2"
-  },
   "engines": { "node": ">=20" }
 }

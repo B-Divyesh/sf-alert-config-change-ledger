@@ -1,10 +1,13 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
+const fs = require('node:fs/promises');
+const os = require('node:os');
+const path = require('node:path');
 const approvalPack = require('./index.js');
 const { createApprovalPack } = approvalPack;
 const {
-  AzureTableAtomicCounterStore,
+  SharedFileAtomicCounterStore,
   clientId,
   productionCounterStore,
 } = require('./rate-limit.js');
@@ -99,10 +102,11 @@ test('bursts are rate limited per client before license verification', async (t)
   }
 });
 
-test('concurrent requests cannot bypass the allowance across handler instances', async () => {
-  const table = new FakeAtomicTable();
+test('concurrent requests cannot bypass the allowance across handler instances', async (t) => {
+  const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'alert-ledger-rate-limit-'));
+  t.after(() => fs.rm(directory, { recursive: true, force: true }));
   const handlers = Array.from({ length: 5 }, () => createApprovalPack({
-    store: new AzureTableAtomicCounterStore('unused-in-test', { table }),
+    store: new SharedFileAtomicCounterStore({ directory }),
   }));
   const contexts = Array.from({ length: 25 }, () => ({}));
   await Promise.all(contexts.map((context, index) => handlers[index % handlers.length](context, {
@@ -117,13 +121,23 @@ test('concurrent requests cannot bypass the allowance across handler instances',
 
 test('a deployed handler fails closed when shared protection is unavailable', async () => {
   const handler = createApprovalPack({
-    store: productionCounterStore({ WEBSITE_INSTANCE_ID: 'serverless-instance' }),
+    store: {
+      increment: async () => { throw new Error('unavailable'); },
+      reset() {},
+    },
   });
   const context = {};
   await handler(context, { headers: {} });
   assert.equal(context.res.status, 503);
   assert.equal(context.res.headers['Retry-After'], '5');
   assert.equal(context.res.headers['Cache-Control'], 'private, no-store');
+});
+
+test('deployed handlers select the shared filesystem counter', () => {
+  assert.ok(
+    productionCounterStore({ WEBSITE_INSTANCE_ID: 'serverless-instance' })
+      instanceof SharedFileAtomicCounterStore,
+  );
 });
 
 test('the endpoint ceiling protects against rotating forwarded client identities', async () => {
@@ -138,35 +152,3 @@ test('the endpoint ceiling protects against rotating forwarded client identities
   assert.equal(blocked.length, 5);
   assert.ok(blocked.every((item) => /^[1-9]\d*$/.test(item.headers['Retry-After'])));
 });
-
-class FakeAtomicTable {
-  constructor() {
-    this.entities = new Map();
-    this.etag = 0;
-  }
-
-  async createTable() {}
-
-  async getEntity(partitionKey, rowKey) {
-    const entity = this.entities.get(`${partitionKey}:${rowKey}`);
-    if (!entity) throw statusError(404);
-    return { ...entity };
-  }
-
-  async createEntity(entity) {
-    const key = `${entity.partitionKey}:${entity.rowKey}`;
-    if (this.entities.has(key)) throw statusError(409);
-    this.entities.set(key, { ...entity, etag: String(++this.etag) });
-  }
-
-  async updateEntity(entity, _mode, options) {
-    const key = `${entity.partitionKey}:${entity.rowKey}`;
-    const current = this.entities.get(key);
-    if (!current || current.etag !== options.etag) throw statusError(412);
-    this.entities.set(key, { ...entity, etag: String(++this.etag) });
-  }
-}
-
-function statusError(statusCode) {
-  return Object.assign(new Error(`table status ${statusCode}`), { statusCode });
-}
