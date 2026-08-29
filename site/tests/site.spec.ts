@@ -6,10 +6,10 @@ import { resolve } from 'node:path';
 
 test('landing has the required structure and no serious accessibility issues', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Alert Config Ledger — trace alert route changes');
+  await expect(page).toHaveTitle('Alert Config Ledger — compare alert routes');
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('h1')).toHaveCount(1);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Trace every alert route change');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Compare reviewed and live alert routes');
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter((item) => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
 });
@@ -54,6 +54,25 @@ test('routing updates the title and focuses the page heading', async ({ page }) 
   await expect(page).toHaveURL('/');
 });
 
+test('each route sets route-specific metadata', async ({ page }) => {
+  const expected = {
+    '/': ['Alert Config Ledger — compare alert routes', 'Compare reviewed and live alert routes, then show recipient, severity, and route changes.', 'https://alert-config-change-ledger.sociobot.in/'],
+    '/demo': ['Demo — Alert Config Ledger', 'Review three sample alert route changes in an isolated browser demo.', 'https://alert-config-change-ledger.sociobot.in/demo'],
+    '/privacy': ['Privacy — Alert Config Ledger', 'Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.', 'https://alert-config-change-ledger.sociobot.in/privacy'],
+    '/terms': ['Terms — Alert Config Ledger', 'Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.', 'https://alert-config-change-ledger.sociobot.in/terms'],
+  } as const;
+  for (const [path, [title, description, canonical]] of Object.entries(expected)) {
+    await page.goto(path);
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', description);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
+    await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', description);
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
+    await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', description);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
+  }
+});
+
 test('reduced motion removes scrolling and reel movement', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/demo');
@@ -83,8 +102,8 @@ test('demo supports selection, empty state, and reset', async ({ page }) => {
 test('unknown routes show the designed 404 page', async ({ page }) => {
   await page.goto('/missing-tape');
   await expect(page).toHaveTitle('Page not found — Alert Config Ledger');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('This route is not in the ledger');
-  await expect(page.getByRole('link', { name: 'Return to the ledger' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('This page was not found');
+  await expect(page.getByRole('link', { name: 'Return to the home page' })).toBeVisible();
 });
 
 test('390px layout has no horizontal overflow', async ({ page }) => {
@@ -94,7 +113,7 @@ test('390px layout has no horizontal overflow', async ({ page }) => {
   expect(sizes.scroll).toBeLessThanOrEqual(sizes.client);
 });
 
-test('primary demo action is fully visible on common desktop first screens', async ({ page }) => {
+test('first screen includes the action and all three facts on common desktop viewports', async ({ page }) => {
   for (const viewport of [{ width: 1366, height: 768 }, { width: 1440, height: 900 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/');
@@ -102,6 +121,11 @@ test('primary demo action is fully visible on common desktop first screens', asy
     expect(box).not.toBeNull();
     expect(box!.y).toBeGreaterThanOrEqual(0);
     expect(box!.y + box!.height).toBeLessThanOrEqual(viewport.height);
+    for (const fact of ['Runs offline after the first visit.', 'Recipient endpoints stay redacted.', 'Core CLI needs no license.']) {
+      const factBox = await page.getByText(fact, { exact: true }).boundingBox();
+      expect(factBox, fact).not.toBeNull();
+      expect(factBox!.y + factBox!.height, fact).toBeLessThanOrEqual(viewport.height);
+    }
   }
 });
 
@@ -231,7 +255,9 @@ test('@claim:demo-privacy demo stays same-origin and isolated', async ({ page })
 });
 
 test('@claim:demo-exit-clears-state leaving the demo removes only demo state', async ({ page }) => {
-  await page.goto('/demo');
+  await page.goto('/?demo=1');
+  await expect(page).toHaveTitle('Demo — Alert Config Ledger');
+  await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
   const initialKeys = await page.evaluate(() => {
     localStorage.setItem('demo:alert-config-ledger:extra', 'sample-only');
     localStorage.setItem('sb_license_verdict:alert-config-change-ledger', '{"valid":true}');
@@ -243,7 +269,7 @@ test('@claim:demo-exit-clears-state leaving the demo removes only demo state', a
     'sb_license_verdict:alert-config-change-ledger',
   ]);
 
-  await page.getByRole('button', { name: 'Start for real' }).click();
+  await page.getByRole('button', { name: 'Install the CLI' }).click();
   await expect(page).toHaveURL('/#install');
   const storage = await page.evaluate(() => ({
     demoKeys: Object.keys(localStorage).filter((key) => key.startsWith('demo:alert-config-ledger:')),

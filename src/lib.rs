@@ -654,7 +654,7 @@ pub fn render_terminal(report: &DriftReport) -> String {
         return out;
     }
     out.push_str(&format!(
-        "\n! DRIFT  {} changed routes · {} matched\n",
+        "\n! CHANGE  {} changed routes · {} matched\n",
         report.changes.len(),
         report.matched_routes
     ));
@@ -683,7 +683,7 @@ pub fn render_terminal(report: &DriftReport) -> String {
 
 pub fn render_markdown(report: &DriftReport) -> String {
     let mut out = format!(
-        "# Alert configuration drift\n\nBaseline: `{}`{}  \nLive: `{}`{}\n\n",
+        "# Alert configuration changes\n\nBaseline: `{}`{}  \nLive: `{}`{}\n\n",
         report.baseline.source,
         revision_label(&report.baseline.revision),
         report.live.source,
@@ -697,7 +697,7 @@ pub fn render_markdown(report: &DriftReport) -> String {
         return out;
     }
     out.push_str(&format!(
-        "**Drift:** {} changed routes; {} matched.\n\n",
+        "**Changes:** {} changed routes; {} matched.\n\n",
         report.changes.len(),
         report.matched_routes
     ));

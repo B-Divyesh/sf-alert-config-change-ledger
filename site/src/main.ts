@@ -49,12 +49,34 @@ const changes = displayOrder.map((route) => {
   };
 });
 
-const titles: Record<string, string> = {
-  '/': 'Alert Config Ledger — trace alert route changes',
-  '/demo': 'Demo — Alert Config Ledger',
-  '/privacy': 'Privacy — Alert Config Ledger',
-  '/terms': 'Terms — Alert Config Ledger',
-  '/404': 'Page not found — Alert Config Ledger'
+type PageMeta = { title: string; description: string; canonical: string };
+
+const metadata: Record<string, PageMeta> = {
+  '/': {
+    title: 'Alert Config Ledger — compare alert routes',
+    description: 'Compare reviewed and live alert routes, then show recipient, severity, and route changes.',
+    canonical: '/',
+  },
+  '/demo': {
+    title: 'Demo — Alert Config Ledger',
+    description: 'Review three sample alert route changes in an isolated browser demo.',
+    canonical: '/demo',
+  },
+  '/privacy': {
+    title: 'Privacy — Alert Config Ledger',
+    description: 'Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.',
+    canonical: '/privacy',
+  },
+  '/terms': {
+    title: 'Terms — Alert Config Ledger',
+    description: 'Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.',
+    canonical: '/terms',
+  },
+  '/404': {
+    title: 'Page not found — Alert Config Ledger',
+    description: 'This Alert Config Ledger page does not exist. Return to the alert route comparison.',
+    canonical: '/404',
+  },
 };
 
 function header(): string {
@@ -70,7 +92,7 @@ function header(): string {
 
 function footer(): string {
   return `<footer class="site-footer">
-    <p>Trace live alert route changes back to their source.</p>
+    <p>Compare alert route changes with their sources.</p>
     <nav aria-label="Footer navigation"><a class="route-link" href="/privacy">Privacy</a><a class="route-link" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
     <p class="build">v0.1.0 · build 003</p>
   </footer>`;
@@ -79,7 +101,7 @@ function footer(): string {
 function demoBanner(): string {
   return `<aside class="demo-banner" aria-label="Demo mode">
     <span><strong>Demo</strong> — sample data, nothing is saved</span>
-    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-action="start-real">Start for real</button></span>
+    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-action="start-real">Install the CLI</button></span>
   </aside>`;
 }
 
@@ -87,22 +109,22 @@ function landing(): string {
   return `${header()}<main id="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">Read-only config audit · tape 01</p>
-        <h1 id="hero-title" tabindex="-1">Trace every alert route change</h1>
+        <p class="eyebrow">Read-only alert route comparison</p>
+        <h1 id="hero-title" tabindex="-1">Compare reviewed and live alert routes</h1>
         <p class="lede">For platform teams who need to prove whether live alert routes match the reviewed baseline.</p>
-        <div class="hero-action"><a class="button route-link" href="/demo">Try it with sample data</a><span>Loads three realistic route changes in an isolated demo.</span></div>
+        <div class="hero-action"><a class="button route-link" href="/?demo=1">Try it with sample data</a><span>Loads three sample route changes in an isolated demo.</span></div>
         <ul class="plain-facts" aria-label="Product facts"><li>Runs offline after the first visit.</li><li>Recipient endpoints stay redacted.</li><li>Core CLI needs no license.</li></ul>
       </div>
-      <figure class="hero-art"><img src="/cassette-ledger.webp" width="1200" height="800" alt="A cut-paper cassette routes red and teal tape through an alert ledger." fetchpriority="high"><figcaption>Baseline on reel A. Live state on reel B.</figcaption></figure>
+      <figure class="hero-art"><img src="/cassette-ledger.webp" width="1200" height="800" alt="A cut-paper cassette routes red and teal tape through an alert ledger." fetchpriority="high"><figcaption>Reviewed baseline on the left. Live configuration on the right.</figcaption></figure>
     </section>
 
     <section class="terminal-section" aria-labelledby="preview-title">
-      <div class="section-label">Playback / actual command</div>
-      <div class="terminal-copy"><h2 id="preview-title">See drift before the handoff</h2><p>The bundled demo runs the same comparison as the CLI.</p></div>
+      <div class="section-label">CLI demo / actual command</div>
+      <div class="terminal-copy"><h2 id="preview-title">Sample CLI comparison</h2><p>The bundled demo runs the same comparison as the CLI.</p></div>
       <figure class="terminal-frame">
         <img src="/terminal-demo.svg" width="960" height="590" alt="A terminal recording shows three changed alert routes and their sources." loading="lazy">
         <figcaption><details><summary>Read the terminal transcript</summary><pre><code>$ alert-ledger demo
-! DRIFT  3 changed routes · 2 matched
+! CHANGE  3 changed routes · 2 matched
 ~ team = payments · recipients
 ~ service = checkout · severity, recipients
 + team = security · route
@@ -111,26 +133,26 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
     </section>
 
     <section class="method" aria-labelledby="method-title">
-      <div class="section-label">A / B / source</div><h2 id="method-title">How the ledger works</h2>
+      <div class="section-label">Three steps</div><h2 id="method-title">How the ledger works</h2>
       <ol class="tape-steps">
-        <li><span>01</span><div><h3>Snapshot exports</h3><p>Read Grafana or Alertmanager exports from a file or read-only URL.</p></div></li>
-        <li><span>02</span><div><h3>Normalize routes</h3><p>Keep non-secret provider fields and replace recipient endpoints with fingerprints.</p></div></li>
-        <li><span>03</span><div><h3>Compare sources</h3><p>Compare the baseline with live state and show each change with its timestamp.</p></div></li>
+        <li><span>01</span><div><h3>Import provider exports</h3><p>Read Grafana or Alertmanager exports from a file or read-only URL.</p></div></li>
+        <li><span>02</span><div><h3>Put routes in one format</h3><p>Keep non-secret provider fields and replace recipient endpoints with SHA-256 identifiers.</p></div></li>
+        <li><span>03</span><div><h3>Show route changes</h3><p>Compare the baseline with live state and show each change with its timestamp.</p></div></li>
       </ol>
     </section>
 
     <section id="install" class="install" aria-labelledby="install-title">
-      <div><div class="section-label">Side A / install</div><h2 id="install-title">Run the ledger locally</h2><p>The demo ships inside the binary and needs no account.</p><p><a href="https://github.com/B-Divyesh/sf-alert-config-change-ledger" rel="external">Get the source on GitHub <span class="sr-only">(external site)</span></a>.</p></div>
+      <div><div class="section-label">Install the CLI</div><h2 id="install-title">Run the ledger locally</h2><p>The demo ships inside the binary and needs no account.</p><p><a href="https://github.com/B-Divyesh/sf-alert-config-change-ledger" rel="external">Get the source on GitHub <span class="sr-only">(external site)</span></a>.</p></div>
       <div class="command-block"><code>git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git<br>cd sf-alert-config-change-ledger<br>cargo install --path .<br>alert-ledger demo</code><button class="copy-button" data-action="copy-command">Copy install command</button></div>
     </section>
 
     <section class="boundaries" aria-labelledby="boundaries-title">
-      <div class="section-label">Write protect / on</div><h2 id="boundaries-title">What it does not do</h2>
+      <div class="section-label">Read-only limits</div><h2 id="boundaries-title">What it does not do</h2>
       <div class="boundary-grid"><p>It does not send alerts.</p><p>It does not change provider config.</p><p>It does not replace Git review.</p><p>It does not send telemetry.</p></div>
     </section>
 
     <section class="paid" aria-labelledby="paid-title">
-      <div><div class="section-label">Side B / optional</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
+      <div><div class="section-label">Optional Pro feature</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
       <div class="license-panel" data-license-panel><p class="license-state" aria-live="polite">Checking this browser for a license…</p></div>
     </section>
   </main>${footer()}`;
@@ -169,18 +191,18 @@ function demo(): string {
   } else {
     const selected = changes[state.selected] || changes[0];
     content = `<section class="ledger" aria-labelledby="ledger-title">
-      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>${sampleReport.baseline.revision}</strong><time datetime="${sampleReport.baseline.captured_at}">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Drift found</b><span>${sampleReport.changes.length} changed · ${sampleReport.matched_routes} matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>${sampleReport.live.revision}</strong><time datetime="${sampleReport.live.captured_at}">28 Aug · 07:42 UTC</time></div></div>
+      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>${sampleReport.baseline.revision}</strong><time datetime="${sampleReport.baseline.captured_at}">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Changes found</b><span>${sampleReport.changes.length} changed · ${sampleReport.matched_routes} matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>${sampleReport.live.revision}</strong><time datetime="${sampleReport.live.captured_at}">28 Aug · 07:42 UTC</time></div></div>
       <div class="ledger-body"><div class="track-list"><h2 id="ledger-title">Changed routes</h2><p>Choose a route to inspect its baseline and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
-      <article class="change-detail" aria-live="polite"><div class="section-label">Track 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>${sampleReport.live.source} #${sampleReport.live.revision}</dd></div></dl></article></div>
+      <article class="change-detail" aria-live="polite"><div class="section-label">Change 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>${sampleReport.live.source} #${sampleReport.live.revision}</dd></div></dl></article></div>
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
   }
-  return `${demoBanner()}${header()}<main id="main" class="demo-main" tabindex="-1"><section class="demo-intro"><p class="eyebrow">Sandbox playback · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
+  return `${demoBanner()}${header()}<main id="main" class="demo-main" tabindex="-1"><section class="demo-intro"><p class="eyebrow">Sample data · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
 }
 
 function privacy(): string {
   return `${header()}<main id="main" class="legal" tabindex="-1"><p class="eyebrow">Policy / plain copy</p><h1 tabindex="-1">Keep alert config on your machine</h1><p class="lede">Effective 28 August 2026.</p>
-    <h2>CLI data</h2><p>The CLI processes exports on your machine. It makes no telemetry request.</p><p>A URL import sends one GET request to the URL you provide. Tokens come from your chosen environment variable.</p><p>Snapshots contain recipient fingerprints instead of endpoint values.</p>
+    <h2>CLI data</h2><p>The CLI processes exports on your machine. It makes no telemetry request.</p><p>A URL import sends one GET request to the URL you provide. Tokens come from your chosen environment variable.</p><p>Snapshots contain SHA-256 identifiers instead of recipient endpoint values.</p>
     <h2>Demo data</h2><p>The web demo uses bundled sample data. Its state stays under the <code>demo:alert-config-ledger:</code> browser prefix.</p><p>Leaving demo mode removes that demo state. The service worker caches site files for offline use.</p>
     <h2>License data</h2><p>If you paste a license, this browser stores the token and its latest verdict.</p><p>Verification sends the token to the Sociobot billing API. No alert configuration is included.</p>
     <h2>Questions</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a>.</p>
@@ -198,18 +220,32 @@ function terms(): string {
 }
 
 function notFound(): string {
-  return `${header()}<main id="main" class="not-found" tabindex="-1"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Tape missing / 404</p><h1 tabindex="-1">This route is not in the ledger</h1><p>The address does not match a page in this release.</p><a class="button route-link" href="/">Return to the ledger</a></main>${footer()}`;
+  return `${header()}<main id="main" class="not-found" tabindex="-1"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Page not found / 404</p><h1 tabindex="-1">This page was not found</h1><p>The address does not match a page in this release.</p><a class="button route-link" href="/">Return to the home page</a></main>${footer()}`;
 }
 
 function setMeta(path: string): void {
-  const known = titles[path] ? path : '/404';
-  document.title = titles[known];
+  const known = metadata[path] ? path : '/404';
+  const page = metadata[known];
+  document.title = page.title;
   const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-  if (canonical) canonical.href = `https://alert-config-change-ledger.sociobot.in${known === '/' ? '/' : known}`;
+  if (canonical) canonical.href = `https://alert-config-change-ledger.sociobot.in${page.canonical}`;
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', page.description);
+  for (const selector of ['meta[property="og:title"]', 'meta[name="twitter:title"]']) {
+    document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', page.title);
+  }
+  for (const selector of ['meta[property="og:description"]', 'meta[name="twitter:description"]']) {
+    document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', page.description);
+  }
+}
+
+function currentRoute(): '/' | '/demo' | '/privacy' | '/terms' | '/404' {
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  if (path === '/' && new URLSearchParams(window.location.search).get('demo') === '1') return '/demo';
+  return path === '/' || path === '/demo' || path === '/privacy' || path === '/terms' ? path : '/404';
 }
 
 function render(options: { focus?: boolean } = {}): void {
-  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  const path = currentRoute();
   setMeta(path);
   app.innerHTML = path === '/' ? landing() : path === '/demo' ? demo() : path === '/privacy' ? privacy() : path === '/terms' ? terms() : notFound();
   bindEvents();
@@ -232,7 +268,8 @@ function bindEvents(): void {
   document.querySelectorAll<HTMLAnchorElement>('a.route-link').forEach((link) => link.addEventListener('click', (event) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    navigate(new URL(link.href).pathname);
+    const target = new URL(link.href);
+    navigate(`${target.pathname}${target.search}${target.hash}`);
   }));
   document.querySelectorAll<HTMLButtonElement>('[data-change-index]').forEach((button) => button.addEventListener('click', () => {
     const state = getDemoState();
@@ -260,7 +297,7 @@ async function handleAction(event: Event): Promise<void> {
     render();
   } else if (action === 'download-report') {
     download('alert-ledger-sample-report.json', JSON.stringify(sampleReport, null, 2), 'application/json');
-    announce('Downloaded the sample drift report.');
+    announce('Downloaded the sample change report.');
   } else if (action === 'copy-command') {
     await navigator.clipboard.writeText('git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git\ncd sf-alert-config-change-ledger\ncargo install --path .\nalert-ledger demo');
     (event.currentTarget as HTMLElement).textContent = 'Copied command';

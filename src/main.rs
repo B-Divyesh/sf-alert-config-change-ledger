@@ -251,7 +251,7 @@ fn run_demo(json_output: bool) -> Result<u8> {
         .with_context(|| format!("cannot create demo folder {}", dir.display()))?;
     let baseline_path = dir.join("01-reviewed.json");
     let live_path = dir.join("02-live.json");
-    let report_path = dir.join("drift.md");
+    let report_path = dir.join("changes.md");
     write_file(&baseline_path, &serde_json::to_string_pretty(&baseline)?)?;
     write_file(&live_path, &serde_json::to_string_pretty(&live)?)?;
     let report = compare(&baseline, &live);

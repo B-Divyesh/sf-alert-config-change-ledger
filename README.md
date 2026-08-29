@@ -1,8 +1,8 @@
 # Alert Config Ledger
 
-Compare live alert routes with a reviewed baseline. Alert Config Ledger is a read-only CLI for platform teams using Grafana, Alertmanager, or normalized JSON exports.
+Compare live alert routes with a reviewed baseline. Alert Config Ledger is a read-only CLI for platform teams using Grafana, Alertmanager, or Alert Config Ledger snapshot JSON.
 
-It fingerprints recipient endpoints during import. Reports show that a recipient changed without printing an email address, phone number, or webhook URL.
+It replaces recipient addresses and URLs with SHA-256 identifiers during import. Reports show that a recipient changed without printing an email address, phone number, or webhook URL.
 
 ## Try the bundled demo
 
@@ -10,7 +10,7 @@ It fingerprints recipient endpoints during import. Reports show that a recipient
 cargo run -- demo
 ```
 
-The command compares two realistic Grafana exports in a new temporary folder. It prints the drift report and the folder containing the generated snapshots. Nothing is uploaded.
+The command compares two sample Grafana exports in a new temporary folder. It prints the change report and the folder containing the generated snapshots. Nothing is uploaded.
 
 ## Install
 
@@ -55,7 +55,7 @@ Compare live state with the reviewed baseline:
 ```sh
 alert-ledger diff --baseline baseline.json --live live.json
 alert-ledger diff --baseline baseline.json --live live.json --format json
-alert-ledger diff --baseline baseline.json --live live.json --format markdown --output drift.md
+alert-ledger diff --baseline baseline.json --live live.json --format markdown --output changes.md
 ```
 
 Render changes across a folder of snapshots:
@@ -65,7 +65,7 @@ alert-ledger timeline --dir snapshots/
 alert-ledger timeline --dir snapshots/ --format json
 ```
 
-Exit code `0` means the command completed and no drift was found. `diff` and `timeline` return `2` when drift exists. Invalid input, network failures, and other command errors return `1`.
+Exit code `0` means the command completed and no changes were found. `diff` and `timeline` return `2` when changes exist. Invalid input, network failures, and other command errors return `1`.
 
 ## Supported input
 
@@ -100,13 +100,13 @@ npm run build:site
 npm run test:site
 ```
 
-The landing-page demo is available at `/demo` and uses only bundled data. Its storage namespace is `demo:alert-config-ledger:*`.
+The landing-page demo is available at `/?demo=1` and `/demo` and uses only bundled data. It stores browser data only under keys that start with `demo:alert-config-ledger:`.
 
 The deployed demo URL is `https://alert-config-change-ledger.sociobot.in/demo`.
 
 ## Privacy and security
 
-Configuration is processed by the CLI on your machine. API tokens are read from the environment and are not written to snapshots. Recipient targets are stored only as SHA-256 fingerprints. Non-secret provider fields and timestamps remain in snapshots. The static demo makes no cross-origin requests.
+Configuration is processed by the CLI on your machine. API tokens are read from the environment and are not written to snapshots. Recipient endpoints are stored only as SHA-256 identifiers. Non-secret provider fields and timestamps remain in snapshots. The static demo makes no cross-origin requests.
 
 Existing Pro approval-report licenses are verified through the Sociobot billing API. The protected template comes from a same-origin function only after that check. New license sales are not open in this release. The CLI's snapshot, diff, timeline, JSON, and Markdown output remain free.
 

@@ -14,6 +14,13 @@
     "sandbox": "bundled Grafana and Alertmanager example exports"
   },
   {
+    "id": "normalized-snapshot-input",
+    "claim": "The CLI accepts Alert Config Ledger snapshot JSON as input for scripted comparisons.",
+    "where": "README supported input",
+    "test": "cargo test --test claims claim_normalized_snapshot_input_can_be_compared",
+    "sandbox": "bundled snapshot JSON is re-imported in a temporary directory and compared with the bundled live snapshot"
+  },
+  {
     "id": "grafana-contact-points",
     "claim": "The CLI accepts Grafana contact-point arrays, detects PagerDuty, Opsgenie, Slack, webhook, and email recipient changes, and preserves non-secret provider fields and timestamps.",
     "where": "landing how-it-works, README",
@@ -43,7 +50,7 @@
   },
   {
     "id": "exit-codes",
-    "claim": "The CLI returns 0 without drift, 2 with drift, and 1 for command errors.",
+    "claim": "The CLI returns 0 when no changes are found, 2 when changes are found, and 1 for command errors.",
     "where": "README usage",
     "test": "cargo test --test claims claim_documented_exit_codes",
     "sandbox": "bundled snapshots and malformed input in a temporary directory"
@@ -85,7 +92,7 @@
   },
   {
     "id": "report-download",
-    "claim": "The demo exports a JSON drift report with all three sample changes.",
+    "claim": "The demo exports a JSON comparison report with all three sample changes.",
     "where": "demo action",
     "test": "npm test -- --grep @claim:report-download",
     "sandbox": "fresh demo state; inspect the downloaded file and count change records"

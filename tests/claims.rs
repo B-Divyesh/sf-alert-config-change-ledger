@@ -67,6 +67,49 @@ fn claim_provider_inputs() {
     );
 }
 
+/// @claim:normalized-snapshot-input
+#[test]
+fn claim_normalized_snapshot_input_can_be_compared() {
+    let folder = tempdir().unwrap();
+    let (baseline, live) = demo_snapshots().unwrap();
+    let original = folder.path().join("reviewed.json");
+    let imported = folder.path().join("reviewed-imported.json");
+    let live_path = folder.path().join("live.json");
+    std::fs::write(&original, serde_json::to_vec_pretty(&baseline).unwrap()).unwrap();
+    std::fs::write(&live_path, serde_json::to_vec_pretty(&live).unwrap()).unwrap();
+
+    Command::cargo_bin("alert-ledger")
+        .unwrap()
+        .args([
+            "snapshot",
+            "--provider",
+            "normalized",
+            "--input",
+            original.to_str().unwrap(),
+            "--source",
+            "scripted-pipeline",
+            "--output",
+            imported.to_str().unwrap(),
+        ])
+        .assert()
+        .success();
+
+    Command::cargo_bin("alert-ledger")
+        .unwrap()
+        .args([
+            "diff",
+            "--baseline",
+            imported.to_str().unwrap(),
+            "--live",
+            live_path.to_str().unwrap(),
+            "--format",
+            "json",
+        ])
+        .assert()
+        .code(2)
+        .stdout(predicate::str::contains("\"changes\""));
+}
+
 #[test]
 fn duplicate_sibling_routes_keep_unique_ids_and_recipient_drift() {
     let baseline = parse_export(

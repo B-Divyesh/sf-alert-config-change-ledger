@@ -9,7 +9,7 @@ fn demo_runs_without_setup() {
         .arg("demo")
         .assert()
         .success()
-        .stdout(predicate::str::contains("! DRIFT  3 changed routes"))
+        .stdout(predicate::str::contains("! CHANGE  3 changed routes"))
         .stdout(predicate::str::contains("Demo files:"));
 }
 
