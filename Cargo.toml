@@ -2,6 +2,7 @@
 name = "alert-config-change-ledger"
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 description = "Read-only alert configuration snapshot and drift ledger"
 license = "MIT"
 repository = "https://github.com/B-Divyesh/sf-alert-config-change-ledger"

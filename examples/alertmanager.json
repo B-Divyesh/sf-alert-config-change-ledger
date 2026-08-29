@@ -1,0 +1,23 @@
+{
+  "route": {
+    "receiver": "ops-primary",
+    "group_by": ["alertname", "cluster"],
+    "group_wait": "30s",
+    "routes": [
+      {
+        "receiver": "payments-pager",
+        "matchers": ["team=\"payments\"", "severity=\"critical\""]
+      }
+    ]
+  },
+  "receivers": [
+    {
+      "name": "ops-primary",
+      "email_configs": [{ "to": "ops@example.test" }]
+    },
+    {
+      "name": "payments-pager",
+      "webhook_configs": [{ "url": "https://pager.example.test/integration/secret" }]
+    }
+  ]
+}

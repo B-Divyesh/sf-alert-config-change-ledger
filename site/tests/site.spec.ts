@@ -54,6 +54,37 @@ test('routing updates the title and focuses the page heading', async ({ page }) 
   await expect(page).toHaveURL('/');
 });
 
+test('browser Back and Forward restore focused controls and scroll position', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.evaluate(() => {
+    const scroller = document.scrollingElement!;
+    scroller.scrollTop = scroller.scrollHeight;
+  });
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(4_000);
+  const footerPrivacy = page.locator('footer').getByRole('link', { name: 'Privacy' });
+  await footerPrivacy.evaluate((element: HTMLElement) => element.focus({ preventScroll: true }));
+
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL('/privacy');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+
+  await page.goBack();
+  await expect(page).toHaveURL('/');
+  await expect(footerPrivacy).toBeFocused();
+  const restoredScroll = await page.evaluate(() => window.scrollY);
+  expect(restoredScroll).toBeGreaterThan(400);
+  const footerBox = await footerPrivacy.boundingBox();
+  expect(footerBox).not.toBeNull();
+  expect(footerBox!.y).toBeGreaterThanOrEqual(0);
+  expect(footerBox!.y + footerBox!.height).toBeLessThanOrEqual(844);
+
+  await page.goForward();
+  await expect(page).toHaveURL('/privacy');
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  expect(await page.evaluate(() => window.scrollY)).toBeLessThanOrEqual(2);
+});
+
 test('each route sets route-specific metadata', async ({ page }) => {
   const expected = {
     '/': ['Alert Config Ledger — compare alert routes', 'Compare reviewed and live alert routes, then show recipient, severity, and route changes.', 'https://alert-config-change-ledger.sociobot.in/'],
@@ -209,7 +240,7 @@ test('publishable crate excludes Node dependency files', () => {
   expect(files.some((file) => file.includes('node_modules/'))).toBe(false);
 });
 
-test('production deployment configuration always ships the approval-pack API', () => {
+test('@claim:deployment-shape production deployment configuration ships the site and approval-pack API', () => {
   const deploy = JSON.parse(readFileSync(resolve('swa-cli.config.json'), 'utf8')).configurations.production;
   const config = JSON.parse(readFileSync(resolve('site/public/staticwebapp.config.json'), 'utf8'));
   expect(deploy).toMatchObject({

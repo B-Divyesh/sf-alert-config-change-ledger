@@ -70,14 +70,14 @@ Exit code `0` means the command completed and no changes were found. `diff` and 
 ## Supported input
 
 - Grafana notification-policy JSON and contact-point array exports.
-- Alertmanager YAML or JSON with nested routes and receiver configs.
+- Alertmanager YAML and JSON with nested routes and receiver configs.
 - Alert Config Ledger snapshot JSON for scripted pipelines.
 
 The CLI performs `GET` requests only. It has no write command and sends no telemetry.
 
 ## Development
 
-Requirements: Rust 1.85+ and Node 22+.
+Minimum supported runtimes: Rust 1.85.0 and Node 22.12.0.
 
 ```sh
 npm install
@@ -122,8 +122,8 @@ The checked-in `swa-cli.config.json` deploys both `dist/site/` and the
 license-gated function in `api/` to
 `https://alert-config-change-ledger.sociobot.in`. Verify that deployment shape
 without publishing with `npm run deploy:check`; publish the production build
-with `npm run deploy`. The deployment supplies `ALERT_LEDGER_RATE_LIMIT_STORAGE`
-as a secret application setting for the shared approval-pack request counter.
+with `npm run deploy`. Set `ALERT_LEDGER_RATE_LIMIT_STORAGE` as a secret
+application setting for the shared approval-pack request counter.
 This repository does not manage DNS, infrastructure, billing registration, or
 registry credentials.
 

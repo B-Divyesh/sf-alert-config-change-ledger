@@ -91,10 +91,28 @@ fn claim_provider_inputs() {
         Utc::now(),
     )
     .unwrap();
+    let alertmanager_json = parse_export(
+        include_bytes!("../examples/alertmanager.json"),
+        "alertmanager",
+        Source {
+            name: "test".into(),
+            revision: None,
+        },
+        Utc::now(),
+    )
+    .unwrap();
     assert_eq!(grafana.provider, "grafana");
     assert_eq!(alertmanager.provider, "alertmanager");
+    assert_eq!(alertmanager_json.provider, "alertmanager");
     assert!(!grafana.routes.is_empty());
     assert!(!alertmanager.routes.is_empty());
+    assert_eq!(alertmanager_json.routes.len(), alertmanager.routes.len());
+    assert!(alertmanager_json.routes.iter().any(|route| {
+        route.matchers.get("team").map(String::as_str) == Some("=payments")
+            && route.recipients[0]
+                .channels
+                .contains(&"webhook".to_string())
+    }));
 
     let negative_regex = parse_export(
         include_bytes!("fixtures/alertmanager-negative-regex-reviewed.yml"),

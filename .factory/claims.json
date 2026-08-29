@@ -15,10 +15,10 @@
   },
   {
     "id": "provider-inputs",
-    "claim": "The CLI normalizes Grafana JSON and Alertmanager YAML exports.",
+    "claim": "The CLI normalizes Grafana JSON and Alertmanager YAML and JSON exports with nested routes and receiver configs.",
     "where": "landing how-it-works, README",
     "test": "cargo test --test claims claim_provider_inputs",
-    "sandbox": "bundled Grafana and Alertmanager example exports"
+    "sandbox": "bundled Grafana JSON, Alertmanager YAML, and Alertmanager JSON exports with a nested route and receiver configs"
   },
   {
     "id": "normalized-snapshot-input",
@@ -131,6 +131,27 @@
     "where": "landing Pro section, README",
     "test": "npm test -- --grep @claim:sales-closed",
     "sandbox": "fresh browser context; assert the closed-sales notice and absence of checkout and paid-content links"
+  },
+  {
+    "id": "minimum-runtimes",
+    "claim": "The CLI builds with Rust 1.85.0 and the static site builds with Node 22.12.0.",
+    "where": "README development",
+    "test": "npm run test:claim:minimum-runtimes",
+    "sandbox": "Rust 1.85.0 runs cargo check on the CLI; Node 22.12.0 runs the Vite production build"
+  },
+  {
+    "id": "build-artifacts",
+    "claim": "The production build creates a runnable release CLI and static site artifacts.",
+    "where": "README development",
+    "test": "npm run test:claim:build-artifacts",
+    "sandbox": "run npm run build, execute target/release/alert-ledger --help, and check the built site entry point and hashed assets"
+  },
+  {
+    "id": "deployment-shape",
+    "claim": "The checked-in deployment configuration ships dist/site and the approval-pack function to the product app.",
+    "where": "README deploy",
+    "test": "npm test -- --grep @claim:deployment-shape",
+    "sandbox": "read the Static Web Apps configuration and assert the production app, static output, API folder, runtime, and approval-pack route"
   },
   {
     "id": "clean-claim-bootstrap",

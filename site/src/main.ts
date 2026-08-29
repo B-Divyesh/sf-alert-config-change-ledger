@@ -50,6 +50,10 @@ const changes = displayOrder.map((route) => {
 });
 
 type PageMeta = { title: string; description: string; canonical: string };
+type HistoryEntry = {
+  focus?: string;
+  scroll?: { x: number; y: number };
+};
 
 const metadata: Record<string, PageMeta> = {
   '/': {
@@ -81,11 +85,11 @@ const metadata: Record<string, PageMeta> = {
 
 function header(): string {
   return `<header class="site-header">
-    <a class="wordmark route-link" href="/"><span>ACL</span><b>Alert Config Ledger</b></a>
+    <a class="wordmark route-link" data-history-focus="wordmark" href="/"><span>ACL</span><b>Alert Config Ledger</b></a>
     <nav aria-label="Main navigation">
-      <a class="route-link" href="/demo">Demo</a>
+      <a class="route-link" data-history-focus="header-demo" href="/demo">Demo</a>
       <a href="/#install">Install</a>
-      <a class="route-link" href="/privacy">Privacy</a>
+      <a class="route-link" data-history-focus="header-privacy" href="/privacy">Privacy</a>
     </nav>
   </header>`;
 }
@@ -93,7 +97,7 @@ function header(): string {
 function footer(): string {
   return `<footer class="site-footer">
     <p>Compare alert route changes with their sources.</p>
-    <nav aria-label="Footer navigation"><a class="route-link" href="/privacy">Privacy</a><a class="route-link" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
+    <nav aria-label="Footer navigation"><a class="route-link" data-history-focus="footer-privacy" href="/privacy">Privacy</a><a class="route-link" data-history-focus="footer-terms" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
     <p class="build">v0.1.0 · build 004</p>
   </footer>`;
 }
@@ -101,18 +105,18 @@ function footer(): string {
 function demoBanner(): string {
   return `<aside class="demo-banner" aria-label="Demo mode">
     <span><strong>Demo</strong> — sample data, nothing is saved</span>
-    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-action="start-real">Install the CLI</button></span>
+    <span class="banner-actions"><button class="text-button" data-action="reset-demo">Reset demo</button><button class="text-button" data-history-focus="demo-install" data-action="start-real">Install the CLI</button></span>
   </aside>`;
 }
 
 function landing(): string {
-  return `${header()}<main id="main" tabindex="-1">
+  return `${header()}<main id="main" data-history-focus="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">Read-only alert route comparison</p>
-        <h1 id="hero-title" tabindex="-1">Compare reviewed and live alert routes</h1>
+        <h1 id="hero-title" data-history-focus="page-heading" tabindex="-1">Compare reviewed and live alert routes</h1>
         <p class="lede">For platform teams who need to prove whether live alert routes match the reviewed baseline.</p>
-        <div class="hero-action"><a class="button route-link" href="/?demo=1">Try it with sample data</a><span>Loads three sample route changes in an isolated demo.</span></div>
+        <div class="hero-action"><a class="button route-link" data-history-focus="try-sample" href="/?demo=1">Try it with sample data</a><span>Loads three sample route changes in an isolated demo.</span></div>
         <ul class="plain-facts" aria-label="Product facts"><li>Runs offline after the first visit.</li><li>Recipient endpoints stay redacted.</li><li>Core CLI needs no license.</li></ul>
       </div>
       <figure class="hero-art"><img src="/cassette-ledger.webp" width="1200" height="800" alt="A cut-paper cassette routes red and teal tape through an alert ledger." fetchpriority="high"><figcaption>Reviewed baseline on the left. Live configuration on the right.</figcaption></figure>
@@ -197,11 +201,11 @@ function demo(): string {
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
   }
-  return `${demoBanner()}${header()}<main id="main" class="demo-main" tabindex="-1"><section class="demo-intro"><p class="eyebrow">Sample data · no setup</p><h1 tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
+  return `${demoBanner()}${header()}<main id="main" class="demo-main" data-history-focus="main" tabindex="-1"><section class="demo-intro"><p class="eyebrow">Sample data · no setup</p><h1 data-history-focus="page-heading" tabindex="-1">Review three live route changes</h1><p class="lede">Compare a reviewed Grafana baseline with a later live snapshot.</p><div class="offline-note" hidden role="status">You are offline. The bundled demo still works.</div></section>${content}</main>${footer()}`;
 }
 
 function privacy(): string {
-  return `${header()}<main id="main" class="legal" tabindex="-1"><p class="eyebrow">Policy / plain copy</p><h1 tabindex="-1">Keep alert config on your machine</h1><p class="lede">Effective 28 August 2026.</p>
+  return `${header()}<main id="main" class="legal" data-history-focus="main" tabindex="-1"><p class="eyebrow">Policy / plain copy</p><h1 data-history-focus="page-heading" tabindex="-1">Keep alert config on your machine</h1><p class="lede">Effective 28 August 2026.</p>
     <h2>CLI data</h2><p>The CLI processes exports on your machine. It makes no telemetry request.</p><p>A URL import sends one GET request to the URL you provide. Tokens come from your chosen environment variable.</p><p>Snapshots contain SHA-256 identifiers instead of recipient endpoint values.</p>
     <h2>Demo data</h2><p>The web demo uses bundled sample data. Its state stays under the <code>demo:alert-config-ledger:</code> browser prefix.</p><p>Leaving demo mode removes that demo state. The service worker caches site files for offline use.</p>
     <h2>License data</h2><p>If you paste a license, this browser stores the token and its latest verdict.</p><p>Verification sends the token to the Sociobot billing API. No alert configuration is included.</p>
@@ -210,7 +214,7 @@ function privacy(): string {
 }
 
 function terms(): string {
-  return `${header()}<main id="main" class="legal" tabindex="-1"><p class="eyebrow">Terms / version 0.1</p><h1 tabindex="-1">Use the ledger as an audit aid</h1><p class="lede">Effective 28 August 2026.</p>
+  return `${header()}<main id="main" class="legal" data-history-focus="main" tabindex="-1"><p class="eyebrow">Terms / version 0.1</p><h1 data-history-focus="page-heading" tabindex="-1">Use the ledger as an audit aid</h1><p class="lede">Effective 28 August 2026.</p>
     <h2>Open source CLI</h2><p>The CLI is licensed under MIT. It is provided without warranty.</p>
     <h2>Your responsibility</h2><p>Use credentials with read-only access. Review reports before using them in an incident process.</p>
     <h2>Pro licenses</h2><p>An active Pro license gives access to the approval report pack.</p><p>Core CLI commands stay available without a license.</p>
@@ -220,7 +224,7 @@ function terms(): string {
 }
 
 function notFound(): string {
-  return `${header()}<main id="main" class="not-found" tabindex="-1"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Page not found / 404</p><h1 tabindex="-1">This page was not found</h1><p>The address does not match a page in this release.</p><a class="button route-link" href="/">Return to the home page</a></main>${footer()}`;
+  return `${header()}<main id="main" class="not-found" data-history-focus="main" tabindex="-1"><div class="lost-tape" aria-hidden="true"><span></span><span></span></div><p class="eyebrow">Page not found / 404</p><h1 data-history-focus="page-heading" tabindex="-1">This page was not found</h1><p>The address does not match a page in this release.</p><a class="button route-link" data-history-focus="not-found-home" href="/">Return to the home page</a></main>${footer()}`;
 }
 
 function setMeta(path: string): void {
@@ -244,24 +248,67 @@ function currentRoute(): '/' | '/demo' | '/privacy' | '/terms' | '/404' {
   return path === '/' || path === '/demo' || path === '/privacy' || path === '/terms' ? path : '/404';
 }
 
-function render(options: { focus?: boolean } = {}): void {
+function activeFocusKey(): string | undefined {
+  const active = document.activeElement;
+  return active instanceof HTMLElement ? active.dataset.historyFocus : undefined;
+}
+
+function rememberCurrentHistoryEntry(): void {
+  const existing = history.state && typeof history.state === 'object' ? history.state as HistoryEntry : {};
+  history.replaceState({
+    ...existing,
+    focus: activeFocusKey(),
+    scroll: { x: window.scrollX, y: window.scrollY },
+  }, '', window.location.href);
+}
+
+function announceRoute(): void {
+  routeStatus.textContent = document.querySelector<HTMLElement>('h1')?.textContent || '';
+}
+
+function setRouteScroll(x: number, y: number): void {
+  const root = document.documentElement;
+  window.scrollTo({ left: x, top: y, behavior: 'instant' as ScrollBehavior });
+  root.scrollLeft = x;
+  root.scrollTop = y;
+  document.body.scrollLeft = x;
+  document.body.scrollTop = y;
+}
+
+function focusNewRoute(): void {
+  setRouteScroll(0, 0);
+  document.querySelector<HTMLElement>('[data-history-focus="page-heading"]')?.focus({ preventScroll: true });
+  announceRoute();
+  rememberCurrentHistoryEntry();
+}
+
+function restoreHistoryEntry(entry: HistoryEntry | null): void {
+  const target = entry?.focus
+    ? document.querySelector<HTMLElement>(`[data-history-focus="${entry.focus}"]`)
+    : null;
+  const fallback = document.querySelector<HTMLElement>('[data-history-focus="page-heading"]');
+  window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+    setRouteScroll(entry?.scroll?.x || 0, entry?.scroll?.y || 0);
+    (target || fallback)?.focus({ preventScroll: true });
+    announceRoute();
+  }));
+}
+
+function render(options: { focus?: 'new' | 'restore'; entry?: HistoryEntry | null } = {}): void {
   const path = currentRoute();
   setMeta(path);
   app.innerHTML = path === '/' ? landing() : path === '/demo' ? demo() : path === '/privacy' ? privacy() : path === '/terms' ? terms() : notFound();
   bindEvents();
   if (path === '/') setupLicense();
   updateOfflineState();
-  if (options.focus) {
-    window.scrollTo(0, 0);
-    const heading = document.querySelector<HTMLElement>('h1');
-    heading?.focus();
-    routeStatus.textContent = heading?.textContent || '';
-  }
+  if (options.focus === 'new') focusNewRoute();
+  if (options.focus === 'restore') restoreHistoryEntry(options.entry || null);
 }
 
 function navigate(href: string): void {
-  history.pushState({}, '', href);
-  render({ focus: true });
+  rememberCurrentHistoryEntry();
+  history.pushState({ focus: 'page-heading', scroll: { x: 0, y: 0 } } satisfies HistoryEntry, '', href);
+  render({ focus: 'new' });
 }
 
 function bindEvents(): void {
@@ -385,7 +432,8 @@ function updateOfflineState(): void {
   if (note) note.hidden = navigator.onLine;
 }
 
-window.addEventListener('popstate', () => render({ focus: true }));
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('popstate', (event) => render({ focus: 'restore', entry: event.state as HistoryEntry | null }));
 window.addEventListener('online', updateOfflineState);
 window.addEventListener('offline', updateOfflineState);
 captureReturnedLicense();

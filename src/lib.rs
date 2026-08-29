@@ -492,10 +492,14 @@ fn parse_matchers(object: &Map<String, Value>) -> BTreeMap<String, String> {
     let mut matchers = BTreeMap::new();
     if let Some(items) = object.get("object_matchers").and_then(Value::as_array) {
         for item in items {
-            if let Some(parts) = item.as_array()
-                && parts.len() >= 3
-                && let (Some(key), Some(op), Some(value)) =
-                    (parts[0].as_str(), parts[1].as_str(), parts[2].as_str())
+            let Some(parts) = item.as_array() else {
+                continue;
+            };
+            if parts.len() < 3 {
+                continue;
+            }
+            if let (Some(key), Some(op), Some(value)) =
+                (parts[0].as_str(), parts[1].as_str(), parts[2].as_str())
             {
                 matchers.insert(key.to_string(), format!("{op}{value}"));
             }
