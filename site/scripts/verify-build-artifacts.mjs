@@ -10,7 +10,8 @@ execFileSync('npm', ['run', 'build'], { cwd: root, stdio: 'inherit' });
 const binary = resolve(root, 'target/release/alert-ledger');
 assert.ok(existsSync(binary), 'the release CLI must exist');
 const help = execFileSync(binary, ['--help'], { encoding: 'utf8' });
-assert.match(help, /Read-only alert configuration snapshot and drift ledger/);
+assert.match(help, /Usage: alert-ledger <COMMAND>/);
+assert.match(help, /^  snapshot  Normalize a provider export/m);
 
 const site = resolve(root, 'dist/site');
 const index = resolve(site, 'index.html');
