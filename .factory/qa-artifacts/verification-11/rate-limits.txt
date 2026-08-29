@@ -1,0 +1,20 @@
+Checked: 2026-08-29 UTC
+
+POST https://alert-config-change-ledger.sociobot.in/api/approval-pack
+- Requests 1-20: HTTP 401 (expected without a license)
+- Request 21: HTTP 429
+- Retry-After: 53
+- Cache-Control: no-store, private
+- X-Alert-Ledger-Build: repair-7
+- X-Alert-Ledger-Limit-Store: azure-table
+- Observed allowance: 20 requests per 60 seconds
+
+GET https://api.sociobot.in/api/v1/products/alert-config-change-ledger/verify?license=<invalid>
+- Requests 1-30: HTTP 200 with invalid verdicts
+- Request 31: HTTP 429
+- Retry-After: 3
+- Observed allowance: 30 requests in the active gateway window
+
+Local API concurrency and persistence tests also passed. They cover concurrent
+requests across handler instances, Azure Table ETag serialization, the global
+endpoint ceiling, and fail-closed behavior when shared protection is absent.

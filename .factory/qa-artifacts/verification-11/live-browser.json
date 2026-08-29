@@ -1,0 +1,328 @@
+{
+  "routes": {
+    "desktop:/": {
+      "status": 200,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Alert Config Ledger — compare alert routes",
+      "seriousCritical": []
+    },
+    "desktop:/demo": {
+      "status": 200,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Demo — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "desktop:/privacy": {
+      "status": 200,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Privacy — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "desktop:/terms": {
+      "status": 200,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Terms — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "desktop:/404.html": {
+      "status": 200,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Page not found — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "desktop:/missing-tape": {
+      "status": 404,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Page not found — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "mobile:/": {
+      "status": 200,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Alert Config Ledger — compare alert routes",
+      "seriousCritical": []
+    },
+    "mobile:/demo": {
+      "status": 200,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Demo — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "mobile:/privacy": {
+      "status": 200,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Privacy — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "mobile:/terms": {
+      "status": 200,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Terms — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "mobile:/404.html": {
+      "status": 200,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Page not found — Alert Config Ledger",
+      "seriousCritical": []
+    },
+    "mobile:/missing-tape": {
+      "status": 404,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "title": "Page not found — Alert Config Ledger",
+      "seriousCritical": []
+    }
+  },
+  "desktop": {
+    "errors": []
+  },
+  "mobile": {
+    "targets": [
+      {
+        "name": "Skip to main content",
+        "width": 228.03125,
+        "height": 52.796875
+      },
+      {
+        "name": "ACLAlert Config Ledger",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "name": "Demo",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "name": "Install",
+        "width": 67.21875,
+        "height": 44
+      },
+      {
+        "name": "Privacy",
+        "width": 67.21875,
+        "height": 44
+      },
+      {
+        "name": "Try it with sample data",
+        "width": 260.84375,
+        "height": 48.796875
+      },
+      {
+        "name": "Get the source on GitHub (external site)",
+        "width": 230.4375,
+        "height": 44
+      },
+      {
+        "name": "Copy install command",
+        "width": 196.03125,
+        "height": 44
+      },
+      {
+        "name": "",
+        "width": 242,
+        "height": 48
+      },
+      {
+        "name": "Verify license",
+        "width": 242,
+        "height": 48.796875
+      },
+      {
+        "name": "Privacy",
+        "width": 67.21875,
+        "height": 44
+      },
+      {
+        "name": "Terms",
+        "width": 48.015625,
+        "height": 44
+      },
+      {
+        "name": "Built by Param Factory (external site)",
+        "width": 211.234375,
+        "height": 44
+      }
+    ],
+    "targetsBelow44": [],
+    "text200": {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "errors": []
+  },
+  "demo": {
+    "banner": true,
+    "heading": "REVIEW THREE LIVE ROUTE CHANGES",
+    "changed": "3 CHANGED · 2 MATCHED",
+    "routeButtons": 3,
+    "download": {
+      "filename": "alert-ledger-sample-report.json",
+      "changes": 3,
+      "matched_routes": 2,
+      "rawContacts": []
+    },
+    "storageBefore": [
+      "demo:alert-config-ledger:state"
+    ],
+    "afterStartReal": {
+      "url": "https://alert-config-change-ledger.sociobot.in/#install",
+      "demoKeys": [],
+      "real": "keep"
+    },
+    "emptyState": true,
+    "errorState": true,
+    "recovered": true,
+    "requests": [
+      "https://alert-config-change-ledger.sociobot.in/demo",
+      "https://alert-config-change-ledger.sociobot.in/assets/index-B6pIrGFD.js",
+      "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css",
+      "https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp",
+      "https://alert-config-change-ledger.sociobot.in/terminal-demo.svg"
+    ],
+    "crossOrigin": [],
+    "errors": []
+  },
+  "offline": {
+    "scope": "https://alert-config-change-ledger.sociobot.in/",
+    "script": "https://alert-config-change-ledger.sociobot.in/sw.js",
+    "heading": "REVIEW THREE LIVE ROUTE CHANGES",
+    "notice": true
+  },
+  "keyboard": {
+    "firstFocus": {
+      "text": "Skip to main content",
+      "outline": "rgb(11, 103, 98) solid 3px",
+      "outlineOffset": "3px"
+    },
+    "skipTarget": "MAIN:main",
+    "primaryFocused": "Try it with sample data",
+    "routeSelected": "true"
+  },
+  "reducedMotion": {
+    "media": true,
+    "reel": {
+      "duration": "1e-05s",
+      "iterations": "1",
+      "scrollBehavior": "auto"
+    }
+  },
+  "responseHeaders": {
+    "/": {
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "content-type": "text/html"
+      }
+    },
+    "/demo": {
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "content-type": "text/html"
+      }
+    },
+    "/privacy": {
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "content-type": "text/html"
+      }
+    },
+    "/terms": {
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "content-type": "text/html"
+      }
+    },
+    "/missing-tape": {
+      "status": 404,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "content-type": "text/html"
+      }
+    },
+    "/assets/index-B6pIrGFD.js": {
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-type": "text/javascript",
+        "x-content-type-options": "nosniff"
+      }
+    }
+  }
+}

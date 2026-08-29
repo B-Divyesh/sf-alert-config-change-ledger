@@ -1,0 +1,29 @@
+Candidate: 63be2fb4ae95d37225cb668e5779b26404b59f13
+Live URL: https://alert-config-change-ledger.sociobot.in
+Checked: 2026-08-29 UTC
+
+Fresh npm run build output was compared byte-for-byte with the live deployment:
+
+index.html match=yes
+sha256 6c72f97457ef3fac6d599a360e255c2e2eae46ddfd79999b4f0faf962e2a355b
+
+404.html match=yes
+sha256 9b092804717a269ad98e9c390ea8840aaec33e7697ebb12f5e3ed36fd01980cf
+
+sw.js match=yes
+sha256 0255ffbaeec9a204def1d74093d9e6a39dcf2318a7b057c347e50c05d3c3188c
+
+cassette-ledger.webp match=yes
+sha256 a8ae0f9fa2e0963e1527fc306cb81c5e81fbbb6577fbef12b8570b502270ecbb
+
+terminal-demo.svg match=yes
+sha256 44df560bb2b76b66082357e78a623ddc1ec4d51c36b965a2318e1cec0761c46f
+
+favicon.svg match=yes
+sha256 8bbaebd2b01c390779fd6518ffd44ad9723977d5b195dc2fea82cec4c5c6b660
+
+assets/index-B6pIrGFD.js match=yes
+sha256 8c3e48cb7bc0167c6b295e2f3510340265480a3d510b69b281c31468a351f6ea
+
+assets/index-Bfp0AagM.css match=yes
+sha256 39be9876e67f7d8e29b729f3a98f8a5c4d171e5d0fa53f47ffe8bde3afe77780
