@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Reject empty provider objects and HTTP error envelopes before writing snapshots.
 - Keep duplicate sibling routes distinct so recipient drift cannot be overwritten.
 - Preserve Alertmanager negative-regex matchers and report their changes.
 - Generate the web demo report from the CLI comparison code.

@@ -139,14 +139,7 @@ pub fn parse_export(
     if is_grafana_contact_export {
         return snapshot_from_contact_points(contacts, source, captured_at);
     }
-    let route_root = if provider == "alertmanager" {
-        value.get("route").unwrap_or(&value)
-    } else {
-        value.get("policy").unwrap_or(&value)
-    };
-    if !route_root.is_object() {
-        bail!("{provider} export has no route object");
-    }
+    let route_root = routing_root(&value, provider)?;
 
     let mut routes = Vec::new();
     flatten_routes(route_root, "root", 0, &contacts, &mut routes)?;
@@ -162,6 +155,36 @@ pub fn parse_export(
         source,
         routes,
     })
+}
+
+fn routing_root<'a>(value: &'a Value, provider: &str) -> Result<&'a Value> {
+    let route = if provider == "alertmanager" {
+        value.get("route").ok_or_else(|| {
+            anyhow::anyhow!(
+                "alertmanager export has no route; expected a top-level 'route' object with a non-empty 'receiver' field"
+            )
+        })?
+    } else {
+        value.get("policy").unwrap_or(value)
+    };
+
+    let receiver = route
+        .as_object()
+        .and_then(|object| object.get("receiver"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|receiver| !receiver.is_empty());
+    if receiver.is_none() {
+        if provider == "alertmanager" {
+            bail!(
+                "alertmanager export has no valid route; expected a top-level 'route' object with a non-empty 'receiver' field"
+            );
+        }
+        bail!(
+            "grafana export has no policy route; expected a 'policy' object or root route with a non-empty 'receiver' field"
+        );
+    }
+    Ok(route)
 }
 
 fn disambiguate_route_ids(routes: &mut [Route]) {

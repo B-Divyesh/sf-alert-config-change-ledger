@@ -1,5 +1,7 @@
 use assert_cmd::Command;
 use predicates::prelude::*;
+use std::io::{Read, Write};
+use std::net::TcpListener;
 use tempfile::tempdir;
 
 #[test]
@@ -45,6 +47,101 @@ fn invalid_input_explains_recovery() {
         .stderr(predicate::str::contains(
             "cannot read input file missing.json",
         ));
+}
+
+#[test]
+fn invalid_provider_shapes_exit_one_without_writing_snapshots() {
+    let folder = tempdir().unwrap();
+    for (name, provider, body, message) in [
+        (
+            "grafana-empty",
+            "grafana",
+            "{}",
+            "grafana export has no policy route",
+        ),
+        (
+            "grafana-error-envelope",
+            "grafana",
+            r#"{"message":"Access denied"}"#,
+            "grafana export has no policy route",
+        ),
+        (
+            "alertmanager-empty",
+            "alertmanager",
+            "{}",
+            "alertmanager export has no route",
+        ),
+    ] {
+        let input = folder.path().join(format!("{name}.json"));
+        let output = folder.path().join(format!("{name}-snapshot.json"));
+        std::fs::write(&input, body).unwrap();
+
+        Command::cargo_bin("alert-ledger")
+            .unwrap()
+            .args([
+                "snapshot",
+                "--provider",
+                provider,
+                "--input",
+                input.to_str().unwrap(),
+                "--source",
+                "invalid-response",
+                "--output",
+                output.to_str().unwrap(),
+            ])
+            .assert()
+            .code(1)
+            .stderr(predicate::str::contains(message))
+            .stderr(predicate::str::contains("non-empty 'receiver' field"));
+
+        assert!(!output.exists(), "{name} must not produce a snapshot");
+    }
+}
+
+#[test]
+fn http_200_error_envelope_exits_one_without_writing_snapshot() {
+    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+    let address = listener.local_addr().unwrap();
+    std::thread::spawn(move || {
+        let (mut stream, _) = listener.accept().unwrap();
+        let mut request = [0_u8; 2048];
+        let request_size = stream.read(&mut request).unwrap();
+        assert!(request_size > 0);
+        let body = r#"{"message":"Access denied"}"#;
+        write!(
+            stream,
+            "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+            body.len()
+        )
+        .unwrap();
+    });
+
+    let folder = tempdir().unwrap();
+    let output = folder.path().join("error-envelope-snapshot.json");
+    Command::cargo_bin("alert-ledger")
+        .unwrap()
+        .args([
+            "snapshot",
+            "--provider",
+            "grafana",
+            "--url",
+            &format!("http://{address}"),
+            "--source",
+            "grafana-live",
+            "--output",
+            output.to_str().unwrap(),
+        ])
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains(
+            "grafana export has no policy route",
+        ))
+        .stderr(predicate::str::contains("non-empty 'receiver' field"));
+
+    assert!(
+        !output.exists(),
+        "an error response must not become a snapshot"
+    );
 }
 
 #[test]
