@@ -1,0 +1,107 @@
+{
+  "desktop": {
+    "status": 200,
+    "url": "https://alert-config-change-ledger.sociobot.in/",
+    "title": "Alert Config Ledger — compare alert routes",
+    "h1": [
+      "Compare reviewed and live alert routes"
+    ],
+    "viewportText": [
+      "ACL",
+      "Alert Config Ledger",
+      "Demo",
+      "Install",
+      "Privacy",
+      "Read-only alert route comparison",
+      "Compare reviewed and live alert routes",
+      "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+      "Try it with sample data",
+      "Loads three sample route changes in an isolated demo.",
+      "Runs offline after the first visit.",
+      "Recipient endpoints stay redacted.",
+      "Core CLI needs no license."
+    ],
+    "sampleCount": 1,
+    "sampleVisible": true,
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/",
+        "type": "document"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "type": "script"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css",
+        "type": "stylesheet"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp",
+        "type": "image"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/terminal-demo.svg",
+        "type": "image"
+      }
+    ],
+    "errors": []
+  },
+  "mobile": {
+    "status": 200,
+    "url": "https://alert-config-change-ledger.sociobot.in/",
+    "title": "Alert Config Ledger — compare alert routes",
+    "h1": [
+      "Compare reviewed and live alert routes"
+    ],
+    "viewportText": [
+      "ACL",
+      "Demo",
+      "Install",
+      "Privacy",
+      "Read-only alert route comparison",
+      "Compare reviewed and live alert routes",
+      "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+      "Try it with sample data",
+      "Loads three sample route changes in an isolated demo.",
+      "Runs offline after the first visit.",
+      "Recipient endpoints stay redacted.",
+      "Core CLI needs no license."
+    ],
+    "sampleCount": 1,
+    "sampleVisible": true,
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/",
+        "type": "document"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "type": "script"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css",
+        "type": "stylesheet"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp",
+        "type": "image"
+      },
+      {
+        "method": "GET",
+        "url": "https://alert-config-change-ledger.sociobot.in/terminal-demo.svg",
+        "type": "image"
+      }
+    ],
+    "errors": []
+  }
+}

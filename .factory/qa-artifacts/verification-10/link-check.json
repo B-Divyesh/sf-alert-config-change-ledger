@@ -1,0 +1,77 @@
+[
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/#main",
+    "text": "Skip to main content",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/",
+    "text": "Return to the home page",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/demo",
+    "text": "Demo",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/#install",
+    "text": "Install",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/privacy",
+    "text": "Privacy",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+    "text": "Try it with sample data",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/B-Divyesh/sf-alert-config-change-ledger",
+    "text": "Get the source on GitHub (external site)",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/terms",
+    "text": "Terms",
+    "status": 200
+  },
+  {
+    "url": "https://sociobot.in/",
+    "text": "Built by Param Factory (external site)",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/demo#main",
+    "text": "Skip to main content",
+    "status": 200
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/privacy#main",
+    "text": "Skip to main content",
+    "status": 200
+  },
+  {
+    "url": "mailto:privacy@sociobot.in",
+    "text": "privacy@sociobot.in",
+    "status": "mailto"
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/terms#main",
+    "text": "Skip to main content",
+    "status": 200
+  },
+  {
+    "url": "mailto:support@sociobot.in",
+    "text": "support@sociobot.in",
+    "status": "mailto"
+  },
+  {
+    "url": "https://alert-config-change-ledger.sociobot.in/404.html#main",
+    "text": "Skip to main content",
+    "status": 200
+  }
+]

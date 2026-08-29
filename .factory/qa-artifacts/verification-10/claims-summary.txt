@@ -1,0 +1,32 @@
+Independent verification 10 claims summary — 2026-08-29 UTC
+
+Requested candidate: 690a08bcc3ad8f49602916f45e5fcda49bf843e3
+Available commit: 690a08b11e786c509459a204f4abb1bed7bceabb
+
+Mandatory first run before install:
+- Claims 1–10: PASS.
+- Claim 11 (`npm test -- --grep @claim:demo-privacy`): FAIL.
+- Failure: API subtest `deployment-provided storage selects the atomic Azure Table counter` could not load `@azure/data-tables`.
+- A direct live first-read Playwright attempt also could not load `playwright` before install.
+
+After `npm ci` and `npm ci --prefix api`, all 17 commands in `.factory/claims.json` passed exactly as written on the available commit:
+
+1. core-workflow — PASS
+2. provider-inputs — PASS
+3. normalized-snapshot-input — PASS
+4. grafana-contact-points — PASS
+5. read-only-import — PASS
+6. recipient-redaction — PASS
+7. token-exclusion — PASS
+8. exit-codes — PASS
+9. free-core-cli — PASS
+10. no-telemetry — PASS
+11. demo-privacy — PASS
+12. demo-exit-clears-state — PASS
+13. offline-reload — PASS
+14. report-download — PASS
+15. web-cli-parity — PASS
+16. paid-template — PASS
+17. sales-closed — PASS
+
+The requested candidate could not be fetched (`upload-pack: not our ref`) and therefore none of these passing results can be attributed to it.

@@ -1,0 +1,11 @@
+HTTP/2 429
+content-type: text/plain; charset=utf-8
+date: Sat, 29 Aug 2026 17:58:31 GMT
+cache-control: no-store, private
+retry-after: 55
+content-length: 51
+strict-transport-security: max-age=31536000; includeSubDomains
+x-ms-middleware-request-id: a499fae3-4da5-4271-82af-e19772a7fcbc
+x-content-type-options: nosniff
+x-alert-ledger-build: repair-7
+x-alert-ledger-limit-store: azure-table
