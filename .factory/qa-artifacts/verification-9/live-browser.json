@@ -1,0 +1,382 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "meta": {
+        "title": "Alert Config Ledger — compare alert routes",
+        "lang": "en",
+        "h1": [
+          "Compare reviewed and live alert routes"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1,
+          2,
+          2,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css",
+        "https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp",
+        "https://alert-config-change-ledger.sociobot.in/terminal-demo.svg"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-encoding": "br",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:21 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    "/demo": {
+      "status": 200,
+      "meta": {
+        "title": "Demo — Alert Config Ledger",
+        "lang": "en",
+        "h1": [
+          "Review three live route changes"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1,
+          2,
+          2
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/demo",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-encoding": "br",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:23 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    "/privacy": {
+      "status": 200,
+      "meta": {
+        "title": "Privacy — Alert Config Ledger",
+        "lang": "en",
+        "h1": [
+          "Keep alert config on your machine"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1,
+          2,
+          2,
+          2,
+          2
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/privacy",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-encoding": "br",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:24 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    "/terms": {
+      "status": 200,
+      "meta": {
+        "title": "Terms — Alert Config Ledger",
+        "lang": "en",
+        "h1": [
+          "Use the ledger as an audit aid"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/terms",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+        "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-encoding": "br",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:26 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    "/404.html": {
+      "status": 200,
+      "meta": {
+        "title": "Page not found — Alert Config Ledger",
+        "lang": "en",
+        "h1": [
+          "This page was not found"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/404.html",
+        "https://alert-config-change-ledger.sociobot.in/404.css"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-encoding": "br",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:27 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "vary": "Accept-Encoding",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    },
+    "/missing-verification-9": {
+      "status": 404,
+      "meta": {
+        "title": "Page not found — Alert Config Ledger",
+        "lang": "en",
+        "h1": [
+          "This page was not found"
+        ],
+        "main": 1,
+        "headingLevels": [
+          1
+        ],
+        "missingAlt": 0,
+        "unlabeledButtons": 0,
+        "horizontalOverflow": false
+      },
+      "seriousCritical": [],
+      "errors": [],
+      "requests": [
+        "https://alert-config-change-ledger.sociobot.in/missing-verification-9",
+        "https://alert-config-change-ledger.sociobot.in/404.css"
+      ],
+      "documentHeaders": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-length": "2540",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in",
+        "content-type": "text/html",
+        "date": "Sat, 29 Aug 2026 16:34:28 GMT",
+        "etag": "\"69017639\"",
+        "last-modified": "Sat, 29 Aug 2026 16:06:07 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff",
+        "x-dns-prefetch-control": "off",
+        "x-xss-protection": "1; mode=block"
+      }
+    }
+  },
+  "desktop": {
+    "h1": "Compare reviewed and live alert routes",
+    "lede": "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+    "action": "Try it with sample data",
+    "actionRect": {
+      "x": 130,
+      "y": 555.8125,
+      "width": 260.84375,
+      "height": 48.796875
+    },
+    "facts": [
+      "Runs offline after the first visit.",
+      "Recipient endpoints stay redacted.",
+      "Core CLI needs no license."
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "crossOrigin": []
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "scrollWidth": 390,
+    "overflow": false,
+    "bodyFont": "16px",
+    "undersized": [],
+    "actionRect": {
+      "x": 16,
+      "y": 525.953125,
+      "width": 260.84375,
+      "height": 48.796875
+    },
+    "at200Percent": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    }
+  },
+  "keyboard": {
+    "skipTarget": {
+      "tag": "MAIN",
+      "id": "main"
+    },
+    "sampleFocus": {
+      "outline": "rgb(11, 103, 98) solid 3px",
+      "outlineWidth": "3px",
+      "outlineColor": "rgb(11, 103, 98)"
+    },
+    "demoAfterEnter": "Review three live route changes",
+    "routePressed": "true",
+    "steps": [
+      {
+        "tag": "A",
+        "text": "Skip to main content",
+        "href": "#main",
+        "outline": "rgb(11, 103, 98) solid 3px",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(11, 103, 98)"
+      }
+    ]
+  },
+  "demo": {
+    "initial": {
+      "banner": "Demo — sample data, nothing is saved\nReset demo\nInstall the CLI",
+      "keys": [
+        "demo:alert-config-ledger:state"
+      ],
+      "summary": false
+    },
+    "download": {
+      "filename": "alert-ledger-sample-report.json",
+      "bytes": 2494,
+      "sha256": "827e2f7dac8e2fc187efaa386e842355e9526bccf76cbc125453475f384ce0a8",
+      "changes": 3,
+      "matched": 2,
+      "containsContact": false
+    },
+    "afterReset": {
+      "keys": [
+        "demo:alert-config-ledger:extra",
+        "demo:alert-config-ledger:state",
+        "real:sentinel"
+      ],
+      "summary": false
+    },
+    "afterExit": {
+      "url": "https://alert-config-change-ledger.sociobot.in/#install",
+      "keys": [
+        "real:sentinel"
+      ],
+      "sentinel": "keep"
+    },
+    "requests": [
+      "https://alert-config-change-ledger.sociobot.in/demo",
+      "https://alert-config-change-ledger.sociobot.in/assets/index-BlCm3KVK.js",
+      "https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css",
+      "https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp",
+      "https://alert-config-change-ledger.sociobot.in/terminal-demo.svg"
+    ],
+    "crossOrigin": [],
+    "errors": [],
+    "offline": {
+      "registration": {
+        "active": "https://alert-config-change-ledger.sociobot.in/sw.js",
+        "scope": "https://alert-config-change-ledger.sociobot.in/"
+      },
+      "notice": true,
+      "summary": true
+    }
+  },
+  "reducedMotion": {
+    "scrollBehavior": "auto",
+    "animationName": "spool",
+    "animationDuration": "1e-05s",
+    "transitionDuration": "1e-05s"
+  }
+}

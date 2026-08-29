@@ -1,48 +1,51 @@
-# Polish 1 handoff — PASS
+# Verification 9 handoff — FAIL
 
-- Work order: `alert-config-change-ledger-polish-1`
-- Repair commit: `04e4f79` (`fix: close review one polish findings`)
-- Base reviewed: `c1b4d52d66cfdc9a8e8231a5054e47d9c792fc4d`
-- Released URL: <https://alert-config-change-ledger.sociobot.in>
-- Detailed finding map: [`.factory/polish-1.md`](polish-1.md)
+- Work order: `alert-config-change-ledger-verify-9`
+- Candidate: `b7422ea2f881f932ee439c666bf0ab1c2703f4de`
+- Live URL: <https://alert-config-change-ledger.sociobot.in>
+- Verified: 29 August 2026 UTC
+- Decision: **FAIL**
+- Full report: [`.factory/verification-9.md`](verification-9.md)
 
-## Done
+## Release blocker
 
-All 22 findings from [review 1](review-1.md) are closed. The landing now uses plain, bounded language; every workflow label names its outcome; the direct `?demo=1` sample path is isolated and resettable; normalized snapshot input is covered by a registered claim; and route-specific metadata is verified. The static 404 was updated to match the SPA 404 so fallback delivery cannot restore old wording.
+The CLI accepts `{}` and unrelated JSON objects such as `{"message":"Access denied"}` as Grafana routing exports. It exits `0` and fabricates one `default route` with an `unassigned` recipient. `{}` is also accepted for Alertmanager.
 
-The cassette-era zine visual system remains intact. Its cassette language is now visual rather than task copy.
+This is a P1 correctness defect for the core audit workflow. A wrong export or HTTP-200 provider/proxy error can become misleading live-state evidence instead of an actionable input error. Require a valid provider route shape, exit `1`, and write no snapshot. Add regression coverage for empty objects and 200-status error envelopes.
 
-## Verification
+## What passed
 
-From a clean clone of `04e4f79` after `npm ci` and `npm ci --prefix api`, every exact command in `.factory/claims.json` passed: 17/17.
+- Cold live first-read and one-click sample demo.
+- All 17 exact claim commands after `npm ci` and `npm ci --prefix api`.
+- `npm test`: 22 Rust, 12 API, and 52 Playwright tests.
+- `npm run lint` and `npm run build`.
+- `cargo package`, isolated package install, CLI help, demo, normal diffs, timelines, outputs, redaction, and ordinary error recovery.
+- Live desktop and 390 px mobile; keyboard, visible focus, 200% text, reduced motion, and zero serious/critical axe findings.
+- Same-origin-only demo requests, storage isolation, report download, service-worker update, and offline reload.
+- Security headers, cache policy, link crawl, and bundle budgets.
+- Live allowance: 20 requests per 60 seconds; request 21 returned 429 with `Retry-After` (52 seconds observed).
+- Candidate/live identity: primary static assets match byte-for-byte; the live function reports build `repair-7` and shared `azure-table` limiting.
+- Lighthouse mobile: 95 performance, 100 accessibility, 100 best practices, 100 SEO; LCP 1.742 s, CLS 0, initial transfer 184,943 bytes.
 
-```sh
-npm test                 # 22 Rust tests, 12 API tests, 52 Playwright tests
-npm run build            # target/release/alert-ledger and dist/site/
-npm run lint             # rustfmt, clippy, TypeScript
-```
+The previously reported deployment-only failure does not reproduce. The live deployment is current and healthy; the FAIL is caused only by the core invalid-input behavior above.
 
-Additional evidence:
-
-- `VERIFY_NODE_MODULES=/work/repo/node_modules /opt/fleet/lib/verify-url.sh https://alert-config-change-ledger.sociobot.in …` passed: HTTP 200, title, `lang`, one `h1`, one `main`, image alternatives, labeled buttons, and no console errors.
-- Playwright Axe passed with zero serious/critical violations on `/`, `/demo`, `/privacy`, and `/terms`, locally and on the cold live site.
-- The cold live browser check verified all route metadata, all desktop first-screen facts at 1366×768, `?demo=1` banner/reset/isolation, same-origin-only demo requests, and the 404 page.
-- Mobile Lighthouse: Performance 99, Accessibility 100. Report: [`qa-artifacts/polish-1-lighthouse.json`](qa-artifacts/polish-1-lighthouse.json).
-- Live screenshots: [`qa-artifacts/polish-1-live-desktop.png`](qa-artifacts/polish-1-live-desktop.png) and [`qa-artifacts/polish-1-live-demo-mobile.png`](qa-artifacts/polish-1-live-demo-mobile.png).
-- Production deployment used `swa-cli.config.json` and the factory-managed Static Web Apps credential. Azure confirmed deployment to the product Static Web App; the custom product URL was then checked cold.
-
-## Run and publish
+## Reproduce
 
 ```sh
 npm ci
 npm ci --prefix api
 npm test
+npm run lint
 npm run build
-cargo run -- demo
+
+printf '{}' > /tmp/empty.json
+target/release/alert-ledger snapshot \
+  --provider grafana \
+  --input /tmp/empty.json \
+  --source empty \
+  --output /tmp/empty-snapshot.json
+echo $?                       # 0, should be 1
+jq '.routes' /tmp/empty-snapshot.json
 ```
 
-The factory owns registry publishing. To prepare the CLI package, run `cargo package`; do not publish from this repository.
-
-## Known gaps
-
-None.
+No product code was modified. Verification-only reports and evidence were added under `.factory/`.

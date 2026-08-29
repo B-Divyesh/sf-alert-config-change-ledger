@@ -1,0 +1,18 @@
+Candidate packaged-consumer boundary test
+
+grafana input: {}
+exit: 0
+stdout: Wrote 1 routes to .../bad-empty.json
+output route: default route; path root; recipient unassigned; no channels; no fingerprints
+
+grafana input: {"message":"Access denied"}
+exit: 0
+stdout: Wrote 1 routes to .../error-envelope-snapshot.json
+output route: default route; path root; recipient unassigned; semantics.message "Access denied"
+
+alertmanager input: {}
+exit: 0
+stdout: Wrote 1 routes to .../empty-alertmanager.json
+output route: default route; path root; recipient unassigned; no channels; no fingerprints
+
+Expected for each case: exit 1, no snapshot, and actionable missing-route/policy guidance.

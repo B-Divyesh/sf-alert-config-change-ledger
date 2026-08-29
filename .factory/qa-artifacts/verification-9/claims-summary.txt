@@ -1,0 +1,22 @@
+Candidate: b7422ea2f881f932ee439c666bf0ab1c2703f4de
+Clean install: npm ci; npm ci --prefix api
+
+PASS core-workflow
+PASS provider-inputs
+PASS normalized-snapshot-input
+PASS grafana-contact-points
+PASS read-only-import
+PASS recipient-redaction
+PASS token-exclusion
+PASS exit-codes
+PASS free-core-cli
+PASS no-telemetry
+PASS demo-privacy
+PASS demo-exit-clears-state
+PASS offline-reload
+PASS report-download
+PASS web-cli-parity
+PASS paid-template
+PASS sales-closed
+
+Result: 17/17 exact commands in .factory/claims.json passed after both documented clean-install commands.
