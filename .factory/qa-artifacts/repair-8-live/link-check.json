@@ -1,0 +1,62 @@
+[
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/#install",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/#main",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/404.html#main",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/demo",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/demo#main",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/privacy",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/privacy#main",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/terms",
+    "status": 200
+  },
+  {
+    "href": "https://alert-config-change-ledger.sociobot.in/terms#main",
+    "status": 200
+  },
+  {
+    "href": "https://github.com/B-Divyesh/sf-alert-config-change-ledger",
+    "status": 200
+  },
+  {
+    "href": "https://sociobot.in/",
+    "status": 200
+  },
+  {
+    "href": "mailto:privacy@sociobot.in",
+    "status": "mailto"
+  },
+  {
+    "href": "mailto:support@sociobot.in",
+    "status": "mailto"
+  }
+]
