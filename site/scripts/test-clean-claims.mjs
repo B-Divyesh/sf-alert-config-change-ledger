@@ -4,6 +4,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
+// @claim:clean-claim-bootstrap
 const repository = resolve(process.cwd());
 const temporaryRoot = mkdtempSync(join(tmpdir(), 'alert-ledger-clean-claims-'));
 const clone = join(temporaryRoot, 'repo');

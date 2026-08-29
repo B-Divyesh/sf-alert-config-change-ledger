@@ -1,0 +1,229 @@
+{
+  "base": "https://alert-config-change-ledger.sociobot.in",
+  "checkedAt": "2026-08-29T20:41:55.555Z",
+  "routes": {
+    "/": {
+      "title": "Alert Config Ledger — compare alert routes",
+      "description": "Compare reviewed and live alert routes, then show recipient, severity, and route changes.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/",
+      "ogTitle": "Alert Config Ledger — compare alert routes",
+      "ogDescription": "Compare reviewed and live alert routes, then show recipient, severity, and route changes.",
+      "twitterTitle": "Alert Config Ledger — compare alert routes",
+      "twitterDescription": "Compare reviewed and live alert routes, then show recipient, severity, and route changes.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Compare reviewed and live alert routes",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 200,
+      "axeSeriousCritical": [],
+      "consoleErrors": []
+    },
+    "/demo": {
+      "title": "Demo — Alert Config Ledger",
+      "description": "Review three sample alert route changes in an isolated browser demo.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/demo",
+      "ogTitle": "Demo — Alert Config Ledger",
+      "ogDescription": "Review three sample alert route changes in an isolated browser demo.",
+      "twitterTitle": "Demo — Alert Config Ledger",
+      "twitterDescription": "Review three sample alert route changes in an isolated browser demo.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Review three live route changes",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 200,
+      "axeSeriousCritical": [],
+      "consoleErrors": []
+    },
+    "/privacy": {
+      "title": "Privacy — Alert Config Ledger",
+      "description": "Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "ogTitle": "Privacy — Alert Config Ledger",
+      "ogDescription": "Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.",
+      "twitterTitle": "Privacy — Alert Config Ledger",
+      "twitterDescription": "Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Keep alert config on your machine",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 200,
+      "axeSeriousCritical": [],
+      "consoleErrors": []
+    },
+    "/terms": {
+      "title": "Terms — Alert Config Ledger",
+      "description": "Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/terms",
+      "ogTitle": "Terms — Alert Config Ledger",
+      "ogDescription": "Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.",
+      "twitterTitle": "Terms — Alert Config Ledger",
+      "twitterDescription": "Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "Use the ledger as an audit aid",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 200,
+      "axeSeriousCritical": [],
+      "consoleErrors": []
+    },
+    "/404.html": {
+      "title": "Page not found — Alert Config Ledger",
+      "description": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/404",
+      "ogTitle": "Page not found — Alert Config Ledger",
+      "ogDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "twitterTitle": "Page not found — Alert Config Ledger",
+      "twitterDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "This page was not found",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 200,
+      "axeSeriousCritical": [],
+      "consoleErrors": []
+    },
+    "/missing-ledger-page": {
+      "title": "Page not found — Alert Config Ledger",
+      "description": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/404",
+      "ogTitle": "Page not found — Alert Config Ledger",
+      "ogDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "twitterTitle": "Page not found — Alert Config Ledger",
+      "twitterDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "lang": "en",
+      "h1Count": 1,
+      "h1": "This page was not found",
+      "mainCount": 1,
+      "missingAlt": 0,
+      "status": 404,
+      "axeSeriousCritical": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    }
+  },
+  "consoleErrors": [],
+  "firstScreen": {
+    "Compare reviewed and live alert routes": {
+      "x": 93,
+      "y": 148.140625,
+      "width": 588.703125,
+      "height": 251.75
+    },
+    "For platform teams who need to prove whether live alert routes match the reviewed baseline.": {
+      "x": 93,
+      "y": 422.28125,
+      "width": 588.703125,
+      "height": 97.453125
+    },
+    "Try it with sample data": {
+      "x": 93,
+      "y": 542.125,
+      "width": 260.84375,
+      "height": 48.796875
+    },
+    "Loads three sample route changes in an isolated demo.": {
+      "x": 373.84375,
+      "y": 544.1875,
+      "width": 259.0625,
+      "height": 44.65625
+    },
+    "Runs offline after the first visit.": {
+      "x": 93,
+      "y": 610.921875,
+      "width": 588.703125,
+      "height": 24.796875
+    },
+    "Recipient endpoints stay redacted.": {
+      "x": 93,
+      "y": 635.71875,
+      "width": 588.703125,
+      "height": 24.796875
+    },
+    "Core CLI needs no license.": {
+      "x": 93,
+      "y": 660.515625,
+      "width": 588.703125,
+      "height": 24.796875
+    }
+  },
+  "keyboard": {
+    "firstFocus": "Skip to main content",
+    "firstOutline": "rgb(11, 103, 98) solid 3px"
+  },
+  "links": [
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/#main",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/#install",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+      "status": 200
+    },
+    {
+      "href": "https://github.com/B-Divyesh/sf-alert-config-change-ledger",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/terms",
+      "status": 200
+    },
+    {
+      "href": "https://sociobot.in/",
+      "status": 200
+    }
+  ],
+  "mobileFirstScreen": {
+    "overflow": 0,
+    "text200Overflow": 0
+  },
+  "demo": {
+    "path": "/",
+    "query": "?demo=1",
+    "storageKeys": [
+      "demo:alert-config-ledger:extra",
+      "demo:alert-config-ledger:state",
+      "real-mode-sentinel"
+    ],
+    "crossOriginRequests": [],
+    "changes": 3,
+    "exit": {
+      "url": "https://alert-config-change-ledger.sociobot.in/#install",
+      "demoKeys": [],
+      "sentinel": "keep"
+    }
+  },
+  "touchTargetsBelow44": [],
+  "offline": {
+    "worker": "https://alert-config-change-ledger.sociobot.in/sw.js",
+    "notice": "You are offline. The bundled demo still works.",
+    "summary": "3 changed · 2 matched"
+  },
+  "reducedMotion": {
+    "scrollBehavior": "auto",
+    "reelDuration": "1e-05s",
+    "reelIterations": "1"
+  },
+  "result": "PASS"
+}
