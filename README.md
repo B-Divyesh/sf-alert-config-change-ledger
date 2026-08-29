@@ -36,7 +36,7 @@ alert-ledger snapshot \
   --output baseline.json
 ```
 
-Snapshot Grafana's read-only provisioning API. Put the bearer token in an environment variable so it does not enter shell history:
+Snapshot Grafana's read-only provisioning API using a bearer token from an environment variable:
 
 ```sh
 export ALERT_LEDGER_TOKEN='...'

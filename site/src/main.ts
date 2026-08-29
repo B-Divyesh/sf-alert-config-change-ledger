@@ -3,7 +3,8 @@ import './style.css';
 type DemoState = { cleared: boolean; selected: number };
 
 const SLUG = 'alert-config-change-ledger';
-const DEMO_KEY = 'demo:alert-config-ledger:state';
+const DEMO_PREFIX = 'demo:alert-config-ledger:';
+const DEMO_KEY = `${DEMO_PREFIX}state`;
 const LICENSE_KEY = `sb_license:${SLUG}`;
 const VERDICT_KEY = `sb_license_verdict:${SLUG}`;
 const API = 'https://api.sociobot.in/api/v1';
@@ -128,6 +129,13 @@ function getDemoState(): DemoState | 'error' {
   }
 }
 
+function clearDemoState(): void {
+  for (let index = localStorage.length - 1; index >= 0; index -= 1) {
+    const key = localStorage.key(index);
+    if (key?.startsWith(DEMO_PREFIX)) localStorage.removeItem(key);
+  }
+}
+
 function demo(): string {
   const state = getDemoState();
   let content = '';
@@ -221,7 +229,7 @@ async function handleAction(event: Event): Promise<void> {
     render();
     document.querySelector<HTMLElement>('#ledger-title')?.focus();
   } else if (action === 'start-real') {
-    localStorage.removeItem(DEMO_KEY);
+    clearDemoState();
     navigate('/#install');
     requestAnimationFrame(() => document.querySelector('#install')?.scrollIntoView());
   } else if (action === 'clear-demo') {

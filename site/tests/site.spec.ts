@@ -160,6 +160,12 @@ test('production deployment configuration always ships the approval-pack API', (
   expect(readFileSync(resolve('api/approval-pack/function.json'), 'utf8')).toContain('"route": "approval-pack"');
 });
 
+test('README token guidance makes no shell-history promise', () => {
+  const readme = readFileSync(resolve('README.md'), 'utf8');
+  expect(readme).not.toMatch(/does not enter shell history/i);
+  expect(readme).toContain('API tokens are read from the environment and are not written to snapshots.');
+});
+
 test('sample demo shows attributable drift', async ({ page }) => {
   await page.goto('/demo');
   await expect(page.getByText('3 changed · 2 matched')).toBeVisible();
@@ -179,6 +185,29 @@ test('@claim:demo-privacy demo stays same-origin and isolated', async ({ page })
   expect(await page.locator('body').textContent()).not.toContain('hooks.example.test');
   const keys = await page.evaluate(() => Object.keys(localStorage));
   expect(keys).toEqual([expect.stringMatching(/^demo:alert-config-ledger:/)]);
+});
+
+test('@claim:demo-exit-clears-state leaving the demo removes only demo state', async ({ page }) => {
+  await page.goto('/demo');
+  const initialKeys = await page.evaluate(() => {
+    localStorage.setItem('demo:alert-config-ledger:extra', 'sample-only');
+    localStorage.setItem('sb_license_verdict:alert-config-change-ledger', '{"valid":true}');
+    return Object.keys(localStorage).sort();
+  });
+  expect(initialKeys).toEqual([
+    'demo:alert-config-ledger:extra',
+    'demo:alert-config-ledger:state',
+    'sb_license_verdict:alert-config-change-ledger',
+  ]);
+
+  await page.getByRole('button', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL('/#install');
+  const storage = await page.evaluate(() => ({
+    demoKeys: Object.keys(localStorage).filter((key) => key.startsWith('demo:alert-config-ledger:')),
+    realVerdict: localStorage.getItem('sb_license_verdict:alert-config-change-ledger'),
+  }));
+  expect(storage.demoKeys).toEqual([]);
+  expect(storage.realVerdict).toBe('{"valid":true}');
 });
 
 test('@claim:report-download exports the sample report', async ({ page }) => {

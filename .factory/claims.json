@@ -70,6 +70,13 @@
     "sandbox": "fresh browser context on /demo with every request and localStorage key recorded"
   },
   {
+    "id": "demo-exit-clears-state",
+    "claim": "Leaving the web demo removes every demo-namespaced browser storage item.",
+    "where": "privacy, demo documentation",
+    "test": "npm test -- --grep @claim:demo-exit-clears-state",
+    "sandbox": "fresh browser context on /demo with an extra demo key and a real-mode key; activate Start for real and inspect localStorage"
+  },
+  {
     "id": "offline-reload",
     "claim": "The bundled demo reloads offline after the first visit.",
     "where": "landing facts, demo offline state",
