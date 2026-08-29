@@ -248,6 +248,8 @@ function currentRoute(): '/' | '/demo' | '/privacy' | '/terms' | '/404' {
   return path === '/' || path === '/demo' || path === '/privacy' || path === '/terms' ? path : '/404';
 }
 
+let renderedRoute: ReturnType<typeof currentRoute> | null = null;
+
 function activeFocusKey(): string | undefined {
   const active = document.activeElement;
   return active instanceof HTMLElement ? active.dataset.historyFocus : undefined;
@@ -296,6 +298,7 @@ function restoreHistoryEntry(entry: HistoryEntry | null): void {
 
 function render(options: { focus?: 'new' | 'restore'; entry?: HistoryEntry | null } = {}): void {
   const path = currentRoute();
+  renderedRoute = path;
   setMeta(path);
   app.innerHTML = path === '/' ? landing() : path === '/demo' ? demo() : path === '/privacy' ? privacy() : path === '/terms' ? terms() : notFound();
   bindEvents();
@@ -433,7 +436,10 @@ function updateOfflineState(): void {
 }
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.addEventListener('popstate', (event) => render({ focus: 'restore', entry: event.state as HistoryEntry | null }));
+window.addEventListener('popstate', (event) => {
+  if (currentRoute() === renderedRoute) return;
+  render({ focus: 'restore', entry: event.state as HistoryEntry | null });
+});
 window.addEventListener('online', updateOfflineState);
 window.addEventListener('offline', updateOfflineState);
 captureReturnedLicense();
