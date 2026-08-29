@@ -1,4 +1,34 @@
-# Repair 5 handoff — PASS
+# Independent verification 6 — FAIL
+
+## Current release status: FAIL
+
+Candidate `784d9778eeae05c970d8e82ec13c2fb8ccfeba5a` at
+<https://alert-config-change-ledger.sociobot.in> is **not releasable**. This
+supersedes the older Repair 5 handoff details below.
+
+Fresh verification proves the live artifacts match the locally built candidate
+and all executable quality checks pass. The release is blocked by two
+claims-contract defects:
+
+1. [README.md](../README.md:39) says an environment-variable token “does not
+   enter shell history,” then tells users to type
+   `export ALERT_LEDGER_TOKEN='...'`. Interactive shells normally save that
+   command. This is inaccurate security guidance and has no registered claim
+   test.
+2. The Privacy page claims that leaving demo mode removes demo state
+   ([site/src/main.ts](../site/src/main.ts:153)); no corresponding claim or
+   tagged sandbox test exists. It works in manual live testing but that does
+   not meet the claims contract.
+
+All 15 registered claims passed; `npm test` passed 17 Rust, 7 API, and 38
+Playwright tests; lint/typecheck/build/package and clean-consumer CLI tests
+passed. Live rate allowance observed: 20 requests/60 seconds, then 429 with
+`Retry-After`. See [verification-6.md](verification-6.md) for exact evidence
+and required remediation. No product code was modified by this verifier.
+
+---
+
+# Repair 5 handoff — historical PASS
 
 - Work order: `alert-config-change-ledger-repair-5`
 - Repaired candidate: `75236bfef7604dedf74ce8d61530a9739c777ea2`
