@@ -43,6 +43,7 @@ function createApprovalPack({
   clientStore = new InMemoryAtomicCounterStore(),
   fetchImpl = (...args) => fetch(...args),
 } = {}) {
+  const storeKind = store.kind || store.constructor.name;
   const limiter = new PerClientRateLimiter({ store: clientStore, scope: 'client' });
   const endpointLimiter = new PerClientRateLimiter({ store, scope: 'endpoint' });
 
@@ -50,24 +51,24 @@ function createApprovalPack({
     try {
       const endpointLimit = await endpointLimiter.take('approval-pack');
       if (!endpointLimit.allowed) {
-        context.res = rateLimitResponse(endpointLimit.retryAfter);
+        context.res = withStore(rateLimitResponse(endpointLimit.retryAfter), storeKind);
         return;
       }
       const clientLimit = await limiter.take(clientId(req));
       if (!clientLimit.allowed) {
-        context.res = rateLimitResponse(clientLimit.retryAfter);
+        context.res = withStore(rateLimitResponse(clientLimit.retryAfter), storeKind);
         return;
       }
     } catch {
-      context.res = response(503, 'Request protection is unavailable. Try again shortly.', {
+      context.res = withStore(response(503, 'Request protection is unavailable. Try again shortly.', {
         'Retry-After': '5',
-      });
+      }), storeKind);
       return;
     }
 
     const license = header(req.headers, 'x-alert-ledger-license') || '';
     if (!license) {
-      context.res = response(401, 'A Pro license is required.');
+      context.res = withStore(response(401, 'A Pro license is required.'), storeKind);
       return;
     }
 
@@ -77,12 +78,12 @@ function createApprovalPack({
         { headers: { Accept: 'application/json' } },
       );
       if (!verify.ok) {
-        context.res = response(502, 'The license service could not verify this request.');
+        context.res = withStore(response(502, 'The license service could not verify this request.'), storeKind);
         return;
       }
       const verdict = await verify.json();
       if (verdict.valid !== true) {
-        context.res = response(403, 'This Pro license is not active.');
+        context.res = withStore(response(403, 'This Pro license is not active.'), storeKind);
         return;
       }
       context.res = {
@@ -93,11 +94,12 @@ function createApprovalPack({
           'Content-Type': 'text/markdown; charset=utf-8',
           'X-Content-Type-Options': 'nosniff',
           'X-Alert-Ledger-Build': BUILD_ID,
+          'X-Alert-Ledger-Limit-Store': storeKind,
         },
         body: template,
       };
     } catch {
-      context.res = response(502, 'The license service could not be reached.');
+      context.res = withStore(response(502, 'The license service could not be reached.'), storeKind);
     }
   };
 
@@ -106,6 +108,11 @@ function createApprovalPack({
     clientStore.reset();
   };
   return approvalPack;
+}
+
+function withStore(result, storeKind) {
+  result.headers['X-Alert-Ledger-Limit-Store'] = storeKind;
+  return result;
 }
 
 function rateLimitResponse(retryAfter) {

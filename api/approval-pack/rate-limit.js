@@ -7,6 +7,7 @@ const WINDOW_MS = 60_000;
 const MAX_REQUESTS_PER_WINDOW = 20;
 const MAX_CLIENTS = 10_000;
 const SHARED_DIRECTORY = '/home/data/alert-config-change-ledger/rate-limit';
+const TABLE_NAME = 'AlertLedgerRateLimits';
 
 class InMemoryAtomicCounterStore {
   constructor({ maxClients = MAX_CLIENTS } = {}) {
@@ -106,6 +107,68 @@ class SharedFileAtomicCounterStore {
   reset() {}
 }
 
+class AzureTableAtomicCounterStore {
+  constructor(connectionString, { table } = {}) {
+    if (table) {
+      this.table = table;
+    } else {
+      const { TableClient } = require('@azure/data-tables');
+      this.table = TableClient.fromConnectionString(connectionString, TABLE_NAME);
+    }
+    this.ready = null;
+    this.kind = 'azure-table';
+  }
+
+  async increment(scope, client, now, windowMs) {
+    await this.ensureTable();
+    const partitionKey = 'approval-pack';
+    const rowKey = createHash('sha256').update(`${scope}:${client}`).digest('hex');
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      let entity;
+      try {
+        entity = await this.table.getEntity(partitionKey, rowKey);
+      } catch (error) {
+        if (!hasStatus(error, 404)) throw error;
+        const counter = { partitionKey, rowKey, count: 1, resetAt: now + windowMs };
+        try {
+          await this.table.createEntity(counter);
+          return { count: counter.count, resetAt: counter.resetAt };
+        } catch (createError) {
+          if (hasStatus(createError, 409)) continue;
+          throw createError;
+        }
+      }
+
+      const resetAt = Number(entity.resetAt);
+      const counter = {
+        partitionKey,
+        rowKey,
+        count: resetAt <= now ? 1 : Number(entity.count) + 1,
+        resetAt: resetAt <= now ? now + windowMs : resetAt,
+      };
+      try {
+        await this.table.updateEntity(counter, 'Replace', { etag: entity.etag });
+        return { count: counter.count, resetAt: counter.resetAt };
+      } catch (updateError) {
+        if (hasStatus(updateError, 412)) continue;
+        throw updateError;
+      }
+    }
+    throw new Error('shared rate-limit counter stayed busy');
+  }
+
+  async ensureTable() {
+    if (!this.ready) {
+      this.ready = this.table.createTable().catch((error) => {
+        if (!hasStatus(error, 409)) throw error;
+      });
+    }
+    return this.ready;
+  }
+
+  reset() {}
+}
+
 class PerClientRateLimiter {
   constructor({
     store = new InMemoryAtomicCounterStore(),
@@ -136,10 +199,22 @@ class PerClientRateLimiter {
 }
 
 function productionCounterStore(environment = process.env) {
+  const connectionString = environment.AzureWebJobsStorage
+    || environment.AZURE_STORAGE_CONNECTION_STRING
+    || environment.WEBSITE_CONTENTAZUREFILECONNECTIONSTRING;
+  if (connectionString) return new AzureTableAtomicCounterStore(connectionString);
   if (environment.WEBSITE_INSTANCE_ID || environment.WEBSITE_SITE_NAME) {
-    return new SharedFileAtomicCounterStore();
+    const store = new SharedFileAtomicCounterStore();
+    store.kind = 'shared-file';
+    return store;
   }
-  return new InMemoryAtomicCounterStore();
+  const store = new InMemoryAtomicCounterStore();
+  store.kind = 'memory';
+  return store;
+}
+
+function hasStatus(error, expected) {
+  return Boolean(error && typeof error === 'object' && error.statusCode === expected);
 }
 
 function header(headers, name) {
@@ -159,6 +234,7 @@ function clientId(req) {
 module.exports = {
   MAX_REQUESTS_PER_WINDOW,
   WINDOW_MS,
+  AzureTableAtomicCounterStore,
   InMemoryAtomicCounterStore,
   PerClientRateLimiter,
   SharedFileAtomicCounterStore,
