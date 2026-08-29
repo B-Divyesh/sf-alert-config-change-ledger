@@ -7,6 +7,7 @@ const path = require('node:path');
 const approvalPack = require('./index.js');
 const { createApprovalPack } = approvalPack;
 const {
+  AzureTableAtomicCounterStore,
   SharedFileAtomicCounterStore,
   clientId,
   productionCounterStore,
@@ -119,6 +120,22 @@ test('concurrent requests cannot bypass the allowance across handler instances',
   assert.ok(blocked.every((context) => /^[1-9]\d*$/.test(context.res.headers['Retry-After'])));
 });
 
+test('Azure Table ETags serialize concurrent requests across handler instances', async () => {
+  const table = new FakeAtomicTable();
+  const handlers = Array.from({ length: 5 }, () => createApprovalPack({
+    store: new AzureTableAtomicCounterStore('unused-in-test', { table }),
+  }));
+  const contexts = Array.from({ length: 25 }, () => ({}));
+  await Promise.all(contexts.map((context, index) => handlers[index % handlers.length](context, {
+    headers: { 'X-Forwarded-For': '198.51.100.75' },
+  })));
+
+  assert.equal(contexts.filter((context) => context.res.status === 401).length, 20);
+  const blocked = contexts.filter((context) => context.res.status === 429);
+  assert.equal(blocked.length, 5);
+  assert.ok(blocked.every((context) => /^[1-9]\d*$/.test(context.res.headers['Retry-After'])));
+});
+
 test('a deployed handler fails closed when shared protection is unavailable', async () => {
   const handler = createApprovalPack({
     store: {
@@ -159,3 +176,35 @@ test('the endpoint ceiling protects against rotating forwarded client identities
   assert.equal(blocked.length, 5);
   assert.ok(blocked.every((item) => /^[1-9]\d*$/.test(item.headers['Retry-After'])));
 });
+
+class FakeAtomicTable {
+  constructor() {
+    this.entities = new Map();
+    this.etag = 0;
+  }
+
+  async createTable() {}
+
+  async getEntity(partitionKey, rowKey) {
+    const entity = this.entities.get(`${partitionKey}:${rowKey}`);
+    if (!entity) throw statusError(404);
+    return { ...entity };
+  }
+
+  async createEntity(entity) {
+    const key = `${entity.partitionKey}:${entity.rowKey}`;
+    if (this.entities.has(key)) throw statusError(409);
+    this.entities.set(key, { ...entity, etag: String(++this.etag) });
+  }
+
+  async updateEntity(entity, _mode, options) {
+    const key = `${entity.partitionKey}:${entity.rowKey}`;
+    const current = this.entities.get(key);
+    if (!current || current.etag !== options.etag) throw statusError(412);
+    this.entities.set(key, { ...entity, etag: String(++this.etag) });
+  }
+}
+
+function statusError(statusCode) {
+  return Object.assign(new Error(`table status ${statusCode}`), { statusCode });
+}

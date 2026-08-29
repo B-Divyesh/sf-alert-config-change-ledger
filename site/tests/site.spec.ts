@@ -54,6 +54,22 @@ test('routing updates the title and focuses the page heading', async ({ page }) 
   await expect(page).toHaveURL('/');
 });
 
+test('reduced motion removes scrolling and reel movement', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/demo');
+  const styles = await page.evaluate(() => {
+    const reel = document.querySelector<HTMLElement>('.reel')!;
+    return {
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+      animationDuration: getComputedStyle(reel).animationDuration,
+      animationIterations: getComputedStyle(reel).animationIterationCount,
+    };
+  });
+  expect(styles.scrollBehavior).toBe('auto');
+  expect(Number.parseFloat(styles.animationDuration)).toBeLessThanOrEqual(0.00001);
+  expect(styles.animationIterations).toBe('1');
+});
+
 test('demo supports selection, empty state, and reset', async ({ page }) => {
   await page.goto('/demo');
   await page.getByRole('button', { name: /service = checkout/ }).click();
@@ -270,7 +286,12 @@ test('public install instructions include a usable source acquisition step', asy
 
 test('@claim:offline-reload bundled demo reloads offline', async ({ page, context }) => {
   await page.goto('/demo');
-  await page.evaluate(() => navigator.serviceWorker.ready);
+  const serviceWorker = await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.ready;
+    await registration.update();
+    return registration.active?.scriptURL;
+  });
+  expect(serviceWorker).toBe('http://127.0.0.1:4173/sw.js');
   await page.reload();
   await context.setOffline(true);
   await page.reload();
