@@ -1,0 +1,10 @@
+cache-control: no-store, private
+content-length: 51
+content-type: text/plain; charset=utf-8
+date: Sat, 29 Aug 2026 18:56:50 GMT
+retry-after: 57
+strict-transport-security: max-age=31536000; includeSubDomains
+x-alert-ledger-build: repair-7
+x-alert-ledger-limit-store: azure-table
+x-content-type-options: nosniff
+x-ms-middleware-request-id: 0eb35a3a-0087-4e09-9005-f3030534fc94

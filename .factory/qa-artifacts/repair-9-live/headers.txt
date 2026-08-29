@@ -1,0 +1,85 @@
+URL https://alert-config-change-ledger.sociobot.in/
+HTTP/2 200 
+content-type: text/html
+date: Sat, 29 Aug 2026 18:54:42 GMT
+accept-ranges: bytes
+cache-control: public, must-revalidate, max-age=30
+etag: "90976438"
+last-modified: Sat, 29 Aug 2026 18:53:46 GMT
+content-length: 1897
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://alert-config-change-ledger.sociobot.in/sw.js
+HTTP/2 200 
+content-type: text/javascript
+date: Sat, 29 Aug 2026 18:54:42 GMT
+accept-ranges: bytes
+cache-control: public, must-revalidate, max-age=30
+etag: "90976438"
+last-modified: Sat, 29 Aug 2026 18:53:46 GMT
+content-length: 1370
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://alert-config-change-ledger.sociobot.in/assets/index-B6pIrGFD.js
+HTTP/2 200 
+content-type: text/javascript
+date: Sat, 29 Aug 2026 18:54:42 GMT
+accept-ranges: bytes
+cache-control: public, max-age=31536000, immutable
+etag: "90976438"
+last-modified: Sat, 29 Aug 2026 18:53:46 GMT
+content-length: 20308
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://alert-config-change-ledger.sociobot.in/assets/index-Bfp0AagM.css
+HTTP/2 200 
+content-type: text/css
+date: Sat, 29 Aug 2026 18:54:43 GMT
+accept-ranges: bytes
+cache-control: public, max-age=31536000, immutable
+etag: "90976438"
+last-modified: Sat, 29 Aug 2026 18:53:46 GMT
+content-length: 13336
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+
+URL https://alert-config-change-ledger.sociobot.in/cassette-ledger.webp
+HTTP/2 200 
+content-type: image/webp
+date: Sat, 29 Aug 2026 18:54:43 GMT
+accept-ranges: bytes
+cache-control: public, max-age=3600, must-revalidate
+etag: "90976438"
+last-modified: Sat, 29 Aug 2026 18:53:46 GMT
+content-length: 169978
+strict-transport-security: max-age=10886400; includeSubDomains; preload
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-xss-protection: 1; mode=block
+x-dns-prefetch-control: off
+content-security-policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.sociobot.in; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self' https://api.sociobot.in
+permissions-policy: camera=(), microphone=(), geolocation=()
+
