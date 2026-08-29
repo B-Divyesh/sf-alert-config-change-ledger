@@ -1,6 +1,19 @@
 import './style.css';
 
 type DemoState = { cleared: boolean; selected: number };
+type SnapshotRef = { source: string; revision: string | null; captured_at: string };
+type RouteView = { severity: string | null; recipients: string[]; matchers: Record<string, string> };
+type ReportChange = {
+  kind: 'added' | 'removed' | 'modified';
+  route: string;
+  route_id: string;
+  fields: string[];
+  before?: RouteView;
+  after?: RouteView;
+  attributed_to: SnapshotRef;
+};
+type DriftReport = { baseline: SnapshotRef; live: SnapshotRef; matched_routes: number; changes: ReportChange[] };
+declare const __SAMPLE_REPORT__: DriftReport;
 
 const SLUG = 'alert-config-change-ledger';
 const DEMO_PREFIX = 'demo:alert-config-ledger:';
@@ -10,21 +23,31 @@ const VERDICT_KEY = `sb_license_verdict:${SLUG}`;
 const API = 'https://api.sociobot.in/api/v1';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const routeStatus = document.querySelector<HTMLDivElement>('#route-status')!;
+const sampleReport = __SAMPLE_REPORT__;
 
-const changes = [
-  {
-    mark: '~', kind: 'Recipient changed', route: 'team = payments', detail: 'Pager endpoint fingerprint changed.',
-    before: 'payments-pager · fp:9b3c79c1a632', after: 'payments-secondary · fp:5d6d0f0b2cb1', fields: 'recipients'
-  },
-  {
-    mark: '~', kind: 'Severity changed', route: 'service = checkout', detail: 'Warning now routes as critical.',
-    before: 'severity = warning', after: 'severity = critical', fields: 'severity, recipients, matchers'
-  },
-  {
-    mark: '+', kind: 'Route added', route: 'team = security', detail: 'A new critical route exists only in live state.',
-    before: 'No reviewed route', after: 'security-oncall · severity = critical', fields: 'route'
-  }
-];
+const displayCopy: Record<string, { kind: string; detail: string }> = {
+  'team = payments': { kind: 'Recipient changed', detail: 'Pager endpoint fingerprint changed.' },
+  'service = checkout': { kind: 'Severity changed', detail: 'Warning now routes as critical.' },
+  'team = security': { kind: 'Route added', detail: 'A new critical route exists only in live state.' },
+};
+const displayOrder = ['team = payments', 'service = checkout', 'team = security'];
+const changes = displayOrder.map((route) => {
+  const change = sampleReport.changes.find((item) => item.route === route)!;
+  const severityOnly = route === 'service = checkout';
+  return {
+    mark: change.kind === 'added' ? '+' : change.kind === 'removed' ? '−' : '~',
+    kind: displayCopy[route].kind,
+    route,
+    detail: displayCopy[route].detail,
+    before: change.before
+      ? severityOnly ? `severity = ${change.before.severity}` : change.before.recipients.join(', ')
+      : 'No reviewed route',
+    after: change.after
+      ? severityOnly ? `severity = ${change.after.severity}` : change.after.recipients.join(', ')
+      : 'No live route',
+    fields: change.fields.join(', '),
+  };
+});
 
 const titles: Record<string, string> = {
   '/': 'Alert Config Ledger — trace alert route changes',
@@ -36,7 +59,7 @@ const titles: Record<string, string> = {
 
 function header(): string {
   return `<header class="site-header">
-    <a class="wordmark route-link" href="/" aria-label="Alert Config Ledger home"><span aria-hidden="true">ACL</span><b>Alert Config Ledger</b></a>
+    <a class="wordmark route-link" href="/"><span>ACL</span><b>Alert Config Ledger</b></a>
     <nav aria-label="Main navigation">
       <a class="route-link" href="/demo">Demo</a>
       <a href="/#install">Install</a>
@@ -49,7 +72,7 @@ function footer(): string {
   return `<footer class="site-footer">
     <p>Trace live alert route changes back to their source.</p>
     <nav aria-label="Footer navigation"><a class="route-link" href="/privacy">Privacy</a><a class="route-link" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
-    <p class="build">v0.1.0 · build 002</p>
+    <p class="build">v0.1.0 · build 003</p>
   </footer>`;
 }
 
@@ -97,8 +120,8 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
     </section>
 
     <section id="install" class="install" aria-labelledby="install-title">
-      <div><div class="section-label">Side A / install</div><h2 id="install-title">Run the ledger locally</h2><p>The demo ships inside the binary and needs no account.</p></div>
-      <div class="command-block"><code>cargo install --path .<br>alert-ledger demo</code><button class="copy-button" data-action="copy-command">Copy install command</button></div>
+      <div><div class="section-label">Side A / install</div><h2 id="install-title">Run the ledger locally</h2><p>The demo ships inside the binary and needs no account.</p><p><a href="https://github.com/B-Divyesh/sf-alert-config-change-ledger" rel="external">Get the source on GitHub <span class="sr-only">(external site)</span></a>.</p></div>
+      <div class="command-block"><code>git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git<br>cd sf-alert-config-change-ledger<br>cargo install --path .<br>alert-ledger demo</code><button class="copy-button" data-action="copy-command">Copy install command</button></div>
     </section>
 
     <section class="boundaries" aria-labelledby="boundaries-title">
@@ -146,9 +169,9 @@ function demo(): string {
   } else {
     const selected = changes[state.selected] || changes[0];
     content = `<section class="ledger" aria-labelledby="ledger-title">
-      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>a81c7e2</strong><time datetime="2026-08-27T16:00:00Z">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Drift found</b><span>3 changed · 2 matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>live-1842</strong><time datetime="2026-08-28T07:42:00Z">28 Aug · 07:42 UTC</time></div></div>
+      <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>${sampleReport.baseline.revision}</strong><time datetime="${sampleReport.baseline.captured_at}">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Drift found</b><span>${sampleReport.changes.length} changed · ${sampleReport.matched_routes} matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>${sampleReport.live.revision}</strong><time datetime="${sampleReport.live.captured_at}">28 Aug · 07:42 UTC</time></div></div>
       <div class="ledger-body"><div class="track-list"><h2 id="ledger-title">Changed routes</h2><p>Choose a route to inspect its baseline and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
-      <article class="change-detail" aria-live="polite"><div class="section-label">Track 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>grafana:production #live-1842</dd></div></dl></article></div>
+      <article class="change-detail" aria-live="polite"><div class="section-label">Track 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>${sampleReport.live.source} #${sampleReport.live.revision}</dd></div></dl></article></div>
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
   }
@@ -236,10 +259,10 @@ async function handleAction(event: Event): Promise<void> {
     localStorage.setItem(DEMO_KEY, JSON.stringify({ cleared: true, selected: 0 }));
     render();
   } else if (action === 'download-report') {
-    download('alert-ledger-sample-report.json', JSON.stringify({ baseline: 'a81c7e2', live: 'live-1842', matched_routes: 2, changes }, null, 2), 'application/json');
+    download('alert-ledger-sample-report.json', JSON.stringify(sampleReport, null, 2), 'application/json');
     announce('Downloaded the sample drift report.');
   } else if (action === 'copy-command') {
-    await navigator.clipboard.writeText('cargo install --path .\nalert-ledger demo');
+    await navigator.clipboard.writeText('git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git\ncd sf-alert-config-change-ledger\ncargo install --path .\nalert-ledger demo');
     (event.currentTarget as HTMLElement).textContent = 'Copied command';
   } else if (action === 'download-pro') {
     const token = localStorage.getItem(LICENSE_KEY);

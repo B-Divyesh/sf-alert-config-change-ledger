@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Keep duplicate sibling routes distinct so recipient drift cannot be overwritten.
+- Preserve Alertmanager negative-regex matchers and report their changes.
+- Generate the web demo report from the CLI comparison code.
+- Enforce approval-pack request limits through shared Azure Table counters.
+- Add complete install, mobile wordmark, 404 metadata, and crate-package coverage.
+
 ## 0.1.0 — 2026-08-28
 
 - Add Grafana and Alertmanager export normalizers.

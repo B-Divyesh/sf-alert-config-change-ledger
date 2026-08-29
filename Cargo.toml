@@ -7,7 +7,7 @@ license = "MIT"
 repository = "https://github.com/B-Divyesh/sf-alert-config-change-ledger"
 keywords = ["alerting", "grafana", "alertmanager", "audit", "cli"]
 categories = ["command-line-utilities", "development-tools"]
-include = ["src/**", "examples/**", "tests/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE", "CHANGELOG.md"]
+include = ["/src/**", "/examples/**", "/tests/**", "/Cargo.toml", "/Cargo.lock", "/README.md", "/LICENSE", "/CHANGELOG.md"]
 
 [[bin]]
 name = "alert-ledger"

@@ -79,6 +79,7 @@ pre { max-width: 100%; padding: 18px; overflow: auto; color: var(--paper); backg
 .tape-steps p { margin: 0; }
 .install { padding: 72px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; color: var(--paper); background: var(--ink); }
 .install .section-label { color: var(--ink); background: var(--paper); }
+.install a { min-height: 44px; display: inline-flex; align-items: center; }
 .command-block { border: 2px solid var(--paper); padding: 24px; position: relative; }
 .command-block code { display: block; margin-bottom: 24px; color: #f7c56e; font-size: 1.05rem; }
 .copy-button, .text-button { min-height: 44px; padding: 8px 2px; border: 0; background: transparent; color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; cursor: pointer; }

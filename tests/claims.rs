@@ -47,6 +47,103 @@ fn claim_provider_inputs() {
     assert_eq!(alertmanager.provider, "alertmanager");
     assert!(!grafana.routes.is_empty());
     assert!(!alertmanager.routes.is_empty());
+
+    let negative_regex = parse_export(
+        include_bytes!("fixtures/alertmanager-negative-regex-reviewed.yml"),
+        "alertmanager",
+        Source {
+            name: "test".into(),
+            revision: None,
+        },
+        Utc::now(),
+    )
+    .unwrap();
+    assert_eq!(
+        negative_regex.routes[1]
+            .matchers
+            .get("team")
+            .map(String::as_str),
+        Some("!~dev")
+    );
+}
+
+#[test]
+fn duplicate_sibling_routes_keep_unique_ids_and_recipient_drift() {
+    let baseline = parse_export(
+        include_bytes!("fixtures/grafana-duplicate-siblings-reviewed.json"),
+        "grafana",
+        Source {
+            name: "reviewed".into(),
+            revision: None,
+        },
+        "2026-08-27T09:00:00Z".parse().unwrap(),
+    )
+    .unwrap();
+    let live = parse_export(
+        include_bytes!("fixtures/grafana-duplicate-siblings-live.json"),
+        "grafana",
+        Source {
+            name: "live".into(),
+            revision: None,
+        },
+        "2026-08-28T09:00:00Z".parse().unwrap(),
+    )
+    .unwrap();
+    let ids = baseline
+        .routes
+        .iter()
+        .map(|route| &route.id)
+        .collect::<std::collections::BTreeSet<_>>();
+    let baseline_ids = baseline
+        .routes
+        .iter()
+        .map(|route| &route.id)
+        .collect::<Vec<_>>();
+    let live_ids = live
+        .routes
+        .iter()
+        .map(|route| &route.id)
+        .collect::<Vec<_>>();
+    let report = compare(&baseline, &live);
+
+    assert_eq!(baseline.routes.len(), 3);
+    assert_eq!(ids.len(), 3, "every normalized route ID must be unique");
+    assert_eq!(
+        baseline_ids, live_ids,
+        "recipient edits must not change IDs"
+    );
+    assert_eq!(report.matched_routes, 2);
+    assert_eq!(report.changes.len(), 1);
+    assert_eq!(report.changes[0].fields, ["recipients"]);
+}
+
+#[test]
+fn alertmanager_negative_regex_matcher_drift_is_detected() {
+    let baseline = parse_export(
+        include_bytes!("fixtures/alertmanager-negative-regex-reviewed.yml"),
+        "alertmanager",
+        Source {
+            name: "reviewed".into(),
+            revision: None,
+        },
+        "2026-08-27T09:00:00Z".parse().unwrap(),
+    )
+    .unwrap();
+    let live = parse_export(
+        include_bytes!("fixtures/alertmanager-negative-regex-live.yml"),
+        "alertmanager",
+        Source {
+            name: "live".into(),
+            revision: None,
+        },
+        "2026-08-28T09:00:00Z".parse().unwrap(),
+    )
+    .unwrap();
+    let report = compare(&baseline, &live);
+
+    assert_eq!(baseline.routes[1].matchers["team"], "!~dev");
+    assert_eq!(live.routes[1].matchers["team"], "!~test");
+    assert!(!report.changes.is_empty());
 }
 
 /// @claim:grafana-contact-points

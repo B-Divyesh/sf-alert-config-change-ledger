@@ -1,0 +1,19 @@
+{
+  "receiver": "default",
+  "routes": [
+    {
+      "receiver": "team-a",
+      "object_matchers": [["team", "=", "payments"]],
+      "continue": true
+    },
+    {
+      "receiver": "team-b",
+      "object_matchers": [["team", "=", "payments"]]
+    }
+  ],
+  "contactPoints": [
+    {"name": "default", "type": "email", "settings": {"addresses": "default@example.test"}},
+    {"name": "team-a", "type": "webhook", "settings": {"url": "https://hooks.example.test/team-a-reviewed"}},
+    {"name": "team-b", "type": "webhook", "settings": {"url": "https://hooks.example.test/team-b"}}
+  ]
+}

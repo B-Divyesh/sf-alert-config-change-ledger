@@ -17,6 +17,8 @@ The command compares two realistic Grafana exports in a new temporary folder. It
 Build the single binary from source:
 
 ```sh
+git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git
+cd sf-alert-config-change-ledger
 cargo install --path .
 alert-ledger --help
 ```
@@ -79,13 +81,14 @@ Requirements: Rust 1.85+ and Node 22+.
 
 ```sh
 npm install
+npm install --prefix api
 npm test
 npm run build
 ```
 
 `npm test` runs Rust tests, site tests, and browser claim tests. `npm run build` produces the Rust release binary in `target/release/` and the static site in `dist/site/`.
 
-Use `npm ci` instead of `npm install` in a clean CI checkout.
+Use `npm ci` and `npm ci --prefix api` instead in a clean CI checkout.
 
 Run each part separately:
 

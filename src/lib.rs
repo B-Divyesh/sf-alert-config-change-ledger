@@ -153,6 +153,7 @@ pub fn parse_export(
     if routes.is_empty() {
         bail!("{provider} export contains no alert routes");
     }
+    disambiguate_route_ids(&mut routes);
     routes.sort_by(|a, b| a.id.cmp(&b.id));
     Ok(Snapshot {
         schema_version: SCHEMA_VERSION,
@@ -161,6 +162,19 @@ pub fn parse_export(
         source,
         routes,
     })
+}
+
+fn disambiguate_route_ids(routes: &mut [Route]) {
+    let mut counts = BTreeMap::new();
+    for route in routes.iter() {
+        *counts.entry(route.id.clone()).or_insert(0_usize) += 1;
+    }
+    for route in routes {
+        if counts.get(&route.id).copied().unwrap_or_default() > 1 {
+            let identity = format!("{}@{}", route.id, route.path);
+            route.id = format!("route-{}", &fingerprint(&identity)[..12]);
+        }
+    }
 }
 
 fn collect_contacts(value: &Value, provider: &str) -> BTreeMap<String, Recipient> {
@@ -350,6 +364,7 @@ fn flatten_routes(
     let matchers = parse_matchers(object);
     let severity = matchers.get("severity").map(|value| {
         value
+            .trim_start_matches("!~")
             .trim_start_matches("=~")
             .trim_start_matches("!=")
             .trim_start_matches('=')
@@ -442,7 +457,7 @@ fn flatten_routes(
 }
 
 fn format_matcher(key: &str, value: &str) -> String {
-    for operator in ["=~", "!=", "="] {
+    for operator in ["!~", "=~", "!=", "="] {
         if let Some(operand) = value.strip_prefix(operator) {
             return format!("{key} {operator} {operand}");
         }
@@ -465,7 +480,7 @@ fn parse_matchers(object: &Map<String, Value>) -> BTreeMap<String, String> {
     }
     if let Some(items) = object.get("matchers").and_then(Value::as_array) {
         for item in items.iter().filter_map(Value::as_str) {
-            for operator in ["=~", "!=", "="] {
+            for operator in ["!~", "=~", "!=", "="] {
                 if let Some((key, value)) = item.split_once(operator) {
                     matchers.insert(
                         key.trim().to_string(),
@@ -491,21 +506,17 @@ fn parse_matchers(object: &Map<String, Value>) -> BTreeMap<String, String> {
 pub fn compare(baseline: &Snapshot, live: &Snapshot) -> DriftReport {
     let baseline_ref = snapshot_ref(baseline);
     let live_ref = snapshot_ref(live);
-    let before: BTreeMap<_, _> = baseline
-        .routes
-        .iter()
-        .map(|route| (&route.id, route))
-        .collect();
-    let after: BTreeMap<_, _> = live.routes.iter().map(|route| (&route.id, route)).collect();
-    let ids: BTreeSet<_> = before.keys().chain(after.keys()).copied().collect();
+    let before = index_routes(&baseline.routes);
+    let after = index_routes(&live.routes);
+    let ids: BTreeSet<_> = before.keys().chain(after.keys()).cloned().collect();
     let mut matched_routes = 0;
     let mut changes = Vec::new();
     for id in ids {
-        match (before.get(id), after.get(id)) {
+        match (before.get(&id), after.get(&id)) {
             (None, Some(route)) => changes.push(Change {
                 kind: ChangeKind::Added,
                 route: route.name.clone(),
-                route_id: route.id.clone(),
+                route_id: id.clone(),
                 fields: vec!["route".to_string()],
                 before: None,
                 after: Some(route_view(route)),
@@ -514,7 +525,7 @@ pub fn compare(baseline: &Snapshot, live: &Snapshot) -> DriftReport {
             (Some(route), None) => changes.push(Change {
                 kind: ChangeKind::Removed,
                 route: route.name.clone(),
-                route_id: route.id.clone(),
+                route_id: id.clone(),
                 fields: vec!["route".to_string()],
                 before: Some(route_view(route)),
                 after: None,
@@ -540,7 +551,7 @@ pub fn compare(baseline: &Snapshot, live: &Snapshot) -> DriftReport {
                     changes.push(Change {
                         kind: ChangeKind::Modified,
                         route: new.name.clone(),
-                        route_id: new.id.clone(),
+                        route_id: id.clone(),
                         fields,
                         before: Some(route_view(old)),
                         after: Some(route_view(new)),
@@ -557,6 +568,32 @@ pub fn compare(baseline: &Snapshot, live: &Snapshot) -> DriftReport {
         matched_routes,
         changes,
     }
+}
+
+fn index_routes(routes: &[Route]) -> BTreeMap<String, &Route> {
+    let mut id_counts = BTreeMap::new();
+    for route in routes {
+        *id_counts.entry(&route.id).or_insert(0_usize) += 1;
+    }
+
+    let mut key_counts = BTreeMap::new();
+    let mut indexed = BTreeMap::new();
+    for route in routes {
+        let base = if id_counts.get(&route.id).copied().unwrap_or_default() > 1 {
+            format!("{}@{}", route.id, route.path)
+        } else {
+            route.id.clone()
+        };
+        let occurrence = key_counts.entry(base.clone()).or_insert(0_usize);
+        let key = if *occurrence == 0 {
+            base
+        } else {
+            format!("{base}#{}", *occurrence + 1)
+        };
+        *occurrence += 1;
+        indexed.insert(key, route);
+    }
+    indexed
 }
 
 fn route_view(route: &Route) -> RouteView {

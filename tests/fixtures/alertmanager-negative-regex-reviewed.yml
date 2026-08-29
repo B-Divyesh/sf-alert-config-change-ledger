@@ -1,0 +1,9 @@
+route:
+  receiver: default
+  routes:
+    - receiver: production
+      matchers:
+        - 'team!~"dev"'
+receivers:
+  - name: default
+  - name: production

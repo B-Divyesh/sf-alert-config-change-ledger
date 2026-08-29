@@ -140,6 +140,33 @@ test('deployment policy returns a designed 404 and revalidates mutable art', () 
   const art = config.routes.find((route: { route: string }) => route.route === '/*.webp');
   expect(art.headers['Cache-Control']).not.toContain('immutable');
   expect(art.headers['Cache-Control']).toContain('must-revalidate');
+
+  const notFound = readFileSync(resolve('site/public/404.html'), 'utf8');
+  for (const metadata of [
+    'name="description"',
+    'rel="canonical"',
+    'rel="apple-touch-icon"',
+    'property="og:title"',
+    'property="og:description"',
+    'property="og:image"',
+    'name="twitter:card"',
+    'name="twitter:title"',
+    'name="twitter:description"',
+    'name="twitter:image"',
+  ]) expect(notFound).toContain(metadata);
+});
+
+test('mobile wordmark accessible name contains its visible ACL label', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('link', { name: /^ACL$/ })).toBeVisible();
+  await page.goto('/404.html');
+  await expect(page.getByRole('link', { name: /^ACL$/ })).toBeVisible();
+});
+
+test('publishable crate excludes Node dependency files', () => {
+  const files = execFileSync('cargo', ['package', '--allow-dirty', '--list'], { encoding: 'utf8' }).trim().split('\n');
+  expect(files.some((file) => file.includes('node_modules/'))).toBe(false);
 });
 
 test('production deployment configuration always ships the approval-pack API', () => {
@@ -231,11 +258,14 @@ test('@claim:web-cli-parity web demo reports the CLI sample comparison', async (
   let content = '';
   for await (const chunk of stream!) content += chunk.toString();
   const web = JSON.parse(content);
-  const simplify = (items: Array<{ route: string; fields: string[] | string }>) => items
-    .map((item) => ({ route: item.route, fields: Array.isArray(item.fields) ? item.fields.join(', ') : item.fields }))
-    .sort((a, b) => a.route.localeCompare(b.route));
-  expect(web.matched_routes).toBe(cli.report.matched_routes);
-  expect(simplify(web.changes)).toEqual(simplify(cli.report.changes));
+  expect(web).toEqual(cli.report);
+});
+
+test('public install instructions include a usable source acquisition step', async ({ page }) => {
+  await page.goto('/#install');
+  const source = page.getByRole('link', { name: /Get the source on GitHub/ });
+  await expect(source).toHaveAttribute('href', 'https://github.com/B-Divyesh/sf-alert-config-change-ledger');
+  await expect(page.locator('.command-block code')).toContainText('git clone https://github.com/B-Divyesh/sf-alert-config-change-ledger.git');
 });
 
 test('@claim:offline-reload bundled demo reloads offline', async ({ page, context }) => {

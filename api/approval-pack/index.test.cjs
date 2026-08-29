@@ -2,7 +2,12 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 const approvalPack = require('./index.js');
-const { clientId } = require('./rate-limit.js');
+const { createApprovalPack } = approvalPack;
+const {
+  AzureTableAtomicCounterStore,
+  clientId,
+  productionCounterStore,
+} = require('./rate-limit.js');
 
 test.beforeEach(() => approvalPack.__resetRateLimiterForTests());
 
@@ -20,6 +25,7 @@ test('unlicensed approval-pack requests never receive paid content', async () =>
   assert.equal(context.res.status, 401);
   assert.doesNotMatch(context.res.body, /# Alert route approval/);
   assert.equal(context.res.headers['Cache-Control'], 'private, no-store');
+  assert.equal(context.res.headers['X-Alert-Ledger-Build'], 'repair-7');
 });
 
 test('invalid licenses never receive paid content', async (t) => {
@@ -93,6 +99,33 @@ test('bursts are rate limited per client before license verification', async (t)
   }
 });
 
+test('concurrent requests cannot bypass the allowance across handler instances', async () => {
+  const table = new FakeAtomicTable();
+  const handlers = Array.from({ length: 5 }, () => createApprovalPack({
+    store: new AzureTableAtomicCounterStore('unused-in-test', { table }),
+  }));
+  const contexts = Array.from({ length: 25 }, () => ({}));
+  await Promise.all(contexts.map((context, index) => handlers[index % handlers.length](context, {
+    headers: { 'X-Forwarded-For': '198.51.100.76' },
+  })));
+
+  assert.equal(contexts.filter((context) => context.res.status === 401).length, 20);
+  const blocked = contexts.filter((context) => context.res.status === 429);
+  assert.equal(blocked.length, 5);
+  assert.ok(blocked.every((context) => /^[1-9]\d*$/.test(context.res.headers['Retry-After'])));
+});
+
+test('a deployed handler fails closed when shared protection is unavailable', async () => {
+  const handler = createApprovalPack({
+    store: productionCounterStore({ WEBSITE_INSTANCE_ID: 'serverless-instance' }),
+  });
+  const context = {};
+  await handler(context, { headers: {} });
+  assert.equal(context.res.status, 503);
+  assert.equal(context.res.headers['Retry-After'], '5');
+  assert.equal(context.res.headers['Cache-Control'], 'private, no-store');
+});
+
 test('the endpoint ceiling protects against rotating forwarded client identities', async () => {
   const responses = [];
   for (let index = 0; index < 25; index += 1) {
@@ -105,3 +138,35 @@ test('the endpoint ceiling protects against rotating forwarded client identities
   assert.equal(blocked.length, 5);
   assert.ok(blocked.every((item) => /^[1-9]\d*$/.test(item.headers['Retry-After'])));
 });
+
+class FakeAtomicTable {
+  constructor() {
+    this.entities = new Map();
+    this.etag = 0;
+  }
+
+  async createTable() {}
+
+  async getEntity(partitionKey, rowKey) {
+    const entity = this.entities.get(`${partitionKey}:${rowKey}`);
+    if (!entity) throw statusError(404);
+    return { ...entity };
+  }
+
+  async createEntity(entity) {
+    const key = `${entity.partitionKey}:${entity.rowKey}`;
+    if (this.entities.has(key)) throw statusError(409);
+    this.entities.set(key, { ...entity, etag: String(++this.etag) });
+  }
+
+  async updateEntity(entity, _mode, options) {
+    const key = `${entity.partitionKey}:${entity.rowKey}`;
+    const current = this.entities.get(key);
+    if (!current || current.etag !== options.etag) throw statusError(412);
+    this.entities.set(key, { ...entity, etag: String(++this.etag) });
+  }
+}
+
+function statusError(statusCode) {
+  return Object.assign(new Error(`table status ${statusCode}`), { statusCode });
+}

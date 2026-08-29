@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 28 August 2026. Counts treat route labels and command names as one word. Terminal commands are listed by line because they are recorded output. No item exceeds 22 words. No item contains a banned word.
+Audited 29 August 2026. Counts treat route labels and command names as one word. Terminal commands are listed by line because they are recorded output. No item exceeds 22 words. No item contains a banned word.
 
 | Copy | Words | Result |
 | --- | ---: | --- |
@@ -35,6 +35,7 @@ Audited 28 August 2026. Counts treat route labels and command names as one word.
 | Side A / install | 4 | Pass |
 | Run the ledger locally | 4 | Pass |
 | The demo ships inside the binary and needs no account. | 10 | Pass |
+| Get the source on GitHub. | 5 | Pass |
 | Copy install command | 3 | Pass |
 | Write protect / on | 4 | Pass |
 | What it does not do | 5 | Pass |
@@ -56,7 +57,7 @@ Audited 28 August 2026. Counts treat route labels and command names as one word.
 | Terms | 1 | Pass |
 | Built by Param Factory | 4 | Pass |
 
-Average across the 51 items: 5.9 words.
+Average across the 52 items: 5.9 words.
 
 ## Terminology
 
