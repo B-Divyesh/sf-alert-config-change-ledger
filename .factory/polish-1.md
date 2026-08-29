@@ -3,7 +3,9 @@
 - Work order: `alert-config-change-ledger-polish-1`
 - Base reviewed: `c1b4d52d66cfdc9a8e8231a5054e47d9c792fc4d`
 - Review: [`.factory/review-1.md`](review-1.md)
-- Local screenshots: [`qa-artifacts/polish-1-desktop.png`](qa-artifacts/polish-1-desktop.png), [`qa-artifacts/polish-1-demo-mobile.png`](qa-artifacts/polish-1-demo-mobile.png)
+- Screenshots: [`qa-artifacts/polish-1-live-desktop.png`](qa-artifacts/polish-1-live-desktop.png), [`qa-artifacts/polish-1-live-demo-mobile.png`](qa-artifacts/polish-1-live-demo-mobile.png)
+
+Every row below was rechecked cold at <https://alert-config-change-ledger.sociobot.in> after deployment. The live browser check confirmed route metadata, zero serious/critical Axe violations, no normal-load console errors, no cross-origin demo requests, the `?demo=1` sandbox, the desktop first-screen facts, and the designed 404.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
@@ -48,4 +50,4 @@ npm run build
 npm run lint
 ```
 
-All registered claims, including the new normalized snapshot claim, are rerun from a clean clone before handoff. Live deployment and cold-URL evidence are appended to the handoff after release.
+All 17 registered claims, including the new normalized snapshot claim, passed from a clean clone. The live URL check passed after the production deployment.

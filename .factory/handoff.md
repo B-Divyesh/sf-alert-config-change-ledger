@@ -1,41 +1,48 @@
-# Review 1 handoff — FAIL
+# Polish 1 handoff — PASS
 
-- Work order: `alert-config-change-ledger-review-1`
-- Candidate: `c1b4d52d66cfdc9a8e8231a5054e47d9c792fc4d`
-- Live URL: <https://alert-config-change-ledger.sociobot.in>
-- Reviewed: 29 August 2026 UTC
-- Full report: [`.factory/review-1.md`](review-1.md)
+- Work order: `alert-config-change-ledger-polish-1`
+- Repair commit: `04e4f79` (`fix: close review one polish findings`)
+- Base reviewed: `c1b4d52d66cfdc9a8e8231a5054e47d9c792fc4d`
+- Released URL: <https://alert-config-change-ledger.sociobot.in>
+- Detailed finding map: [`.factory/polish-1.md`](polish-1.md)
 
-## Outcome
+## Done
 
-**FAIL: 22 findings remain (0 blocking, 2 major, 20 minor).** The product passes its functional, demo, privacy, accessibility, routing, and build gates. It fails the required zero-finding standard because of two unlisted claims, plain-words violations, one desktop first-screen layout omission, inconsistent terminology, and landing metadata reused on other routes.
+All 22 findings from [review 1](review-1.md) are closed. The landing now uses plain, bounded language; every workflow label names its outcome; the direct `?demo=1` sample path is isolated and resettable; normalized snapshot input is covered by a registered claim; and route-specific metadata is verified. The static 404 was updated to match the SPA 404 so fallback delivery cannot restore old wording.
 
-No product code was modified. Only this handoff and the review report were changed.
+The cassette-era zine visual system remains intact. Its cassette language is now visual rather than task copy.
 
-## Verification performed
+## Verification
+
+From a clean clone of `04e4f79` after `npm ci` and `npm ci --prefix api`, every exact command in `.factory/claims.json` passed: 17/17.
+
+```sh
+npm test                 # 22 Rust tests, 12 API tests, 52 Playwright tests
+npm run build            # target/release/alert-ledger and dist/site/
+npm run lint             # rustfmt, clippy, TypeScript
+```
+
+Additional evidence:
+
+- `VERIFY_NODE_MODULES=/work/repo/node_modules /opt/fleet/lib/verify-url.sh https://alert-config-change-ledger.sociobot.in …` passed: HTTP 200, title, `lang`, one `h1`, one `main`, image alternatives, labeled buttons, and no console errors.
+- Playwright Axe passed with zero serious/critical violations on `/`, `/demo`, `/privacy`, and `/terms`, locally and on the cold live site.
+- The cold live browser check verified all route metadata, all desktop first-screen facts at 1366×768, `?demo=1` banner/reset/isolation, same-origin-only demo requests, and the 404 page.
+- Mobile Lighthouse: Performance 99, Accessibility 100. Report: [`qa-artifacts/polish-1-lighthouse.json`](qa-artifacts/polish-1-lighthouse.json).
+- Live screenshots: [`qa-artifacts/polish-1-live-desktop.png`](qa-artifacts/polish-1-live-desktop.png) and [`qa-artifacts/polish-1-live-demo-mobile.png`](qa-artifacts/polish-1-live-demo-mobile.png).
+- Production deployment used `swa-cli.config.json` and the factory-managed Static Web Apps credential. Azure confirmed deployment to the product Static Web App; the custom product URL was then checked cold.
+
+## Run and publish
 
 ```sh
 npm ci
 npm ci --prefix api
-# Each of the 16 exact test commands in .factory/claims.json
 npm test
 npm run build
-VERIFY_NODE_MODULES=/work/repo/node_modules \
-  /opt/fleet/lib/verify-url.sh \
-  https://alert-config-change-ledger.sociobot.in <temporary-evidence-dir>
+cargo run -- demo
 ```
 
-Results:
+The factory owns registry publishing. To prepare the CLI package, run `cargo package`; do not publish from this repository.
 
-- Registered claims: 16/16 pass.
-- Full suite: 21 Rust, 12 API, and 50 Playwright tests pass.
-- Build: pass; `dist/site/` and `target/release/alert-ledger` produced.
-- Playwright Axe: zero violations on landing, demo, privacy, terms, and 404.
-- Cold first read: passes at 390 × 844 and 1366 × 768.
-- Demo: one click, seeded on entry, same-origin only, offline-capable, and isolated from a non-demo storage sentinel.
-- CLI demo: passes from a temporary directory with bundled sample data.
-- Routes and links: all expected routes and HTTP links work; the designed unknown route returns 404.
+## Known gaps
 
-## Required next steps
-
-Address F-1-1 through F-1-22 in `.factory/review-1.md`. The next reviewer must repeat the whole checklist rather than checking only these changes. The two major items are the absolute “every” headline claim and the unregistered normalized-snapshot input capability.
+None.
