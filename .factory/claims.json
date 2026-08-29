@@ -117,5 +117,12 @@
     "where": "landing Pro section, README",
     "test": "npm test -- --grep @claim:sales-closed",
     "sandbox": "fresh browser context; assert the closed-sales notice and absence of checkout and paid-content links"
+  },
+  {
+    "id": "clean-claim-bootstrap",
+    "claim": "Every documented claim command runs from a clean clone in ledger order.",
+    "where": "README development",
+    "test": "node site/scripts/test-clean-claims.mjs",
+    "sandbox": "a new local Git clone with no root or API Node dependencies; run every other ledger command in order, including the first self-bootstrapping browser claim"
   }
 ]
