@@ -20,6 +20,54 @@ fn claim_core_workflow_no_license() {
         .stdout(predicate::str::contains("grafana:production#live-1842"));
 }
 
+/// @claim:change-timestamps
+#[test]
+fn claim_change_timestamps_appear_on_every_report_change() {
+    let output = Command::cargo_bin("alert-ledger")
+        .unwrap()
+        .args(["demo", "--json"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+
+    let demo: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    let report = demo.get("report").unwrap();
+    let changes = report
+        .get("changes")
+        .and_then(|value| value.as_array())
+        .unwrap();
+    let live_timestamp = report
+        .pointer("/live/captured_at")
+        .and_then(|value| value.as_str())
+        .unwrap();
+    assert_eq!(changes.len(), 3);
+    assert!(changes.iter().all(|change| {
+        change
+            .pointer("/attributed_to/captured_at")
+            .and_then(|value| value.as_str())
+            == Some(live_timestamp)
+    }));
+
+    let output_dir = demo
+        .get("output_dir")
+        .and_then(|value| value.as_str())
+        .unwrap();
+    let markdown =
+        std::fs::read_to_string(std::path::Path::new(output_dir).join("changes.md")).unwrap();
+    for change in changes {
+        let route = change
+            .get("route")
+            .and_then(|value| value.as_str())
+            .unwrap();
+        let row = markdown.lines().find(|line| line.contains(route)).unwrap();
+        assert!(
+            row.contains(live_timestamp),
+            "missing timestamp in row: {row}"
+        );
+    }
+    std::fs::remove_dir_all(output_dir).unwrap();
+}
+
 /// @claim:provider-inputs
 #[test]
 fn claim_provider_inputs() {

@@ -57,6 +57,27 @@ test('a valid license receives the no-store approval pack', async (t) => {
   assert.match(verificationUrl, /verify\?license=valid%20license$/);
 });
 
+test('@claim:pro-pack-contents the real handler returns the promised review and sign-off sections', async () => {
+  const handler = createApprovalPack({
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({ valid: true, reason: 'ok' }),
+    }),
+  });
+  const context = {};
+  await handler(context, { headers: { 'x-alert-ledger-license': 'recorded-valid-license' } });
+
+  assert.equal(context.res.status, 200);
+  assert.equal(context.res.headers['Content-Type'], 'text/markdown; charset=utf-8');
+  assert.match(context.res.body, /^# Alert route approval/m);
+  assert.match(context.res.body, /^## Route changes$/m);
+  assert.match(context.res.body, /^## Evidence$/m);
+  assert.match(context.res.body, /^## Sign-off$/m);
+  assert.match(context.res.body, /^- Reviewer:$/m);
+  assert.match(context.res.body, /^- Date:$/m);
+  assert.match(context.res.body, /^- Follow-up:$/m);
+});
+
 test('invalid-license requests are also throttled before further verification', async (t) => {
   let verificationCount = 0;
   t.mock.method(global, 'fetch', async () => {

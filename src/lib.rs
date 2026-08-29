@@ -698,7 +698,10 @@ pub fn render_terminal(report: &DriftReport) -> String {
             "  source: {}{} @ {}\n",
             change.attributed_to.source,
             revision_label(&change.attributed_to.revision),
-            change.attributed_to.captured_at.to_rfc3339()
+            change
+                .attributed_to
+                .captured_at
+                .to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
         ));
     }
     out
@@ -724,15 +727,21 @@ pub fn render_markdown(report: &DriftReport) -> String {
         report.changes.len(),
         report.matched_routes
     ));
-    out.push_str("| Change | Route | Fields | Source |\n| --- | --- | --- | --- |\n");
+    out.push_str(
+        "| Change | Route | Fields | Source | Source timestamp |\n| --- | --- | --- | --- | --- |\n",
+    );
     for change in &report.changes {
         out.push_str(&format!(
-            "| {:?} | {} | {} | {}{} |\n",
+            "| {:?} | {} | {} | {}{} | {} |\n",
             change.kind,
             escape_cell(&change.route),
             change.fields.join(", "),
             escape_cell(&change.attributed_to.source),
-            revision_label(&change.attributed_to.revision)
+            revision_label(&change.attributed_to.revision),
+            change
+                .attributed_to
+                .captured_at
+                .to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
         ));
     }
     out.push_str(

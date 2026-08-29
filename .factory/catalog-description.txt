@@ -1,1 +1,1 @@
-Compare reviewed and live alert routes, then show recipient, severity, and route changes.
+Compare reviewed and live alert routes, then trace each recipient, severity, or routing change to its source.

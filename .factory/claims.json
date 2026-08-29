@@ -7,6 +7,13 @@
     "sandbox": "bundled sample exports in a temporary directory; no account or license"
   },
   {
+    "id": "change-timestamps",
+    "claim": "Every JSON and Markdown report change includes its live-source timestamp.",
+    "where": "landing how-it-works",
+    "test": "cargo test --test claims claim_change_timestamps_appear_on_every_report_change",
+    "sandbox": "bundled demo writes JSON output and a Markdown report to a new temporary directory; assert the live timestamp beside all three changes"
+  },
+  {
     "id": "provider-inputs",
     "claim": "The CLI normalizes Grafana JSON and Alertmanager YAML exports.",
     "where": "landing how-it-works, README",
@@ -110,6 +117,13 @@
     "where": "landing Pro section, README",
     "test": "npm test -- --grep @claim:paid-template",
     "sandbox": "fresh browser context with recorded valid verification plus API tests for missing, invalid, and valid licenses"
+  },
+  {
+    "id": "pro-pack-contents",
+    "claim": "The Pro approval pack contains reusable Route changes, Evidence, and Sign-off sections.",
+    "where": "landing Pro section",
+    "test": "npm run test:claim:pro-pack-contents",
+    "sandbox": "real approval-pack handler with a recorded valid license verdict; assert the returned Markdown headings and sign-off fields"
   },
   {
     "id": "sales-closed",

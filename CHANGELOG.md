@@ -8,6 +8,8 @@
 - Generate the web demo report from the CLI comparison code.
 - Enforce approval-pack request limits through a deployment-provided shared counter with an instance-local fail-safe.
 - Add complete install, mobile wordmark, 404 metadata, and crate-package coverage.
+- Show the live-source timestamp beside every change in Markdown reports.
+- Verify the real Pro approval pack contains route, evidence, and sign-off sections.
 
 ## 0.1.0 — 2026-08-28
 
