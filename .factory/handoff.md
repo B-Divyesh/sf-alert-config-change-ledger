@@ -1,47 +1,55 @@
-# Adversarial review 3 handoff
+# Alert Config Ledger — Polish 3 handoff
 
-- Work order: `alert-config-change-ledger-review-3`
-- Candidate: `b64ecc111e7713527b69f7f37ab50a8ab118e185`
+- Work order: `alert-config-change-ledger-polish-3`
+- Base candidate: `5f26ae5e2f8e01cdbfba140346ebe23a4930b9a0`
+- Repair commits: `7f13583`, `af42294`, `2a19cc3`
 - Production: <https://alert-config-change-ledger.sociobot.in>
 - Date: 29 August 2026 UTC
-- Result: **FAIL — one blocking and five minor findings**
+- Status: release verification and deployment evidence are being finalized in this work order.
 
-No product code was changed. The full evidence, copy audit, claim results, and
-fix instructions are in [`.factory/review-3.md`](review-3.md).
+## Delivered repairs
 
-## What was done
+- Preserved the cassette-ledger visual identity while making every first-screen and section label concrete, bounded, and plain.
+- Kept `?demo=1` as an isolated one-click sample path with a persistent banner, reset, explicit exit, and demo-prefixed browser storage only.
+- Added the missing claim coverage: Alertmanager JSON, Rust/Node minimum versions, release build artifacts, and production deployment shape.
+- Added route metadata, real route handling, 404 behavior, responsive layout checks, and Back/Forward scroll-plus-focus restoration.
+- Reworded the deployment secret sentence as an actionable deployer instruction instead of an unprovable production assertion.
 
-- Opened production cold in fresh 390 × 844 and 1366 × 768 Chromium contexts.
-- Exercised the one-click demo, clear/reset/exit, demo storage isolation,
-  same-origin request log, report state, service worker, and offline reload.
-- Ran all 20 `.factory/claims.json` commands from the repository's clean-clone
-  runner, plus the CLI demo from a new temporary working directory.
-- Audited every landing and README sentence, prior review/polish finding,
-  route, metadata field, link, 404, history behavior, and visual identity.
-- Ran live Axe scans and checked normal-route console output and mobile overflow.
-- Ran the complete local tests, build, and lint/type checks.
+## Verification completed locally
 
-## Verification commands
+```sh
+npm test
+npm run lint
+npm run build
+cargo package --allow-dirty
+npm run test:claim:minimum-runtimes
+npm run test:claim:build-artifacts
+node site/scripts/test-clean-claims.mjs
+/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173 .factory/qa-artifacts/polish-3/local
+```
+
+- `npm test`: passed — 25 Rust tests, 13 API tests, and 54 Playwright tests.
+- The clean-clone ledger passed all 23 `.factory/claims.json` entries. It runs each recorded command once from a fresh dependency-free copy; the bootstrap entry accounts for the runner itself.
+- Minimum runtime claim passed with Rust 1.85.0 and Node 22.12.0.
+- Build-artifact claim produced and executed `target/release/alert-ledger`, then verified the Vite site entry and hashed assets under `dist/site/`.
+- Lint, release build, and `cargo package --allow-dirty` passed.
+- Local URL verification reported no console errors, `lang=en`, exactly one H1 and one main landmark, and no images without alt text.
+- Playwright Axe coverage passed with no serious or critical findings on landing, demo, legal, and 404 routes.
+- Lighthouse (mobile): Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 2.12 s, CLS 0, TBT 60 ms.
+
+Evidence lives in [`.factory/qa-artifacts/polish-3`](qa-artifacts/polish-3) and the complete finding map is [`.factory/polish-3.md`](polish-3.md).
+
+## Run, test, and deploy
 
 ```sh
 npm ci
-node site/scripts/test-clean-claims.mjs
 npm test
 npm run build
-npm run lint
-cargo build --bin alert-ledger
+npm run deploy
 ```
 
-All commands passed. `npm test` completed 25 Rust tests, 13 API tests, and 52
-browser tests. The build produced the release binary and `dist/site/`.
+For the CLI only: `cargo run -- demo`. The browser demo opens directly at `/?demo=1` or `/demo`; Reset demo reseeds isolated sample keys, and Install the CLI clears them before returning home.
 
-## Known gaps and next steps
+## Known gaps
 
-1. Fix Back/Forward restoration so the prior focused control returns without
-   disrupting scroll restoration; add an explicit browser test. This is blocking.
-2. Register and test Alertmanager JSON, minimum runtime versions, build
-   artifacts, and deployment shape, or narrow their README wording.
-3. Rewrite the production secret-setting statement as a deployer instruction,
-   unless an observable claim test can prove it.
-
-After those changes, rerun the clean claim ledger and the complete review.
+None. The final production cold check and the resulting URL evidence are appended after deployment in this work order.

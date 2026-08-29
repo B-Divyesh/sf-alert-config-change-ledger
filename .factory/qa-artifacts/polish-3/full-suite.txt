@@ -1,0 +1,180 @@
+
+> alert-config-change-ledger-site@0.1.0 pretest
+> node site/scripts/ensure-test-deps.mjs
+
+
+> alert-config-change-ledger-site@0.1.0 test
+> cargo test && npm run test:api && playwright test
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.10s
+     Running unittests src/lib.rs (target/debug/deps/alert_config_change_ledger-87f10f6d4649ae80)
+
+running 5 tests
+test tests::alertmanager_yaml_is_normalized ... ok
+test tests::demo_finds_route_recipient_and_severity_drift ... ok
+test tests::grafana_contact_metadata_is_preserved_without_credentials ... ok
+test tests::grafana_contact_point_arrays_detect_common_recipient_changes ... ok
+test tests::snapshot_never_contains_contact_values ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/alert_ledger-27a0729813e2c689)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/claims.rs (target/debug/deps/claims-d9ae0132027600da)
+
+running 13 tests
+test alertmanager_negative_regex_matcher_drift_is_detected ... ok
+test claim_api_tokens_never_enter_snapshots ... ok
+test claim_change_timestamps_appear_on_every_report_change ... ok
+test claim_core_workflow_no_license ... ok
+test claim_demo_needs_no_network_or_telemetry ... ok
+test claim_core_commands_and_formats_need_no_license ... ok
+test claim_grafana_contact_points_and_provider_fields ... ok
+test claim_documented_exit_codes ... ok
+test claim_provider_inputs ... ok
+test claim_normalized_snapshot_input_can_be_compared ... ok
+test claim_recipient_values_are_redacted ... ok
+test duplicate_sibling_routes_keep_unique_ids_and_recipient_drift ... ok
+test claim_read_only_get_and_command_surface ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/cli.rs (target/debug/deps/cli-e33d6219260cab78)
+
+running 7 tests
+test demo_runs_without_setup ... ok
+test alertmanager_negative_regex_change_exits_with_drift ... ok
+test http_200_error_envelope_exits_one_without_writing_snapshot ... ok
+test duplicate_sibling_recipient_change_exits_with_drift ... ok
+test invalid_input_explains_recovery ... ok
+test json_demo_is_scriptable_and_redacted ... ok
+test invalid_provider_shapes_exit_one_without_writing_snapshots ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Doc-tests alert_config_change_ledger
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+> alert-config-change-ledger-site@0.1.0 test:api
+> node --test api/**/*.test.cjs
+
+TAP version 13
+# Subtest: rate-limit client identity uses the factory forwarding header
+ok 1 - rate-limit client identity uses the factory forwarding header
+  ---
+  duration_ms: 1.250344
+  type: 'test'
+  ...
+# Subtest: unlicensed approval-pack requests never receive paid content
+ok 2 - unlicensed approval-pack requests never receive paid content
+  ---
+  duration_ms: 0.592374
+  type: 'test'
+  ...
+# Subtest: invalid licenses never receive paid content
+ok 3 - invalid licenses never receive paid content
+  ---
+  duration_ms: 0.519777
+  type: 'test'
+  ...
+# Subtest: a valid license receives the no-store approval pack
+ok 4 - a valid license receives the no-store approval pack
+  ---
+  duration_ms: 0.422281
+  type: 'test'
+  ...
+# Subtest: @claim:pro-pack-contents the real handler returns the promised review and sign-off sections
+ok 5 - @claim:pro-pack-contents the real handler returns the promised review and sign-off sections
+  ---
+  duration_ms: 0.749066
+  type: 'test'
+  ...
+# Subtest: invalid-license requests are also throttled before further verification
+ok 6 - invalid-license requests are also throttled before further verification
+  ---
+  duration_ms: 2.295497
+  type: 'test'
+  ...
+# Subtest: bursts are rate limited per client before license verification
+ok 7 - bursts are rate limited per client before license verification
+  ---
+  duration_ms: 110.585426
+  type: 'test'
+  ...
+# Subtest: concurrent requests cannot bypass the allowance across handler instances
+ok 8 - concurrent requests cannot bypass the allowance across handler instances
+  ---
+  duration_ms: 168.848505
+  type: 'test'
+  ...
+# Subtest: Azure Table ETags serialize concurrent requests across handler instances
+ok 9 - Azure Table ETags serialize concurrent requests across handler instances
+  ---
+  duration_ms: 5.461954
+  type: 'test'
+  ...
+# Subtest: a deployed handler fails closed when shared protection is unavailable
+ok 10 - a deployed handler fails closed when shared protection is unavailable
+  ---
+  duration_ms: 2.564685
+  type: 'test'
+  ...
+# Subtest: deployed handlers select the shared filesystem counter
+ok 11 - deployed handlers select the shared filesystem counter
+  ---
+  duration_ms: 0.132894
+  type: 'test'
+  ...
+# Subtest: deployment-provided storage selects the atomic Azure Table counter
+ok 12 - deployment-provided storage selects the atomic Azure Table counter
+  ---
+  duration_ms: 204.521801
+  type: 'test'
+  ...
+# Subtest: the endpoint ceiling protects against rotating forwarded client identities
+ok 13 - the endpoint ceiling protects against rotating forwarded client identities
+  ---
+  duration_ms: 0.477678
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 597.664517
+[WebServer] (node:42176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42223) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 54 tests using 2 workers
+(node:42247) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42247) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+··························(node:42698) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·(node:42706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42698) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···························
+  54 passed (43.0s)
