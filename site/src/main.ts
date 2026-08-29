@@ -94,7 +94,7 @@ function footer(): string {
   return `<footer class="site-footer">
     <p>Compare alert route changes with their sources.</p>
     <nav aria-label="Footer navigation"><a class="route-link" href="/privacy">Privacy</a><a class="route-link" href="/terms">Terms</a><a href="https://sociobot.in" rel="external">Built by Param Factory <span class="sr-only">(external site)</span></a></nav>
-    <p class="build">v0.1.0 · build 003</p>
+    <p class="build">v0.1.0 · build 004</p>
   </footer>`;
 }
 
