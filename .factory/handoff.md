@@ -5,7 +5,7 @@
 - Repair commits: `7f13583`, `af42294`, `2a19cc3`
 - Production: <https://alert-config-change-ledger.sociobot.in>
 - Date: 29 August 2026 UTC
-- Status: release verification and deployment evidence are being finalized in this work order.
+- Status: complete — committed, pushed, deployed, and cold-checked in production.
 
 ## Delivered repairs
 
@@ -39,6 +39,13 @@ node site/scripts/test-clean-claims.mjs
 
 Evidence lives in [`.factory/qa-artifacts/polish-3`](qa-artifacts/polish-3) and the complete finding map is [`.factory/polish-3.md`](polish-3.md).
 
+## Production deployment and cold check
+
+- Deployed through `npm run deploy` using `swa-cli.config.json`; Static Web Apps accepted both `dist/site` and `api` and published the revision to the configured production app.
+- Opened <https://alert-config-change-ledger.sociobot.in> cold after deployment. [The production audit](qa-artifacts/polish-3/live/live-audit.json) passed all landing, demo, legal, 404, metadata, focus/history, offline, and mobile checks.
+- The audit confirms the F-3-1 state transition: footer Privacy was focused at scroll position 1815, browser Back restored that same control at 1815, and Forward focused the Privacy H1 at position 0.
+- [Production verification](qa-artifacts/polish-3/live/verify.json) reports HTTP 200, no console errors, `lang=en`, one H1, a main landmark, and no missing image alt text. Production screenshots are saved beside that report.
+
 ## Run, test, and deploy
 
 ```sh
@@ -52,4 +59,4 @@ For the CLI only: `cargo run -- demo`. The browser demo opens directly at `/?dem
 
 ## Known gaps
 
-None. The final production cold check and the resulting URL evidence are appended after deployment in this work order.
+None.

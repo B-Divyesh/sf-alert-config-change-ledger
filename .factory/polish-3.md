@@ -1,11 +1,10 @@
 # Polish 3 acceptance map
 
 Candidate `5f26ae5e2f8e01cdbfba140346ebe23a4930b9a0` was repaired through
-`2a19cc3`; the release evidence and final documentation commit are recorded in
-the handoff. This map covers every finding in all three adversarial reviews.
+`2a19cc3`. This map covers every finding in all three adversarial reviews.
 `npm test` passed 54 browser checks plus the Rust/API suites, and the clean
-claim runner passed all 23 ledger entries. Live evidence is added after the
-production deployment at the end of this document.
+claim runner passed all 23 ledger entries. Production was then cold-checked at
+<https://alert-config-change-ledger.sociobot.in>.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
@@ -46,4 +45,8 @@ production deployment at the end of this document.
 - Full test output: [full-suite.txt](qa-artifacts/polish-3/full-suite.txt)
 - Local verifier and screenshots: [verify.json](qa-artifacts/polish-3/local/verify.json), [desktop](qa-artifacts/polish-3/local/screenshot-desktop.png), [mobile](qa-artifacts/polish-3/local/screenshot-mobile.png)
 - Local Lighthouse: [lighthouse.json](qa-artifacts/polish-3/local/lighthouse.json) — Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 2.12 s and CLS 0.
-- Production cold-check: recorded after deployment in `qa-artifacts/polish-3/live/`.
+- Production cold-check: [live-audit.json](qa-artifacts/polish-3/live/live-audit.json) is `PASS` for `/`, `/demo`, `/privacy`, `/terms`, `/404.html`, and a genuine 404. It records route metadata, no normal-route console errors, no serious/critical Axe findings, demo isolation, offline reload, mobile overflow at 100%/200% text, and the F-3-1 focus/scroll restoration (`1815 → 1815`, then Privacy H1 at `0`).
+- Production screenshots: [desktop first screen](qa-artifacts/polish-3/live/landing-desktop-1366x768.png), [mobile first screen](qa-artifacts/polish-3/live/landing-mobile-390x844.png), and [mobile demo](qa-artifacts/polish-3/live/demo-mobile-390x844.png).
+- Production baseline verifier: [verify.json](qa-artifacts/polish-3/live/verify.json) — HTTP 200, no console errors, English document, one H1/main, and no missing image alt text.
+
+Every table row was rechecked by this production audit where it is user-visible; command and release assertions retain the named clean-sandbox tests in the table.
