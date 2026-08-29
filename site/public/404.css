@@ -25,6 +25,8 @@ p { max-width: 68ch; }
 .lost-tape span { position: absolute; top: 45px; width: 62px; height: 62px; border: 12px double #191714; border-radius: 50%; }
 .lost-tape span:first-child { left: 35px; }.lost-tape span:last-child { right: 35px; }
 footer { min-height: 100px; padding: 32px 0; border-top: 2px solid #191714; }
+footer nav { display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px; }
+footer nav a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 @media (max-width: 780px) {
   header { min-height: 72px; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
   .wordmark b { display: none; }

@@ -173,6 +173,7 @@ pre { max-width: 100%; padding: 18px; overflow: auto; color: var(--paper); backg
   .site-footer { grid-template-columns: 1fr; }
   .site-footer nav { flex-wrap: wrap; gap: 12px 20px; }
   .site-footer .build { grid-column: auto; }
+  .legal a[href^="mailto:"] { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; }
   .demo-banner { width: 100%; flex-direction: column; gap: 0; align-items: flex-start; padding: 8px 16px; }
   .ledger-summary { grid-template-columns: 1fr; }
   .drift-stamp { grid-row: 1; }

@@ -102,17 +102,33 @@ test('mobile pages reflow at 200% text without horizontal overflow', async ({ pa
   }
 });
 
-test('mobile header links meet the 44px touch target baseline', async ({ page }) => {
+test('every mobile interactive element meets the 44px touch target baseline', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
-  for (const link of [
-    page.getByRole('link', { name: 'Alert Config Ledger home' }),
-    page.getByRole('link', { name: 'Demo', exact: true }),
-  ]) {
-    const box = await link.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box!.width).toBeGreaterThanOrEqual(44);
-    expect(box!.height).toBeGreaterThanOrEqual(44);
+  for (const path of ['/', '/demo', '/privacy', '/terms', '/missing-tape', '/404.html']) {
+    await page.goto(path);
+    const controls = page.locator([
+      'a[href]',
+      'button',
+      'input:not([type="hidden"])',
+      'select',
+      'textarea',
+      'summary',
+      '[role="button"]',
+      '[tabindex]:not([tabindex="-1"])',
+    ].join(', '));
+
+    for (let index = 0; index < await controls.count(); index += 1) {
+      const control = controls.nth(index);
+      if (!await control.isVisible()) continue;
+      const box = await control.boundingBox();
+      const label = (await control.getAttribute('aria-label'))
+        || (await control.textContent())?.trim().replace(/\s+/g, ' ')
+        || await control.getAttribute('name')
+        || `control ${index + 1}`;
+      expect(box, `${path}: ${label}`).not.toBeNull();
+      expect(box!.width, `${path}: ${label} width`).toBeGreaterThanOrEqual(44);
+      expect(box!.height, `${path}: ${label} height`).toBeGreaterThanOrEqual(44);
+    }
   }
 });
 
