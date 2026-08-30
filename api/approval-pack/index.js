@@ -1,6 +1,6 @@
 const PRODUCT = 'alert-config-change-ledger';
 const BILLING_API = 'https://api.sociobot.in/api/v1';
-const BUILD_ID = 'repair-7';
+const BUILD_ID = releaseBuildId();
 const {
   PerClientRateLimiter,
   InMemoryAtomicCounterStore,
@@ -8,6 +8,15 @@ const {
   header,
   productionCounterStore,
 } = require('./rate-limit.js');
+
+function releaseBuildId() {
+  try {
+    const identity = require('../release.json');
+    return /^[0-9a-f]{40}$/.test(identity.sourceCommit) ? identity.sourceCommit : 'development';
+  } catch {
+    return 'development';
+  }
+}
 
 const template = `# Alert route approval
 

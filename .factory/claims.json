@@ -147,6 +147,13 @@
     "sandbox": "run npm run build, execute target/release/alert-ledger --help, and check the built site entry point and hashed assets"
   },
   {
+    "id": "release-identity",
+    "claim": "The production build records its full source commit and SHA-256 digests for its public site artifacts.",
+    "where": "README deploy",
+    "test": "npm run test:claim:release-identity",
+    "sandbox": "clean clone; build the CLI and site; compare the release receipt commit to Git HEAD and recompute every recorded artifact digest"
+  },
+  {
     "id": "deployment-shape",
     "claim": "The checked-in deployment configuration ships dist/site and the approval-pack function to the product app.",
     "where": "README deploy",

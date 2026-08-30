@@ -231,6 +231,8 @@ test('deployment policy returns a designed 404 and revalidates mutable art', () 
   const art = config.routes.find((route: { route: string }) => route.route === '/*.webp');
   expect(art.headers['Cache-Control']).not.toContain('immutable');
   expect(art.headers['Cache-Control']).toContain('must-revalidate');
+  const release = config.routes.find((route: { route: string }) => route.route === '/release.json');
+  expect(release.headers['Cache-Control']).toBe('no-store');
 
   const notFound = readFileSync(resolve('site/public/404.html'), 'utf8');
   for (const metadata of [

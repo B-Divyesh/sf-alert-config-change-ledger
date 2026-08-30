@@ -21,3 +21,9 @@ assert.match(indexHtml, /<script type="module" crossorigin src="\/assets\/[^"?]+
 const assets = readdirSync(resolve(site, 'assets'));
 assert.ok(assets.some((asset) => asset.endsWith('.js')), 'the static site must include its JavaScript asset');
 assert.ok(assets.some((asset) => asset.endsWith('.css')), 'the static site must include its CSS asset');
+const release = JSON.parse(readFileSync(resolve(site, 'release.json'), 'utf8'));
+assert.equal(release.product, 'alert-config-change-ledger');
+assert.match(release.sourceCommit, /^[0-9a-f]{40}$/);
+assert.equal(release.artifacts['/index.html'].length, 64);
+const apiRelease = JSON.parse(readFileSync(resolve(root, 'api/release.json'), 'utf8'));
+assert.equal(apiRelease.sourceCommit, release.sourceCommit);

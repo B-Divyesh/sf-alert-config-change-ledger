@@ -122,7 +122,16 @@ The checked-in `swa-cli.config.json` deploys both `dist/site/` and the
 license-gated function in `api/` to
 `https://alert-config-change-ledger.sociobot.in`. Verify that deployment shape
 without publishing with `npm run deploy:check`; publish the production build
-with `npm run deploy`. Set `ALERT_LEDGER_RATE_LIMIT_STORAGE` as a secret
+with `npm run deploy`. Each build writes the full source commit and static-file
+digests to `dist/site/release.json`, and gives the same commit to the API build
+header. After pushing and deploying a clean candidate, verify its exact source
+and live artifacts with:
+
+```sh
+npm run verify:release -- <full-40-character-candidate-sha>
+```
+
+Set `ALERT_LEDGER_RATE_LIMIT_STORAGE` as a secret
 application setting for the shared approval-pack request counter.
 This repository does not manage DNS, infrastructure, billing registration, or
 registry credentials.

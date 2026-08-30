@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add exact source and artifact identity receipts for release verification.
 - Reject empty provider objects and HTTP error envelopes before writing snapshots.
 - Keep duplicate sibling routes distinct so recipient drift cannot be overwritten.
 - Preserve Alertmanager negative-regex matchers and report their changes.

@@ -29,7 +29,7 @@ test('unlicensed approval-pack requests never receive paid content', async () =>
   assert.equal(context.res.status, 401);
   assert.doesNotMatch(context.res.body, /# Alert route approval/);
   assert.equal(context.res.headers['Cache-Control'], 'private, no-store');
-  assert.equal(context.res.headers['X-Alert-Ledger-Build'], 'repair-7');
+  assert.match(context.res.headers['X-Alert-Ledger-Build'], /^(development|[0-9a-f]{40})$/);
 });
 
 test('invalid licenses never receive paid content', async (t) => {
