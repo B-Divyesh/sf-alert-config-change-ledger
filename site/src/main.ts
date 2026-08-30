@@ -157,7 +157,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
 
     <section class="paid" aria-labelledby="paid-title">
       <div><div class="section-label">Optional Pro feature</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
-      <div class="license-panel" data-license-panel><p class="license-state" aria-live="polite">Checking this browser for a license…</p></div>
+      <div class="license-panel" data-license-panel aria-live="polite" aria-atomic="false"><p class="license-state" data-license-status role="status" aria-live="polite" aria-atomic="true">Checking this browser for a license…</p><div data-license-content></div></div>
     </section>
   </main>${footer()}`;
 }
@@ -189,14 +189,14 @@ function demo(): string {
   const state = getDemoState();
   let content = '';
   if (state === 'error') {
-    content = `<section class="state-card error-state" role="alert"><p class="state-mark">!</p><h2>The sample could not load</h2><p>The saved demo state is damaged. Reset it to load a clean copy.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
+    content = `<section class="state-card error-state" role="alert" aria-labelledby="demo-state-title"><p class="state-mark">!</p><h2 id="demo-state-title" tabindex="-1">The sample could not load</h2><p>The saved demo state is damaged. Reset it to load a clean copy.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
   } else if (state.cleared) {
-    content = `<section class="state-card"><p class="state-mark">∅</p><h2>No comparison is loaded</h2><p>Reset the demo to load the baseline and live snapshots.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
+    content = `<section class="state-card" aria-labelledby="demo-state-title"><p class="state-mark">∅</p><h2 id="demo-state-title" tabindex="-1">No comparison is loaded</h2><p>Reset the demo to load the baseline and live snapshots.</p><button class="button" data-action="reset-demo">Reset demo</button></section>`;
   } else {
     const selected = changes[state.selected] || changes[0];
     content = `<section class="ledger" aria-labelledby="ledger-title">
       <div class="ledger-summary"><div><span class="reel reel-a" aria-hidden="true"></span><small>Baseline / Git</small><strong>${sampleReport.baseline.revision}</strong><time datetime="${sampleReport.baseline.captured_at}">27 Aug · 16:00 UTC</time></div><div class="drift-stamp"><b>Changes found</b><span>${sampleReport.changes.length} changed · ${sampleReport.matched_routes} matched</span></div><div><span class="reel reel-b" aria-hidden="true"></span><small>Live / Grafana</small><strong>${sampleReport.live.revision}</strong><time datetime="${sampleReport.live.captured_at}">28 Aug · 07:42 UTC</time></div></div>
-      <div class="ledger-body"><div class="track-list"><h2 id="ledger-title">Changed routes</h2><p>Choose a route to inspect its baseline and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
+      <div class="ledger-body"><div class="track-list"><h2 id="ledger-title" tabindex="-1">Changed routes</h2><p>Choose a route to inspect its baseline and live values.</p>${changes.map((item, index) => `<button class="track ${index === state.selected ? 'selected' : ''}" data-change-index="${index}" aria-pressed="${index === state.selected}"><span class="change-mark">${item.mark}</span><span><b>${item.route}</b><small>${item.kind}</small></span><span class="track-no">0${index + 1}</span></button>`).join('')}</div>
       <article class="change-detail" aria-live="polite"><div class="section-label">Change 0${state.selected + 1} / ${selected.fields}</div><h2>${selected.kind}</h2><p>${selected.detail}</p><dl><div><dt>Baseline</dt><dd>${selected.before}</dd></div><div><dt>Live</dt><dd>${selected.after}</dd></div><div><dt>Attributed to</dt><dd>${sampleReport.live.source} #${sampleReport.live.revision}</dd></div></dl></article></div>
       <div class="ledger-actions"><button class="button" data-action="download-report">Download sample report</button><button class="button secondary" data-action="clear-demo">Clear comparison</button></div>
     </section>`;
@@ -344,6 +344,7 @@ async function handleAction(event: Event): Promise<void> {
     localStorage.setItem(DEMO_KEY, JSON.stringify({ cleared: false, selected: 0 }));
     render();
     document.querySelector<HTMLElement>('#ledger-title')?.focus();
+    announce('Demo reset. Three changed routes and two matched routes are loaded.');
   } else if (action === 'start-real') {
     clearDemoState();
     navigate('/');
@@ -354,6 +355,8 @@ async function handleAction(event: Event): Promise<void> {
   } else if (action === 'clear-demo') {
     localStorage.setItem(DEMO_KEY, JSON.stringify({ cleared: true, selected: 0 }));
     render();
+    document.querySelector<HTMLElement>('#demo-state-title')?.focus();
+    announce('Comparison cleared. No comparison is loaded. Reset demo to load the baseline and live snapshots.');
   } else if (action === 'download-report') {
     download('alert-ledger-sample-report.json', JSON.stringify(sampleReport, null, 2), 'application/json');
     announce('Downloaded the sample change report.');
@@ -392,30 +395,71 @@ function announce(message: string): void {
   routeStatus.textContent = message;
 }
 
-function licenseMarkup(valid: boolean, notice = ''): string {
-  if (valid) return `<p class="license-state good">License active.</p><button class="button" data-action="download-pro">Download approval report pack</button><button class="text-button" data-action="remove-license">Remove license</button>`;
-  return `${notice ? `<p class="license-state notice">${notice}</p>` : '<p class="license-state">No active license in this browser.</p>'}<p>New license sales are not open in this release.</p><form class="license-form"><label for="license-token">Have a license? Paste it</label><div><input id="license-token" name="license" autocomplete="off" required><button class="button secondary" type="submit">Verify license</button></div></form>`;
+function licenseContentMarkup(valid: boolean): string {
+  if (valid) return `<button class="button" data-action="download-pro">Download approval report pack</button><button class="text-button" data-action="remove-license">Remove license</button>`;
+  return `<p>New license sales are not open in this release.</p><form class="license-form"><label for="license-token">Have a license? Paste it</label><div><input id="license-token" name="license" autocomplete="off" required><button class="button secondary" type="submit">Verify license</button></div></form>`;
 }
 
-async function setupLicense(): Promise<void> {
+function renderLicensePanel(panel: HTMLElement, valid: boolean, notice = ''): void {
+  const status = panel.querySelector<HTMLElement>('[data-license-status]');
+  const content = panel.querySelector<HTMLElement>('[data-license-content]');
+  if (!status || !content) return;
+  status.className = `license-state${valid ? ' good' : notice ? ' notice' : ''}`;
+  status.textContent = notice || (valid ? 'License active.' : 'No active license in this browser.');
+  content.innerHTML = licenseContentMarkup(valid);
+  panel.setAttribute('aria-busy', 'false');
+  bindLicensePanel(panel);
+}
+
+function focusLicenseOutcome(panel: HTMLElement, valid: boolean): void {
+  const target = valid
+    ? panel.querySelector<HTMLElement>('[data-action="download-pro"]')
+    : panel.querySelector<HTMLElement>('#license-token');
+  target?.focus();
+}
+
+function announceLicenseCheck(panel: HTMLElement): void {
+  const status = panel.querySelector<HTMLElement>('[data-license-status]');
+  if (!status) return;
+  panel.setAttribute('aria-busy', 'true');
+  status.className = 'license-state';
+  status.textContent = 'Verifying license…';
+}
+
+async function setupLicense(options: { focusAfterVerification?: boolean } = {}): Promise<void> {
   const panel = document.querySelector<HTMLElement>('[data-license-panel]');
   if (!panel) return;
   const token = localStorage.getItem(LICENSE_KEY);
   const cached = readVerdict();
-  panel.innerHTML = licenseMarkup(Boolean(token && cached?.valid));
-  bindLicensePanel(panel);
-  if (!token) return;
-  if (cached && Date.now() - cached.checkedAt < 86_400_000) return;
+  const cachedValid = Boolean(token && cached?.valid);
+  if (!options.focusAfterVerification) renderLicensePanel(panel, cachedValid);
+  if (!token) {
+    if (options.focusAfterVerification) focusLicenseOutcome(panel, false);
+    return;
+  }
+  if (cached && Date.now() - cached.checkedAt < 86_400_000) {
+    if (options.focusAfterVerification) focusLicenseOutcome(panel, cachedValid);
+    return;
+  }
+  if (options.focusAfterVerification) announceLicenseCheck(panel);
   try {
     const response = await fetch(`${API}/products/${SLUG}/verify?license=${encodeURIComponent(token)}`);
-    const result = await response.json();
+    if (!response.ok) throw new Error(`License verification returned ${response.status}`);
+    const result = await response.json() as { valid?: unknown };
     const verdict = { valid: result.valid === true, checkedAt: Date.now() };
     localStorage.setItem(VERDICT_KEY, JSON.stringify(verdict));
-    panel.innerHTML = licenseMarkup(verdict.valid, verdict.valid ? '' : 'License no longer active.');
+    renderLicensePanel(panel, verdict.valid, verdict.valid ? '' : 'License no longer active.');
+    if (options.focusAfterVerification) focusLicenseOutcome(panel, verdict.valid);
   } catch {
-    panel.innerHTML = licenseMarkup(Boolean(cached?.valid), cached?.valid ? 'Offline. Using the last valid check.' : 'License check could not connect. Try again.');
+    const offline = !navigator.onLine;
+    const notice = cached?.valid
+      ? 'Offline. Using the last valid check.'
+      : offline
+        ? 'You are offline. Connect and try again.'
+        : 'License check could not complete. Try again.';
+    renderLicensePanel(panel, Boolean(cached?.valid), notice);
+    if (options.focusAfterVerification) focusLicenseOutcome(panel, Boolean(cached?.valid));
   }
-  bindLicensePanel(panel);
 }
 
 function readVerdict(): { valid: boolean; checkedAt: number } | null {
@@ -429,13 +473,13 @@ function bindLicensePanel(panel: HTMLElement): void {
     if (!input?.value.trim()) return;
     localStorage.setItem(LICENSE_KEY, input.value.trim());
     localStorage.removeItem(VERDICT_KEY);
-    setupLicense();
+    void setupLicense({ focusAfterVerification: true });
   });
   panel.querySelector<HTMLElement>('[data-action="download-pro"]')?.addEventListener('click', handleAction);
   panel.querySelector<HTMLElement>('[data-action="remove-license"]')?.addEventListener('click', () => {
     localStorage.removeItem(LICENSE_KEY);
     localStorage.removeItem(VERDICT_KEY);
-    setupLicense();
+    void setupLicense({ focusAfterVerification: true });
   });
 }
 

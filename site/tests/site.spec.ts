@@ -130,6 +130,26 @@ test('demo supports selection, empty state, and reset', async ({ page }) => {
   await expect(page.getByText('3 changed · 2 matched')).toBeVisible();
 });
 
+test('keyboard demo clear and reset keep focus and announce the new state', async ({ page }) => {
+  await page.goto('/demo');
+  const clear = page.getByRole('button', { name: 'Clear comparison' });
+  await clear.focus();
+  await page.keyboard.press('Space');
+
+  const emptyHeading = page.getByRole('heading', { name: 'No comparison is loaded' });
+  await expect(emptyHeading).toBeFocused();
+  await expect(emptyHeading).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#route-status')).toHaveText('Comparison cleared. No comparison is loaded. Reset demo to load the baseline and live snapshots.');
+
+  const reset = page.getByRole('button', { name: 'Reset demo' }).last();
+  await reset.focus();
+  await page.keyboard.press('Space');
+  const ledgerHeading = page.getByRole('heading', { name: 'Changed routes' });
+  await expect(ledgerHeading).toBeFocused();
+  await expect(ledgerHeading).toHaveAttribute('tabindex', '-1');
+  await expect(page.locator('#route-status')).toHaveText('Demo reset. Three changed routes and two matched routes are loaded.');
+});
+
 test('unknown routes show the designed 404 page', async ({ page }) => {
   await page.goto('/missing-tape');
   await expect(page).toHaveTitle('Page not found — Alert Config Ledger');
@@ -371,13 +391,59 @@ test('@claim:paid-template valid licenses reveal the report pack', async ({ page
   });
   await page.goto('/');
   await page.getByLabel('Have a license? Paste it').fill('test-license-token');
-  await page.getByRole('button', { name: 'Verify license' }).click();
+  await page.getByRole('button', { name: 'Verify license' }).focus();
+  await page.keyboard.press('Space');
   await expect(page.getByText('License active.')).toBeVisible();
+  await expect(page.locator('[data-license-status]')).toHaveAttribute('role', 'status');
+  await expect(page.locator('[data-license-status]')).toHaveAttribute('aria-live', 'polite');
+  await expect(page.getByRole('button', { name: 'Download approval report pack' })).toBeFocused();
   expect(verifyRequest).toContain(`/products/alert-config-change-ledger/verify?license=test-license-token`);
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download approval report pack' }).click();
   expect((await downloadPromise).suggestedFilename()).toBe('alert-ledger-approval-template.md');
   expect(approvalLicense).toBe('test-license-token');
+});
+
+test('keyboard license verification announces invalid, offline, and service-error results', async ({ page }) => {
+  await page.route('https://api.sociobot.in/**', async (route) => {
+    const token = new URL(route.request().url()).searchParams.get('license');
+    if (token === 'offline-token') {
+      await route.abort('internetdisconnected');
+      return;
+    }
+    if (token === 'service-error') {
+      await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'unavailable' }) });
+      return;
+    }
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: false, reason: 'invalid', expires_at: null }) });
+  });
+  await page.goto('/');
+
+  const submit = async (token: string) => {
+    await page.getByLabel('Have a license? Paste it').fill(token);
+    await page.getByRole('button', { name: 'Verify license' }).focus();
+    await page.keyboard.press('Space');
+  };
+  const expectRecovery = async (message: string) => {
+    const panel = page.locator('[data-license-panel]');
+    await expect(panel).toHaveAttribute('aria-live', 'polite');
+    await expect(panel.locator('[data-license-status]')).toHaveText(message);
+    await expect(page.getByLabel('Have a license? Paste it')).toBeFocused();
+  };
+
+  await submit('invalid-token');
+  await expectRecovery('License no longer active.');
+
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.evaluate(() => Object.defineProperty(navigator, 'onLine', { configurable: true, value: false }));
+  await submit('offline-token');
+  await expectRecovery('You are offline. Connect and try again.');
+
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await submit('service-error');
+  await expectRecovery('License check could not complete. Try again.');
 });
 
 test('@claim:sales-closed unlicensed browsers have no checkout or paid-content action', async ({ page }) => {
