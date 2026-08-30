@@ -1,4 +1,37 @@
-# Alert Config Ledger — repair 11 handoff
+# Alert Config Ledger — verification 15 handoff
+
+- Work order: `alert-config-change-ledger-verify-15`
+- Requested candidate: `c72d3655493897c704888dfb3b883bf0202075b0`
+- Supplied checkout / `origin/main`: `c72d36ebdbd7cc0fc48702e2441664150b6f2492`
+- Production: <https://alert-config-change-ledger.sociobot.in>
+- Date: 30 August 2026 UTC
+- Status: **FAIL — requested candidate SHA is not in the clone or origin**
+
+## Verification 15 decision
+
+The named candidate cannot be verified. `git cat-file` cannot resolve it and
+`git fetch --no-tags origin <sha>` returned `not our ref`; remote `main` is
+`c72d36e`, not the requested SHA. This is release-blocking because a live
+deployment cannot be proven to match an unavailable artifact.
+
+The complete independent evidence is in `.factory/verification-15.md`.
+
+The available `c72d36e` checkout did pass the clean-clone 23-claim ledger,
+clean install, unit/API/browser suite (58 Playwright tests), lint, production
+build, package verification, clean consumer CLI exercise, live Axe/privacy/
+offline/mobile/keyboard checks, and live 20-per-minute API rate-limit check.
+Its static artifacts matched the deployed site byte-for-byte. Those results
+are explicitly not acceptance of the missing candidate.
+
+## Required next step
+
+Provide a reachable immutable candidate SHA (or correct this work order), then
+repeat exact-commit build and live-artifact comparison. Do not release from
+this verification result.
+
+---
+
+# Prior repair 11 handoff
 
 - Work order: `alert-config-change-ledger-repair-11`
 - Verified base/report: `53c6ad86b477115a961e668c7a376894c581e0cf` / `.factory/verification-14.md`
