@@ -46,8 +46,8 @@ Lighthouse at [`lighthouse.json`](qa-artifacts/polish-4/lighthouse.json).
 | F-3-4 | Retained release binary and static-site artifact validation. | `npm run test:claim:build-artifacts` |
 | F-3-5 | Retained registered Static Web Apps/API deployment shape. | `@claim:deployment-shape` |
 | F-3-6 | Retained the README as a deployer instruction, not an assertion about external secret state. | README deploy review; `@claim:deployment-shape` |
-| F-4-1 | Added `license-data-boundary`: fresh storage starts empty; after fixture verification it contains only token/verdict keys, survives reload unchanged, and has exactly one bodyless verification GET with the license as its only query value. | `@claim:license-data-boundary`; clean-clone ledger; live `/privacy` in `live-audit.json` |
-| F-4-2 | Standardized all visitor-facing names as **approval report template**: landing, button, terms, README, claims, and terminology table. | `@claim:paid-template`; live landing copy in `live-audit.json`; `copy-audit.md` |
+| F-4-1 | Added `license-data-boundary`: fresh storage starts empty; after fixture verification it contains only token/verdict keys, survives reload unchanged, and has exactly one bodyless verification GET with the license as its only query value. | `@claim:license-data-boundary`; clean-clone ledger; live `/privacy` exact-copy check |
+| F-4-2 | Standardized all visitor-facing names as **approval report template**: landing, button, terms, README, claims, and terminology table. | `@claim:paid-template`; live landing/terms exact-copy check; `copy-audit.md` |
 
 ## Final verification
 
