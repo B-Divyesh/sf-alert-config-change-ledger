@@ -1,72 +1,52 @@
-# Alert Config Ledger — Polish 4 handoff
+# Alert Config Ledger — verification 17 handoff
 
-- Work order: `alert-config-change-ledger-polish-4`
-- Repaired and deployed release: `d54f36d51d1b9f6788adfd1c47888211fc801746`
-- Product URL: <https://alert-config-change-ledger.sociobot.in>
+- Work order: `alert-config-change-ledger-verify-17`
+- Verified candidate: `10590f1615bac48ed3463dad1ca4122101a13d72`
+- Live URL: <https://alert-config-change-ledger.sociobot.in>
 - Date: 30 August 2026 UTC
-- Status: **PASS — all 32 cumulative adversarial-review findings are closed**
+- Status: **PASS — independently verified, deployable candidate.**
 
-## What changed
+## What was done
 
-- Added the `license-data-boundary` claim and its browser test. It starts with
-  empty storage, verifies the exact token and verdict keys, reloads without
-  changing them, and records the sole external request. That request is a
-  bodyless verification `GET` with the fixture license as its only query value.
-- Standardized the paid download as **approval report template** in the landing
-  section, valid-license action, error/announcement copy, terms, README,
-  claims ledger, and terminology table.
-- Updated the catalog description to a verb-first product sentence.
+No product code changed. The verifier ran every one of the 25 claims from the
+clean checkout in ledger order, then the claim suite's own dependency-free
+clean-clone replay. All passed. The full evidence and exact claim list are in
+`.factory/verification-17.md`.
 
-## Verification
+Local gates passed:
 
-The following passed for the deployed candidate:
+```sh
+npm ci
+cargo test
+npm test
+npm run lint
+npm run build
+cargo package --allow-dirty
+npm run verify:release -- 10590f1615bac48ed3463dad1ca4122101a13d72
+```
+
+The crate was unpacked and installed into a fresh temporary consumer; its demo
+returned three changes and two matches. Manual CLI normal, drift, and malformed
+input paths passed. The live release receipt and all 14 recorded static
+artifact digests exactly match the candidate.
+
+Live QA passed first-read/demo, desktop and 390 px mobile, keyboard focus,
+reduced motion, Axe serious/critical, privacy request logging, response
+headers, immutable hashed assets, service-worker offline reload, designed 404,
+and the approval-pack rate limit. The endpoint allowed 20 requests per minute;
+the 21st returned `429` with `Retry-After`.
+
+## Run and package
 
 ```sh
 npm test
 npm run lint
 npm run build
-node site/scripts/test-clean-claims.mjs
-cargo package --locked --allow-dirty
-npm run verify:release -- d54f36d51d1b9f6788adfd1c47888211fc801746
-/opt/fleet/lib/verify-url.sh https://alert-config-change-ledger.sociobot.in .factory/qa-artifacts/polish-4/verify-url
-```
-
-- The clean-clone ledger ran all 25 claim commands from a dependency-free
-  checkout of `d54f36d`, including `license-data-boundary`.
-- `npm test` passed 25 Rust tests, 13 API tests, 5 script tests, and 60
-  Chromium/mobile Playwright tests. Lint passed rustfmt, Clippy with warnings
-  denied, and TypeScript checking.
-- Release verification matched all 14 static artifact digests and the API
-  build header to `d54f36d`.
-- Cold live audit: desktop and 390 px first screens contain the headline,
-  action, and all three facts; no horizontal overflow or normal-route console
-  errors. `/`, `/demo`, `/privacy`, `/terms`, and `/404.html` have one H1 and
-  one main landmark; unknown routes give the designed HTTP 404. Live Axe found
-  no serious or critical violations.
-- The live demo opens from `?demo=1`, has only
-  `demo:alert-config-ledger:state`, makes no cross-origin request, downloads
-  three changes, resets, exits without touching real-mode data, and reloads
-  offline after its first visit.
-- Lighthouse JSON: performance 99, accessibility 100, best practices 100,
-  SEO 100; LCP 1.8 s, CLS 0, TBT 90 ms.
-
-Evidence is in `.factory/qa-artifacts/polish-4/`, especially
-`live-audit.json`, `live-first-read-desktop.png`, `live-first-read-mobile.png`,
-`live-demo-mobile.png`, `verify-url/verify.json`, and `lighthouse.json`.
-The full finding map is `.factory/polish-4.md`.
-
-## Run and deploy
-
-```sh
-npm test
-npm run build
 cargo run -- demo
-npm run deploy
+cargo package --locked
 ```
 
-The CLI is ready to package with `cargo package --locked`; registry publishing
-remains a factory operation.
+## Known gaps / next step
 
-## Known gaps
-
-None.
+None. Deployment and registry publishing remain factory operations; this
+verification did not alter infrastructure, billing, or unrelated services.
