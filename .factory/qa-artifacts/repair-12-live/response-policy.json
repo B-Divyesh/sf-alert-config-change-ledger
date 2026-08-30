@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-08-30T02:50:15Z",
+  "root": {
+    "status": 200,
+    "cacheControl": "public, must-revalidate, max-age=30",
+    "hsts": "max-age=10886400; includeSubDomains; preload",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "contentTypeOptions": "nosniff",
+    "permissionsPolicy": "camera=(), microphone=(), geolocation=()",
+    "cspIncludesFrameAncestorsNone": true
+  },
+  "releaseReceipt": { "status": 200, "cacheControl": "no-store" },
+  "hashedJavaScript": { "status": 200, "cacheControl": "public, max-age=31536000, immutable" },
+  "unknownRoute": { "status": 404 },
+  "approvalPackWithoutLicense": {
+    "status": 401,
+    "cacheControl": "no-store, private",
+    "build": "da7f4fda9b445e359ad00ac9ef81b22462fe676e",
+    "limitStore": "azure-table"
+  },
+  "result": "PASS"
+}

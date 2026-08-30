@@ -1,0 +1,8 @@
+{
+  "candidate": "da7f4fda9b445e359ad00ac9ef81b22462fe676e",
+  "source": "local HEAD and origin/main",
+  "staticArtifactsCompared": 14,
+  "apiStatus": 401,
+  "apiBuildHeader": "da7f4fda9b445e359ad00ac9ef81b22462fe676e",
+  "result": "PASS"
+}

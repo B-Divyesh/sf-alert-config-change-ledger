@@ -1,0 +1,173 @@
+{
+  "checkedAt": "2026-08-30T02:49:53.275Z",
+  "routes": {
+    "/": {
+      "title": "Alert Config Ledger — compare alert routes",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 200,
+      "errors": [],
+      "seriousCritical": []
+    },
+    "/demo": {
+      "title": "Demo — Alert Config Ledger",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 200,
+      "errors": [],
+      "seriousCritical": []
+    },
+    "/privacy": {
+      "title": "Privacy — Alert Config Ledger",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 200,
+      "errors": [],
+      "seriousCritical": []
+    },
+    "/terms": {
+      "title": "Terms — Alert Config Ledger",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 200,
+      "errors": [],
+      "seriousCritical": []
+    },
+    "/404.html": {
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 200,
+      "errors": [],
+      "seriousCritical": []
+    },
+    "/missing-release-ledger": {
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "missingAlt": 0,
+      "unlabeledButtons": 0,
+      "overflow": 0,
+      "status": 404,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "seriousCritical": []
+    }
+  },
+  "errors": [],
+  "mobile": {
+    "overflow": 0,
+    "controlsBelow44": [],
+    "storageKeys": [
+      "demo:alert-config-ledger:state"
+    ]
+  },
+  "demo": {
+    "requests": 3,
+    "crossOriginRequests": [],
+    "errors": [],
+    "keyboardClearTarget": "demo-state-title",
+    "keyboardResetTarget": "ledger-title",
+    "text200Overflow": 0
+  },
+  "offline": {
+    "worker": {
+      "active": "https://alert-config-change-ledger.sociobot.in/sw.js",
+      "installing": null,
+      "waiting": null
+    },
+    "status": 200,
+    "notice": "You are offline. The bundled demo still works.",
+    "summary": "3 changed · 2 matched"
+  },
+  "reducedMotion": {
+    "scrollBehavior": "auto",
+    "reelDuration": "1e-05s",
+    "reelIterations": "1"
+  },
+  "links": [
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/#install",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/#main",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/404.html#main",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/demo#main",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/privacy#main",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/terms",
+      "status": 200
+    },
+    {
+      "href": "https://alert-config-change-ledger.sociobot.in/terms#main",
+      "status": 200
+    },
+    {
+      "href": "https://github.com/B-Divyesh/sf-alert-config-change-ledger",
+      "status": 200
+    },
+    {
+      "href": "https://sociobot.in/",
+      "status": 200
+    },
+    {
+      "href": "mailto:privacy@sociobot.in",
+      "status": "mailto"
+    },
+    {
+      "href": "mailto:support@sociobot.in",
+      "status": "mailto"
+    }
+  ],
+  "result": "PASS"
+}
