@@ -380,7 +380,7 @@ test('@claim:offline-reload bundled demo reloads offline', async ({ page, contex
   await context.setOffline(false);
 });
 
-test('@claim:paid-template valid licenses reveal the report pack', async ({ page }) => {
+test('@claim:paid-template valid licenses reveal the approval report template', async ({ page }) => {
   let verifyRequest = '';
   let approvalLicense = '';
   await page.route('https://api.sociobot.in/**', async (route) => {
@@ -398,12 +398,62 @@ test('@claim:paid-template valid licenses reveal the report pack', async ({ page
   await expect(page.getByText('License active.')).toBeVisible();
   await expect(page.locator('[data-license-status]')).toHaveAttribute('role', 'status');
   await expect(page.locator('[data-license-status]')).toHaveAttribute('aria-live', 'polite');
-  await expect(page.getByRole('button', { name: 'Download approval report pack' })).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Download approval report template' })).toBeFocused();
   expect(verifyRequest).toContain(`/products/alert-config-change-ledger/verify?license=test-license-token`);
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download approval report pack' }).click();
+  await page.getByRole('button', { name: 'Download approval report template' }).click();
   expect((await downloadPromise).suggestedFilename()).toBe('alert-ledger-approval-template.md');
   expect(approvalLicense).toBe('test-license-token');
+});
+
+test('@claim:license-data-boundary license storage and verification contain only the license', async ({ page }) => {
+  const license = 'fixture-license-token';
+  const appOrigin = 'http://127.0.0.1:4173';
+  const externalRequests: Array<{ method: string; url: string; body: string | null; headers: Record<string, string> }> = [];
+
+  page.on('request', (request) => {
+    if (new URL(request.url()).origin !== appOrigin) {
+      externalRequests.push({
+        method: request.method(),
+        url: request.url(),
+        body: request.postData(),
+        headers: request.headers(),
+      });
+    }
+  });
+  await page.route('https://api.sociobot.in/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }) });
+  });
+
+  await page.goto('/');
+  expect(await page.evaluate(() => Object.entries(localStorage).sort(([left], [right]) => left.localeCompare(right)))).toEqual([]);
+  await page.getByLabel('Have a license? Paste it').fill(license);
+  await page.getByRole('button', { name: 'Verify license' }).click();
+  await expect(page.getByText('License active.')).toBeVisible();
+
+  const storedBeforeReload = await page.evaluate(() => Object.entries(localStorage).sort(([left], [right]) => left.localeCompare(right)));
+  expect(storedBeforeReload.map(([key]) => key)).toEqual([
+    'sb_license_verdict:alert-config-change-ledger',
+    'sb_license:alert-config-change-ledger',
+  ]);
+  expect(JSON.parse(storedBeforeReload[0][1])).toEqual({ valid: true, checkedAt: expect.any(Number) });
+  expect(storedBeforeReload[1]).toEqual(['sb_license:alert-config-change-ledger', license]);
+
+  await page.reload();
+  await expect(page.getByText('License active.')).toBeVisible();
+  const storedAfterReload = await page.evaluate(() => Object.entries(localStorage).sort(([left], [right]) => left.localeCompare(right)));
+  expect(storedAfterReload).toEqual(storedBeforeReload);
+
+  expect(externalRequests).toHaveLength(1);
+  const [verification] = externalRequests;
+  const verificationUrl = new URL(verification.url);
+  expect(verification.method).toBe('GET');
+  expect(`${verificationUrl.origin}${verificationUrl.pathname}`).toBe('https://api.sociobot.in/api/v1/products/alert-config-change-ledger/verify');
+  expect([...verificationUrl.searchParams.entries()]).toEqual([['license', license]]);
+  expect(verification.body).toBeNull();
+  expect(verification.headers['x-alert-ledger-license']).toBeUndefined();
+  expect(JSON.stringify(verification)).not.toContain('team = payments');
+  expect(JSON.stringify(verification)).not.toContain('live-1842');
 });
 
 test('keyboard license verification announces invalid, offline, and service-error results', async ({ page }) => {
@@ -450,7 +500,7 @@ test('keyboard license verification announces invalid, offline, and service-erro
 
 test('@claim:sales-closed unlicensed browsers have no checkout or paid-content action', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Download approval report pack' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Download approval report template' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: /Buy Pro/ })).toHaveCount(0);
   await expect(page.getByText('New license sales are not open in this release.')).toHaveCount(2);
   await expect(page.locator('a[href="/approval-report-template.md"]')).toHaveCount(0);

@@ -55,7 +55,7 @@ Audited 29 August 2026 after Polish 3 against the release-candidate landing page
 | It does not send telemetry. | 5 | Pass: `no-telemetry` |
 | Optional Pro feature | 3 | Pass |
 | Use an existing Pro license | 5 | Pass |
-| A Pro license adds a reusable review template and sign-off checklist. | 11 | Pass: `pro-pack-contents` |
+| A Pro license adds an approval report template with a sign-off checklist. | 12 | Pass: `pro-pack-contents` |
 | The snapshot, diff, timeline, JSON, and Markdown commands need no license. | 12 | Pass: `free-core-cli` |
 | New license sales are not open in this release. | 9 | Pass: `sales-closed` |
 | No active license in this browser. | 6 | Pass |
@@ -79,6 +79,7 @@ Audited 29 August 2026 after Polish 3 against the release-candidate landing page
 | One-click sample environment | demo |
 | Protected contact value | recipient endpoint |
 | Paid proof of purchase | license |
+| Paid download | approval report template |
 
 ## First-screen read-aloud
 

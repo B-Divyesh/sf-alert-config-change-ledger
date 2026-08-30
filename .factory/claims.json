@@ -113,17 +113,24 @@
   },
   {
     "id": "paid-template",
-    "claim": "Only a valid Pro license can retrieve the approval report pack.",
+    "claim": "Only a valid Pro license can retrieve the approval report template.",
     "where": "landing Pro section, README",
     "test": "npm test -- --grep @claim:paid-template",
     "sandbox": "fresh browser context with recorded valid verification plus API tests for missing, invalid, and valid licenses"
   },
   {
     "id": "pro-pack-contents",
-    "claim": "The Pro approval pack contains reusable Route changes, Evidence, and Sign-off sections.",
+    "claim": "The Pro approval report template contains reusable Route changes, Evidence, and Sign-off sections.",
     "where": "landing Pro section",
     "test": "npm run test:claim:pro-pack-contents",
     "sandbox": "real approval-pack handler with a recorded valid license verdict; assert the returned Markdown headings and sign-off fields"
+  },
+  {
+    "id": "license-data-boundary",
+    "claim": "A pasted license stores only its token and verdict in this browser, and verification sends only that license to the Sociobot billing API.",
+    "where": "privacy license data",
+    "test": "npm test -- --grep @claim:license-data-boundary",
+    "sandbox": "fresh browser context; use a fixture license, record all cross-origin requests, and compare exact browser storage before and after reload"
   },
   {
     "id": "sales-closed",

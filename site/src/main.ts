@@ -156,7 +156,7 @@ Demo files: /tmp/alert-ledger-demo-…</code></pre></details></figcaption>
     </section>
 
     <section class="paid" aria-labelledby="paid-title">
-      <div><div class="section-label">Optional Pro feature</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds a reusable review template and sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
+      <div><div class="section-label">Optional Pro feature</div><h2 id="paid-title">Use an existing Pro license</h2><p>A Pro license adds an approval report template with a sign-off checklist.</p><p>The snapshot, diff, timeline, JSON, and Markdown commands need no license.</p><p>New license sales are not open in this release.</p></div>
       <div class="license-panel" data-license-panel aria-live="polite" aria-atomic="false"><p class="license-state" data-license-status role="status" aria-live="polite" aria-atomic="true">Checking this browser for a license…</p><div data-license-content></div></div>
     </section>
   </main>${footer()}`;
@@ -217,7 +217,7 @@ function terms(): string {
   return `${header()}<main id="main" class="legal" data-history-focus="main" tabindex="-1"><p class="eyebrow">Terms / version 0.1</p><h1 data-history-focus="page-heading" tabindex="-1">Use the ledger as an audit aid</h1><p class="lede">Effective 28 August 2026.</p>
     <h2>Open source CLI</h2><p>The CLI is licensed under MIT. It is provided without warranty.</p>
     <h2>Your responsibility</h2><p>Use credentials with read-only access. Review reports before using them in an incident process.</p>
-    <h2>Pro licenses</h2><p>An active Pro license gives access to the approval report pack.</p><p>Core CLI commands stay available without a license.</p>
+    <h2>Pro licenses</h2><p>An active Pro license gives access to the approval report template.</p><p>Core CLI commands stay available without a license.</p>
     <h2>Limits</h2><p>The ledger does not guarantee that a provider export is complete. Provider access and export quality remain your responsibility.</p>
     <h2>Contact</h2><p>Email <a href="mailto:support@sociobot.in">support@sociobot.in</a>.</p>
   </main>${footer()}`;
@@ -374,7 +374,7 @@ async function handleAction(event: Event): Promise<void> {
       headers: { 'X-Alert-Ledger-License': token }
     });
     if (!response.ok) {
-      announce('The approval pack could not be authorized. Verify the license and retry.');
+      announce('The approval report template could not be authorized. Verify the license and retry.');
       return;
     }
     download('alert-ledger-approval-template.md', await response.text(), 'text/markdown');
@@ -396,7 +396,7 @@ function announce(message: string): void {
 }
 
 function licenseContentMarkup(valid: boolean): string {
-  if (valid) return `<button class="button" data-action="download-pro">Download approval report pack</button><button class="text-button" data-action="remove-license">Remove license</button>`;
+  if (valid) return `<button class="button" data-action="download-pro">Download approval report template</button><button class="text-button" data-action="remove-license">Remove license</button>`;
   return `<p>New license sales are not open in this release.</p><form class="license-form"><label for="license-token">Have a license? Paste it</label><div><input id="license-token" name="license" autocomplete="off" required><button class="button secondary" type="submit">Verify license</button></div></form>`;
 }
 

@@ -114,7 +114,7 @@ The deployed demo URL is `https://alert-config-change-ledger.sociobot.in/demo`.
 
 Configuration is processed by the CLI on your machine. API tokens are read from the environment and are not written to snapshots. Recipient endpoints are stored only as SHA-256 identifiers. Non-secret provider fields and timestamps remain in snapshots. The static demo makes no cross-origin requests.
 
-Existing Pro approval-report licenses are verified through the Sociobot billing API. The protected template comes from a same-origin function only after that check. New license sales are not open in this release. The CLI's snapshot, diff, timeline, JSON, and Markdown output remain free.
+Existing Pro licenses are verified through the Sociobot billing API. The approval report template comes from a same-origin function only after that check. New license sales are not open in this release. The CLI's snapshot, diff, timeline, JSON, and Markdown output remain free.
 
 ## Deploy
 
