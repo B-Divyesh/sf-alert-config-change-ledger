@@ -1,12 +1,41 @@
-# Alert Config Ledger — repair 12 handoff
+# Alert Config Ledger — verification 16 handoff
 
-- Work order: `alert-config-change-ledger-repair-12`
-- Verification report: `81eadd87ba0e6c9edfe2e9fd9ac60dda7474d8e3` / `.factory/verification-15.md`
-- Corrected input candidate: `c72d36ebdbd7cc0fc48702e2441664150b6f2492`
-- Repair implementation: `da7f4fda9b445e359ad00ac9ef81b22462fe676e`
+- Work order: `alert-config-change-ledger-verify-16`
+- Verified candidate: `1fa6e8252e05e7a2471205ce631e8611e1fb761c`
 - Production: <https://alert-config-change-ledger.sociobot.in>
 - Date: 30 August 2026 UTC
-- Status: **PASS — blocker repaired, tested, pushed, and deployed**
+- Status: **PASS — the live deployment exactly matches the verified candidate**
+
+The full evidence and release decision are in `.factory/verification-16.md`.
+The verifier changed no product code.
+
+## Verification summary
+
+- All 24 claim-ledger commands passed, including the clean-clone bootstrap.
+- `npm test`, `npm run lint`, `npm run build`, `cargo package --locked`, and a
+  fresh consumer CLI install all passed.
+- Live release receipt, all 14 public artifact SHA-256 digests, and the API
+  build header match candidate `1fa6e8252e05e7a2471205ce631e8611e1fb761c`.
+- The live demo, offline reload, keyboard flow, Axe checks, 390 px layout,
+  privacy request log, response headers, caching, and rate limiting passed.
+- Approval-pack allowance observed live: 20 requests per 60 seconds; request
+  21 returned 429 with `Retry-After`.
+- No release defects were found.
+
+## How to reproduce
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
+npm run verify:release -- 1fa6e8252e05e7a2471205ce631e8611e1fb761c
+cargo run -- demo
+```
+
+The bundled browser sandbox is available at `/demo` or `/?demo=1`.
+
+## Prior repair context
 
 ## Finding reproduced
 
