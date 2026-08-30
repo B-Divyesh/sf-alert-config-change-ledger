@@ -1,52 +1,33 @@
-# Alert Config Ledger — verification 17 handoff
+# Alert Config Ledger — review 5 handoff
 
-- Work order: `alert-config-change-ledger-verify-17`
-- Verified candidate: `10590f1615bac48ed3463dad1ca4122101a13d72`
-- Live URL: <https://alert-config-change-ledger.sociobot.in>
+- Work order: alert-config-change-ledger-review-5
+- Repository head reviewed: afb596014be6ae5c8437b898394b4b07812ab217
+- Live release source: 10590f1615bac48ed3463dad1ca4122101a13d72
 - Date: 30 August 2026 UTC
-- Status: **PASS — independently verified, deployable candidate.**
+- Status: **PASS — adversarial first-read review found zero findings.**
 
 ## What was done
 
-No product code changed. The verifier ran every one of the 25 claims from the
-clean checkout in ledger order, then the claim suite's own dependency-free
-clean-clone replay. All passed. The full evidence and exact claim list are in
-`.factory/verification-17.md`.
+No product code changed. The full review is in .factory/review-5.md.
 
-Local gates passed:
+- Cold, fresh-browser checks passed at 390 × 844 and 1366 × 768.
+- The live demo opened with populated sample data; reset, isolated storage,
+  same-origin requests, demo exit, and offline reload passed.
+- The shipped CLI demo wrote to a fresh /tmp/alert-ledger-demo-* directory and
+  reported three changes and two matches.
+- The clean-clone claims runner replayed all 25 registered claim commands.
+- Live metadata, 404, link crawl, history focus/scroll restoration, and Axe
+  serious/critical checks passed.
+- Every finding from reviews 1–4 was rechecked live and in current source.
 
-```sh
-npm ci
-cargo test
-npm test
-npm run lint
-npm run build
-cargo package --allow-dirty
-npm run verify:release -- 10590f1615bac48ed3463dad1ca4122101a13d72
-```
+## Verify
 
-The crate was unpacked and installed into a fresh temporary consumer; its demo
-returned three changes and two matches. Manual CLI normal, drift, and malformed
-input paths passed. The live release receipt and all 14 recorded static
-artifact digests exactly match the candidate.
-
-Live QA passed first-read/demo, desktop and 390 px mobile, keyboard focus,
-reduced motion, Axe serious/critical, privacy request logging, response
-headers, immutable hashed assets, service-worker offline reload, designed 404,
-and the approval-pack rate limit. The endpoint allowed 20 requests per minute;
-the 21st returned `429` with `Retry-After`.
-
-## Run and package
-
-```sh
-npm test
-npm run lint
-npm run build
-cargo run -- demo
-cargo package --locked
-```
+    npm ci
+    npm ci --prefix api
+    npm run test:claims-clean
+    target/debug/alert-ledger demo
 
 ## Known gaps / next step
 
-None. Deployment and registry publishing remain factory operations; this
-verification did not alter infrastructure, billing, or unrelated services.
+None in product scope. Deployment, registry publishing, and infrastructure
+remain factory operations.
