@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 29 August 2026 after Polish 3 against the release-candidate landing page. Counts treat route labels and command names as one word. Terminal output is literal output. No prose item exceeds 22 words or contains a banned plain-words term.
+Audited 30 August 2026 after Polish 4 against the deployed release candidate. Counts treat route labels and command names as one word. Terminal output is literal output. No prose item exceeds 22 words or contains a banned plain-words term.
 
 | Copy | Words | Result |
 | --- | ---: | --- |

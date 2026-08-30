@@ -1,0 +1,434 @@
+{
+  "checkedAt": "2026-08-30T06:48:31.603Z",
+  "origin": "https://alert-config-change-ledger.sociobot.in",
+  "firstRead": {
+    "mobile": {
+      "title": "Alert Config Ledger — compare alert routes",
+      "h1": [
+        "Compare reviewed and live alert routes"
+      ],
+      "visibleText": [
+        "ACLAlert Config Ledger",
+        "Demo",
+        "Install",
+        "Privacy",
+        "Read-only alert route comparison",
+        "Compare reviewed and live alert routes",
+        "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+        "Try it with sample data",
+        "Runs offline after the first visit.",
+        "Recipient endpoints stay redacted.",
+        "Core CLI needs no license."
+      ],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "desktop": {
+      "title": "Alert Config Ledger — compare alert routes",
+      "h1": [
+        "Compare reviewed and live alert routes"
+      ],
+      "visibleText": [
+        "ACLAlert Config Ledger",
+        "Demo",
+        "Install",
+        "Privacy",
+        "Read-only alert route comparison",
+        "Compare reviewed and live alert routes",
+        "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+        "Try it with sample data",
+        "Runs offline after the first visit.",
+        "Recipient endpoints stay redacted.",
+        "Core CLI needs no license."
+      ],
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "errors": []
+    }
+  },
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Alert Config Ledger — compare alert routes",
+      "lang": "en",
+      "h1": [
+        "Compare reviewed and live alert routes"
+      ],
+      "mainCount": 1,
+      "description": "Compare reviewed and live alert routes, then show recipient, severity, and route changes.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/",
+      "ogTitle": "Alert Config Ledger — compare alert routes",
+      "ogDescription": "Compare reviewed and live alert routes, then show recipient, severity, and route changes.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "Compare reviewed and live alert routes"
+        },
+        {
+          "level": 2,
+          "text": "Sample CLI comparison"
+        },
+        {
+          "level": 2,
+          "text": "How the ledger works"
+        },
+        {
+          "level": 3,
+          "text": "Import provider exports"
+        },
+        {
+          "level": 3,
+          "text": "Put routes in one format"
+        },
+        {
+          "level": 3,
+          "text": "Show route changes"
+        },
+        {
+          "level": 2,
+          "text": "Run the ledger locally"
+        },
+        {
+          "level": 2,
+          "text": "What it does not do"
+        },
+        {
+          "level": 2,
+          "text": "Use an existing Pro license"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Alert Config Ledger",
+      "lang": "en",
+      "h1": [
+        "Review three live route changes"
+      ],
+      "mainCount": 1,
+      "description": "Review three sample alert route changes in an isolated browser demo.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/demo",
+      "ogTitle": "Demo — Alert Config Ledger",
+      "ogDescription": "Review three sample alert route changes in an isolated browser demo.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "Review three live route changes"
+        },
+        {
+          "level": 2,
+          "text": "Changed routes"
+        },
+        {
+          "level": 2,
+          "text": "Recipient changed"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Alert Config Ledger",
+      "lang": "en",
+      "h1": [
+        "Keep alert config on your machine"
+      ],
+      "mainCount": 1,
+      "description": "Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "ogTitle": "Privacy — Alert Config Ledger",
+      "ogDescription": "Learn how Alert Config Ledger keeps alert configuration, demo data, and license data separate.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "Keep alert config on your machine"
+        },
+        {
+          "level": 2,
+          "text": "CLI data"
+        },
+        {
+          "level": 2,
+          "text": "Demo data"
+        },
+        {
+          "level": 2,
+          "text": "License data"
+        },
+        {
+          "level": 2,
+          "text": "Questions"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Alert Config Ledger",
+      "lang": "en",
+      "h1": [
+        "Use the ledger as an audit aid"
+      ],
+      "mainCount": 1,
+      "description": "Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/terms",
+      "ogTitle": "Terms — Alert Config Ledger",
+      "ogDescription": "Read the terms for the open-source Alert Config Ledger CLI and optional Pro license.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "Use the ledger as an audit aid"
+        },
+        {
+          "level": 2,
+          "text": "Open source CLI"
+        },
+        {
+          "level": 2,
+          "text": "Your responsibility"
+        },
+        {
+          "level": 2,
+          "text": "Pro licenses"
+        },
+        {
+          "level": 2,
+          "text": "Limits"
+        },
+        {
+          "level": 2,
+          "text": "Contact"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "/404.html": {
+      "status": 200,
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1": [
+        "This page was not found"
+      ],
+      "mainCount": 1,
+      "description": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/404",
+      "ogTitle": "Page not found — Alert Config Ledger",
+      "ogDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "This page was not found"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": []
+    },
+    "/review-4-missing": {
+      "status": 404,
+      "title": "Page not found — Alert Config Ledger",
+      "lang": "en",
+      "h1": [
+        "This page was not found"
+      ],
+      "mainCount": 1,
+      "description": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "canonical": "https://alert-config-change-ledger.sociobot.in/404",
+      "ogTitle": "Page not found — Alert Config Ledger",
+      "ogDescription": "This Alert Config Ledger page does not exist. Return to the alert route comparison.",
+      "favicon": "/favicon.svg",
+      "appleTouch": "/apple-touch-icon.png",
+      "headingOutline": [
+        {
+          "level": 1,
+          "text": "This page was not found"
+        }
+      ],
+      "seriousAxe": [],
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    }
+  },
+  "demo": {
+    "initial": {
+      "url": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+      "h1": "REVIEW THREE LIVE ROUTE CHANGES",
+      "banner": "Demo — sample data, nothing is saved\nReset demo\nStart for real\nInstall the CLI",
+      "summary": "3 CHANGED · 2 MATCHED",
+      "keys": [
+        "demo:alert-config-ledger:state"
+      ],
+      "crossOriginRequests": [],
+      "download": {
+        "name": "alert-ledger-sample-report.json",
+        "changes": 3,
+        "matchedRoutes": 2
+      }
+    },
+    "emptyIncludesRecovery": false,
+    "reset": true,
+    "exitLabel": "Install the CLI",
+    "afterExit": {
+      "url": "https://alert-config-change-ledger.sociobot.in/#install",
+      "keys": [
+        "review-4:real-sentinel"
+      ],
+      "sentinel": "untouched"
+    },
+    "startForReal": {
+      "url": "https://alert-config-change-ledger.sociobot.in/",
+      "keys": [
+        "review-4:real-sentinel"
+      ],
+      "sentinel": "untouched",
+      "focused": "Compare reviewed and live alert routes"
+    },
+    "offline": {
+      "registration": "https://alert-config-change-ledger.sociobot.in/sw.js",
+      "notice": true,
+      "sample": true
+    }
+  },
+  "history": {
+    "before": {
+      "scroll": 4115,
+      "focused": "Privacy"
+    },
+    "privacyFocus": "H1:Keep alert config on your machine",
+    "back": {
+      "scroll": 5022,
+      "focused": "Privacy"
+    },
+    "forward": {
+      "scroll": 0,
+      "focused": "Keep alert config on your machine"
+    }
+  },
+  "links": [
+    {
+      "text": "Skip to main content",
+      "href": "https://alert-config-change-ledger.sociobot.in/#main",
+      "status": 200
+    },
+    {
+      "text": "ACLAlert Config Ledger",
+      "href": "https://alert-config-change-ledger.sociobot.in/",
+      "status": 200
+    },
+    {
+      "text": "Demo",
+      "href": "https://alert-config-change-ledger.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "text": "Install",
+      "href": "https://alert-config-change-ledger.sociobot.in/#install",
+      "status": 200
+    },
+    {
+      "text": "Privacy",
+      "href": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "text": "Try it with sample data",
+      "href": "https://alert-config-change-ledger.sociobot.in/?demo=1",
+      "status": 200
+    },
+    {
+      "text": "Get the source on GitHub (external site)",
+      "href": "https://github.com/B-Divyesh/sf-alert-config-change-ledger"
+    },
+    {
+      "text": "Privacy",
+      "href": "https://alert-config-change-ledger.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "text": "Terms",
+      "href": "https://alert-config-change-ledger.sociobot.in/terms",
+      "status": 200
+    },
+    {
+      "text": "Built by Param Factory (external site)",
+      "href": "https://sociobot.in/"
+    }
+  ],
+  "landingCopy": [
+    "ACLAlert Config Ledger",
+    "Demo",
+    "Install",
+    "Privacy",
+    "Read-only alert route comparison",
+    "Compare reviewed and live alert routes",
+    "For platform teams who need to prove whether live alert routes match the reviewed baseline.",
+    "Try it with sample data",
+    "Runs offline after the first visit.",
+    "Recipient endpoints stay redacted.",
+    "Core CLI needs no license.",
+    "Reviewed baseline on the left. Live configuration on the right.",
+    "Sample CLI comparison",
+    "The bundled demo runs the same comparison as the CLI.",
+    "Read the terminal transcript$ alert-ledger demo ! CHANGE 3 changed routes · 2 matched ~ team = payments · recipients ~ service = checkout · severity, recipients + team = security · route Demo files: /tmp/alert-ledger-demo-…",
+    "Read the terminal transcript",
+    "How the ledger works",
+    "01Import provider exportsRead Grafana or Alertmanager exports from a file or read-only URL.",
+    "Import provider exports",
+    "Read Grafana or Alertmanager exports from a file or read-only URL.",
+    "02Put routes in one formatKeep non-secret provider fields and replace recipient endpoints with SHA-256 identifiers.",
+    "Put routes in one format",
+    "Keep non-secret provider fields and replace recipient endpoints with SHA-256 identifiers.",
+    "03Show route changesCompare the baseline with live state and show each change with its timestamp.",
+    "Show route changes",
+    "Compare the baseline with live state and show each change with its timestamp.",
+    "Run the ledger locally",
+    "The demo ships inside the binary and needs no account.",
+    "Get the source on GitHub (external site).",
+    "Get the source on GitHub (external site)",
+    "Copy install command",
+    "What it does not do",
+    "It does not send alerts.",
+    "It does not change provider config.",
+    "It does not replace Git review.",
+    "It does not send telemetry.",
+    "Use an existing Pro license",
+    "A Pro license adds an approval report template with a sign-off checklist.",
+    "The snapshot, diff, timeline, JSON, and Markdown commands need no license.",
+    "New license sales are not open in this release.",
+    "No active license in this browser.",
+    "Have a license? Paste it",
+    "Verify license",
+    "Compare alert route changes with their sources.",
+    "Terms",
+    "Built by Param Factory (external site)",
+    "v0.1.0 · build 004"
+  ]
+}
